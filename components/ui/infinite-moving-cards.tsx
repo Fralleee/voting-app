@@ -73,7 +73,9 @@ export const InfiniteMovingCards = ({
         ref={scrollerRef}
         className={cn(" flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap", start && "animate-scroll ", pauseOnHover && "hover:[animation-play-state:paused]")}>
         {items.map(item => (
-          <li className="w-[350px] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-stone-700 dark:border-slate-500 px-8 py-6 md:w-[450px]" key={item.name}>
+          <li
+            className="w-[350px] max-w-full relative rounded-2xl border border-b-stone-700/50 dark:border-b-slate-500/50 flex-shrink-0 bg-stone-50/50 dark:bg-slate-900/50 border-stone-700 dark:border-slate-500 px-8 py-6 md:w-[450px]"
+            key={item.name}>
             <blockquote>
               <div aria-hidden="true" className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"></div>
               <span className=" relative z-20 text-sm leading-[1.6] text-stone-950 dark:text-slate-100 font-normal">{item.quote}</span>
