@@ -74,7 +74,7 @@ export const InfiniteMovingCards = ({
         className={cn(" flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap", start && "animate-scroll ", pauseOnHover && "hover:[animation-play-state:paused]")}>
         {items.map(item => (
           <li
-            className="w-[350px] max-w-full relative rounded-2xl border border-b-stone-700/50 dark:border-b-slate-500/50 flex-shrink-0 bg-stone-50/50 dark:bg-slate-900/50 border-stone-700 dark:border-slate-500 px-8 py-6 md:w-[450px]"
+            className="w-[350px] max-w-full relative rounded-2xl border border-b-stone-700/50 dark:border-b-slate-500/50 flex-shrink-0 bg-stone-50/50 dark:bg-slate-950/50 border-stone-700 dark:border-slate-500 px-8 py-6 md:w-[450px]"
             key={item.name}>
             <blockquote>
               <div aria-hidden="true" className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"></div>
