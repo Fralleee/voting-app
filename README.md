@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
 
-## Getting Started
+# Voting App
 
-First, run the development server:
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/fralleee/voting-app)
+![GitHub](https://img.shields.io/github/license/fralleee/voting-app)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/fralleee/voting-app/build-and-test.yml)
+![GitHub issues](https://img.shields.io/github/issues/fralleee/voting-app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Fralleee_VotingApp&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Fralleee_VotingApp)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Fralleee_VotingApp&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=Fralleee_VotingApp)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Fralleee_VotingApp&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Fralleee_VotingApp)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Fralleee_VotingApp&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Fralleee_VotingApp)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Introducing **Voting App**, a comprehensive tool for managing various types of votes online. From simple single-choice votes to multi-option polls and even fun tie-breaker games, this app offers a robust platform for both casual and formal decision-making contexts.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[Installation](#installation) •
+[Usage](#usage) •
+[Configuration](#configuration) •
+[Project Roadmap](#project-roadmap) •
+[Contributing](#contributing)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+</div>
 
-## Learn More
+## Installation
+To get started with **Voting App**, visit the [live site](https://vote.fralle.net/) and explore the different voting options available.
 
-To learn more about Next.js, take a look at the following resources:
+## Usage
+**Voting App** is designed to facilitate a wide range of voting scenarios:
+- Single-choice, multi-choice, and storypoint voting.
+- Engage in tie-breaker games like rock paper scissors, coin toss, or random picker roulette.
+- Visualize voting results in real-time, see who voted for what and when.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+🌐 Accessible from any device with an internet connection!
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+🔒 Ensures voting integrity with IP-based user identification and admin control.
 
-## Deploy on Vercel
+🎉 Easy to use with a friendly interface that enhances your voting experience!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Configuration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Admin Controls
+If you are the creator of the vote:
+- You have admin rights to start/close the voting.
+- Add choices or allow users to create their own choices.
+- Enable or disable multiple option selections.
+
+### Security Settings
+For sensitive voting:
+- Choose to anonymize or delete data immediately after the conclusion of the voting.
+
+## Project Roadmap
+The **Voting App** is constantly evolving, with plans to enhance its functionality:
+- Improve user identification mechanisms.
+- Extend data preservation options.
+- Enhance voting management and security features.
+
+Stay tuned for updates as we continue to expand the app's capabilities.
+
+## Contributing
+We welcome contributions from the community! If you're passionate about improving **Voting App**, check out our [Contributing Guide](CONTRIBUTING.md) for more information on how to get involved. We value every contribution, big or small!
+
+## Links
+* [Web site](https://vote.fralle.net/)
+* [Issue tracker](https://github.com/Fralleee/voting-app/issues)
+* [Source code](https://github.com/Fralleee/voting-app)
