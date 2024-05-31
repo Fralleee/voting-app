@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Prompts from "../components/prompts";
 import { Quotes } from "../components/quotes";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { SparklesCore } from "@/components/ui/sparkles";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function Page() {
   return (
