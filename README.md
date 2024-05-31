@@ -2,15 +2,8 @@
 
 # Voting App
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/fralleee/voting-app)
 ![GitHub](https://img.shields.io/github/license/fralleee/voting-app)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/fralleee/voting-app/build-and-test.yml)
 ![GitHub issues](https://img.shields.io/github/issues/fralleee/voting-app)
-
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Fralleee_VotingApp&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Fralleee_VotingApp)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=Fralleee_VotingApp&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=Fralleee_VotingApp)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Fralleee_VotingApp&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Fralleee_VotingApp)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Fralleee_VotingApp&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Fralleee_VotingApp)
 
 Introducing **Voting App**, a comprehensive tool for managing various types of votes online. From simple single-choice votes to multi-option polls and even fun tie-breaker games, this app offers a robust platform for both casual and formal decision-making contexts.
 
