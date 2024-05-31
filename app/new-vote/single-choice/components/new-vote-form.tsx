@@ -4,6 +4,7 @@ import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { database } from "@/lib/firebase";
 import { ref, push } from "firebase/database";
+import { Button } from "@/components/ui/button";
 
 interface Option {
   value: string;
@@ -17,12 +18,14 @@ interface FormValues {
 
 const NewVoteForm = () => {
   const router = useRouter();
+
   const { register, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       voteName: "",
       options: [{ value: "" }],
     },
   });
+
   const { fields, append } = useFieldArray({
     control,
     name: "options",
@@ -49,12 +52,10 @@ const NewVoteForm = () => {
       {fields.map((item, index) => (
         <input key={item.id} {...register(`options.${index}.value` as const)} className="text-red-500" placeholder="Option Name" />
       ))}
-      <button className="block mt-2 p-1 rounded-sm bg-slate-700" type="button" onClick={() => append({ value: "" })}>
+      <Button type="button" onClick={() => append({ value: "" })}>
         Add Option
-      </button>
-      <button className="block mt-2 p-2 rounded-sm bg-green-700" type="submit">
-        Create Vote
-      </button>
+      </Button>
+      <Button type="submit">Create Vote</Button>
     </form>
   );
 };
