@@ -3,6 +3,8 @@ import Prompts from "../components/prompts";
 import { Quotes } from "../components/quotes";
 import { buttonVariants } from "@/components/ui/button";
 
+export const dynamic = "force-dynamic";
+
 export default function Page() {
   const titles = [
     "Poll Fiction",
@@ -18,7 +20,9 @@ export default function Page() {
     "Polls and Recreation",
     "007: License to Vote",
   ];
+
   const title = titles[Math.floor(Math.random() * titles.length)];
+
   return (
     <>
       <div className="flex flex-col items-center justify-center flex-grow gap-8">
