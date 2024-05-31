@@ -3,22 +3,21 @@ import Prompts from "../components/prompts";
 import { Quotes } from "../components/quotes";
 import { buttonVariants } from "@/components/ui/button";
 
-const titles = [
-  "Poll Fiction",
-  "The Polling Stones",
-  "Indiana Votes",
-  "Silence of the Votes",
-  "Lord of the Polls",
-  "Poll-tergeist",
-  "Votey McVoteface",
-  "Jurassic Poll",
-  "Harry Pollter",
-  "Mad Poll: Fury Vote",
-  "Polls and Recreation",
-  "007: License to Vote",
-];
-
 export default function Page() {
+  const titles = [
+    "Poll Fiction",
+    "The Polling Stones",
+    "Indiana Votes",
+    "Silence of the Votes",
+    "Lord of the Polls",
+    "Poll-tergeist",
+    "Votey McVoteface",
+    "Jurassic Poll",
+    "Harry Pollter",
+    "Mad Poll: Fury Vote",
+    "Polls and Recreation",
+    "007: License to Vote",
+  ];
   const title = titles[Math.floor(Math.random() * titles.length)];
   return (
     <>
