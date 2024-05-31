@@ -34,7 +34,7 @@ const testimonials = [
 
 export function Quotes() {
   return (
-    <div className="h-96 rounded-md flex flex-col antialiased bg-white/85 bg-grid-black/[0.01] dark:bg-black/85 dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+    <div className="h-96 rounded-md flex flex-col antialiased bg-stone-50/85 bg-grid-stone-950/[0.025] dark:bg-slate-950/85 dark:bg-grid-slate-50/[0.04] items-center justify-center relative overflow-hidden">
       <InfiniteMovingCards items={testimonials} direction="right" speed="slow" />
     </div>
   );
