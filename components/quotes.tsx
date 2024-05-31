@@ -1,41 +1,44 @@
 import React from "react";
 import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
+import { shuffle } from "@/utils/array";
 
 const testimonials = [
   {
-    quote: "This app is the ultimate exception handler in the symphony of programming; it's like discovering recursion for the first time—simply mind-blowing!",
-    name: "Guido van Rossum",
-    title: "Python Lord",
+    quote: "This app blows! Nobody is voting my favor!",
+    name: "Doland Tremp",
+    title: "Some weirdo on the internet",
   },
   {
-    quote: "Using this app feels like I've overclocked my brain! It's the kind of tool that could write 'Hello World' in binary using smoke signals.",
-    name: "Linus Torvalds",
-    title: "Doctor Linux aka The Big Cheese",
+    quote: "Perfect for deciding who has to take out the trash. Spoiler: it's never me!",
+    name: "Gary Plotter",
+    title: "Lazy Roommate",
   },
   {
-    quote:
-      "If software development were a sport, this app would be what they use in the world championships. It’s like the digital equivalent of a caffeine boost, minus the jitters.",
-    name: "James Gosling",
-    title: "Father of Java",
+    quote: "Now I can officially prove that pineapple does belong on pizza. Take that, haters!",
+    name: "Sammy Pepperoni",
+    title: "Pizza Advocate",
   },
   {
-    quote:
-      "In a world full of semicolons and syntax errors, this app is the true unconditional breakpoint. It’s like a 'for' loop without an increment condition—just keeps giving more!",
-    name: "Bjarne Stroustrup",
-    title: "The ++ in C++",
+    quote: "Why argue at family dinners when you can silently vote and still be mad about it later?",
+    name: "Ellie Argument",
+    title: "Family Peacemaker",
   },
   {
-    quote:
-      "Forget about quantum computing; using this app is like having a multidimensional array of possibilities at your fingertips. It's the definitive solution to the 'travelling salesman problem' in productivity!",
-    name: "Donald Knuth",
-    title: "Author of The Art of Computer Programming",
+    quote: "My friends and I use this to decide where to eat. Now, I don't talk to half of them. Great app!",
+    name: "Jenna Compromise",
+    title: "Former Friend",
+  },
+  {
+    quote: "I thot this wuz a game. Lol, did I win?",
+    name: "Stoney Rockwell",
+    title: "Gamer and Accidental Tourist",
   },
 ];
 
 export function Quotes() {
   return (
     <div className="h-96 rounded-md flex flex-col antialiased bg-stone-50/85 bg-grid-stone-950/[0.025] dark:bg-slate-950/85 dark:bg-grid-slate-50/[0.04] items-center justify-center relative overflow-hidden">
-      <InfiniteMovingCards items={testimonials} direction="right" speed="slow" />
+      <InfiniteMovingCards items={shuffle(testimonials)} direction="right" speed="slow" />
     </div>
   );
 }
