@@ -7,7 +7,7 @@ import { ToggleTheme } from "@/components/toggle-theme";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Live Voting App | Fralle",
+  title: "Vote | Fralle",
   description: "Probably the best app there is.",
 };
 
