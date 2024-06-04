@@ -9,7 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useIdentifyUserDevice } from "@/app/vote/[id]/hooks/useIdentifyUserDevice";
+import { useIdentity } from "@/app/vote/[id]/hooks/useIdentity";
 import { VoteOption } from "@/types/vote";
 
 const formSchema = z.object({
@@ -27,7 +27,7 @@ const formSchema = z.object({
 
 const CreateVoteForm = () => {
   const router = useRouter();
-  const deviceId = useIdentifyUserDevice();
+  const deviceId = useIdentity();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

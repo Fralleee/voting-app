@@ -4,7 +4,7 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 import type { Vote, VoteOption } from "@/types/vote";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useIdentifyUserDevice } from "../hooks/useIdentifyUserDevice";
+import { useIdentity } from "../hooks/useIdentity";
 import { ref, update } from "firebase/database";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useObject } from "react-firebase-hooks/database";
@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 const Vote = ({ id }: { id: string }) => {
   const voteRef = ref(database, `votes/${id}`);
   const [snapshot, loading, error] = useObject(voteRef);
-  const deviceId = useIdentifyUserDevice();
+  const deviceId = useIdentity();
 
   if (loading)
     return (
