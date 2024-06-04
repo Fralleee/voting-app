@@ -5,13 +5,13 @@ export default function Page() {
   return (
     <Card className="flex flex-col p-12 max-w-96">
       <h1 className="text-xl font-bold pb-4">Select type of vote to create</h1>
-      <Link prefetch href="/new-vote/single-choice">
+      <Link prefetch href="/create/single-choice">
         Single-choice
       </Link>
-      <Link className="cursor-not-allowed text-gray-500 pointer-events-none" prefetch href="/new-vote/multi-choice">
+      <Link prefetch className="cursor-not-allowed text-gray-500 pointer-events-none" href="/create/multi-choice">
         Multi-choice
       </Link>
-      <Link className="cursor-not-allowed text-gray-500 pointer-events-none" prefetch href="/new-vote/storypoints">
+      <Link prefetch className="cursor-not-allowed text-gray-500 pointer-events-none" href="/create/storypoints">
         Storypoints
       </Link>
     </Card>

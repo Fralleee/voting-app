@@ -9,7 +9,6 @@ export const FlipWords = ({ words, duration = 6000, className }: { words: string
 
   const startAnimation = useCallback(() => {
     const word = words[words.indexOf(currentWord) + 1] || words[0];
-    console.log(word);
     setCurrentWord(word);
     setIsAnimating(true);
   }, [currentWord, words]);
@@ -50,7 +49,7 @@ export const FlipWords = ({ words, duration = 6000, className }: { words: string
           scale: 2,
           position: "absolute",
         }}
-        className={cn("z-10 inline-block relative text-neutral-900 font-bold dark:text-neutral-100 text-center whitespace-pre w-[228px]", className)}
+        className={cn("z-10 inline-block relative text-neutral-900 font-bold dark:text-neutral-100 text-center whitespace-pre w-[148px] md:w-[184px] lg:w-[224px]", className)}
         key={currentWord}>
         {currentWord.split("").map((letter, index) => (
           <motion.span
