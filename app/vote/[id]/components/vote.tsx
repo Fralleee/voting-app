@@ -11,11 +11,7 @@ import { useObject } from "react-firebase-hooks/database";
 import { database } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
 
-interface VoteProps {
-  id: string;
-}
-
-const Vote: React.FC<VoteProps> = ({ id }) => {
+const Vote = ({ id }: { id: string }) => {
   const voteRef = ref(database, `votes/${id}`);
   const [snapshot, loading, error] = useObject(voteRef);
   const deviceId = useIdentifyUserDevice();
@@ -70,7 +66,7 @@ const Vote: React.FC<VoteProps> = ({ id }) => {
       <h1 className="text-2xl mb-4">{vote.name}</h1>
       <p className="text-gray-500 mb-4 font-semibold">Voting is {vote.status === "open" ? "Open" : "Closed"}</p>
       <Card className="flex flex-col p-12 w-full">
-        <ToggleGroup defaultValue={defaultValue} onValueChange={value => handleToggle(value)} type="single" className="flex flex-wrap justify-center gap-3 w-full">
+        <ToggleGroup defaultValue={defaultValue} onValueChange={handleToggle} type="single" className="flex flex-wrap justify-center gap-3 w-full">
           {vote.options.map(option => (
             <ToggleGroupItem value={option.value} disabled={vote.status === "closed"} className="w-32 h-32 p-3 relative" key={option.value}>
               <p className="absolute top-2 right-3">{option.votes?.length}</p>
