@@ -53,13 +53,16 @@ const CreateVoteForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const { description, options } = values;
+    const { type, description, options, allowChoiceCreation, allowMultiChoice } = values;
     const filteredOptions = options.filter(option => option.value.trim() !== "") as VoteOption[];
     const newVoteRef = ref(database, "votes");
     const newVote = await push(newVoteRef, {
+      type,
       name: description,
       options: filteredOptions,
       admin: deviceId,
+      allowMultiChoice,
+      allowChoiceCreation,
       status: "open",
     });
     router.push(`/vote/${newVote.key}`);
