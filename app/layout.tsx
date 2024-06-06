@@ -27,7 +27,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ToggleTheme />
-          <div className="mx-auto grid h-full w-full max-w-[1080px] items-center">
+          <div className="mx-auto grid h-full w-full max-w-[1080px] items-center px-4 pb-8 pt-20">
             {children}
           </div>
         </ThemeProvider>

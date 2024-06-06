@@ -4,7 +4,7 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 import type { Vote, VoteOption } from "@/types/vote";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useIdentity } from "../hooks/useIdentity";
+import { useIdentity } from "../_hooks/useIdentity";
 import { ref, update } from "firebase/database";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useObject } from "react-firebase-hooks/database";

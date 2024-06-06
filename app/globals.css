@@ -9,11 +9,6 @@ body,
   height: 100%;
 }
 
-body {
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export const Gradient = () => {
   return (
     <motion.div
-      className="relative h-10 w-full"
+      className="relative -mt-2 h-10 w-full"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ ease: "easeOut", duration: 0.4 }}
