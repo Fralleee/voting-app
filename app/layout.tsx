@@ -32,7 +32,7 @@ export default function RootLayout({
             <ToggleTheme />
             <UserSheet />
           </div>
-          <div className="mx-auto grid h-full w-full max-w-[1080px] items-center px-4 pb-8 pt-20">
+          <div className="mx-auto grid h-full w-full max-w-[1080px] items-center px-4 pb-8">
             {children}
           </div>
         </ThemeProvider>

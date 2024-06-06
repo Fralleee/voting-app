@@ -116,7 +116,7 @@ const CreateVoteForm = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="mx-auto flex h-full w-full max-w-[640px] flex-col justify-between rounded-lg border-stone-200 px-4 dark:border-slate-800 md:h-auto md:border md:px-8 md:py-12"
+        className="mx-auto flex h-full w-full max-w-[640px] flex-col justify-between rounded-lg border-stone-200 px-4 pt-20 dark:border-slate-800 md:h-auto md:border md:px-8 md:py-12"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <div className="flex flex-col gap-3">
