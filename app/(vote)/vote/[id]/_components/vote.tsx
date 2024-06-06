@@ -4,18 +4,18 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 import type { Vote } from "@/types/vote";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useIdentity } from "../_hooks/useIdentity";
 import { ref, update } from "firebase/database";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useObject } from "react-firebase-hooks/database";
 import { database } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
 import { NewOption } from "./new-option";
+import useIdentity from "@/app/_hooks/useIdentity";
 
 const Vote = ({ id }: { id: string }) => {
   const voteRef = ref(database, `votes/${id}`);
   const [snapshot, loading, error] = useObject(voteRef);
-  const deviceId = useIdentity();
+  const { identifier } = useIdentity();
 
   if (loading)
     return (
@@ -40,10 +40,10 @@ const Vote = ({ id }: { id: string }) => {
       options: vote.options.map((option) => ({
         ...option,
         votes: value.includes(option.value)
-          ? (option.votes || []).includes(deviceId)
+          ? (option.votes || []).includes(identifier)
             ? option.votes
-            : [...(option.votes || []), deviceId]
-          : (option.votes || []).filter((vote) => vote !== deviceId),
+            : [...(option.votes || []), identifier]
+          : (option.votes || []).filter((vote) => vote !== identifier),
       })),
     });
   }
@@ -54,8 +54,8 @@ const Vote = ({ id }: { id: string }) => {
         ...option,
         votes:
           option.value === value
-            ? [...(option.votes || []), deviceId]
-            : (option.votes || []).filter((v) => v !== deviceId),
+            ? [...(option.votes || []), identifier]
+            : (option.votes || []).filter((v) => v !== identifier),
       })),
     });
   }
@@ -86,7 +86,7 @@ const Vote = ({ id }: { id: string }) => {
             <ToggleGroup
               variant="outline"
               defaultValue={vote.options
-                .filter((option) => option.votes?.includes(deviceId))
+                .filter((option) => option.votes?.includes(identifier))
                 .map((opt) => opt.value)}
               onValueChange={handleMultipleChoice}
               type="multiple"
@@ -112,8 +112,9 @@ const Vote = ({ id }: { id: string }) => {
             <ToggleGroup
               variant="outline"
               defaultValue={
-                vote.options.find((option) => option.votes?.includes(deviceId))
-                  ?.value
+                vote.options.find((option) =>
+                  option.votes?.includes(identifier),
+                )?.value
               }
               onValueChange={handleSingleChoice}
               type="single"
@@ -141,7 +142,7 @@ const Vote = ({ id }: { id: string }) => {
 
       {vote.allowChoiceCreation && <NewOption onAdd={handleNewOption} />}
 
-      {vote.admin === deviceId && (
+      {vote.admin === identifier && (
         <Button
           onClick={() => {
             update(voteRef, {

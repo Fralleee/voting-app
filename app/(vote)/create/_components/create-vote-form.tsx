@@ -17,7 +17,6 @@ import {
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useIdentity } from "@/app/(vote)/vote/[id]/_hooks/useIdentity";
 import { VoteOption } from "@/types/vote";
 import {
   Select,
@@ -40,6 +39,7 @@ import { motion } from "framer-motion";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { useState } from "react";
 import { voteSchema } from "../_validation/voteSchema";
+import useIdentity from "@/app/_hooks/useIdentity";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -68,7 +68,7 @@ const itemVariants = {
 const CreateVoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const deviceId = useIdentity();
+  const { identifier } = useIdentity();
   const form = useForm<z.infer<typeof voteSchema>>({
     resolver: zodResolver(voteSchema),
     defaultValues: {
@@ -101,7 +101,7 @@ const CreateVoteForm = () => {
       type,
       name: description,
       options: filteredOptions,
-      admin: deviceId,
+      admin: identifier,
       allowMultiChoice,
       allowChoiceCreation,
       status: "open",

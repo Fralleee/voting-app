@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/utils/cn";
 import { ToggleTheme } from "./_components/toggle-theme";
+import { UserSheet } from "./_components/user-sheet";
+import { UserDrawer } from "./_components/user-drawer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +28,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ToggleTheme />
+          <div className="absolute top-4 flex w-full justify-center gap-3">
+            <ToggleTheme />
+            <UserSheet />
+          </div>
           <div className="mx-auto grid h-full w-full max-w-[1080px] items-center px-4 pb-8 pt-20">
             {children}
           </div>

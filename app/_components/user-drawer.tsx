@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +19,7 @@ import {
   optionSchema,
 } from "@/app/(vote)/create/_validation/optionSchema";
 
-export const NewOption = ({ onAdd }: { onAdd: (value: string) => void }) => {
+export const UserDrawer = () => {
   const [open, setOpen] = React.useState(false);
   const {
     register,
@@ -35,7 +36,7 @@ export const NewOption = ({ onAdd }: { onAdd: (value: string) => void }) => {
 
   function handleOnSubmit(data: OptionFormData) {
     setOpen(false);
-    onAdd(data.value);
+    // onAdd(data.value);
     reset();
   }
 
