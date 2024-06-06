@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Card } from "@/components/ui/card";
-import type { Vote, VoteOption } from "@/types/vote";
+import type { Vote } from "@/types/vote";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useIdentity } from "../_hooks/useIdentity";
 import { ref, update } from "firebase/database";
@@ -10,6 +10,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useObject } from "react-firebase-hooks/database";
 import { database } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
+import { NewOption } from "./new-option";
 
 const Vote = ({ id }: { id: string }) => {
   const voteRef = ref(database, `votes/${id}`);
@@ -59,9 +60,21 @@ const Vote = ({ id }: { id: string }) => {
     });
   }
 
+  function handleNewOption(value: string): void {
+    update(voteRef, {
+      options: [
+        ...vote.options,
+        {
+          value,
+          votes: [],
+        },
+      ],
+    });
+  }
+
   return (
     <>
-      <h1 className="mb-4 max-w-[1100px] text-center text-2xl font-bold text-stone-700 dark:text-slate-200 md:text-3xl lg:text-4xl">
+      <h1 className="mb-4 text-center text-2xl font-bold text-stone-700 dark:text-slate-200 md:text-3xl lg:text-4xl">
         {vote.name}
       </h1>
       <div className="flex w-full max-w-[640px] flex-col items-center">
@@ -124,22 +137,22 @@ const Vote = ({ id }: { id: string }) => {
             </ToggleGroup>
           )}
         </Card>
-        {vote.admin === deviceId && (
-          <div className="mt-4 flex flex-col items-center">
-            <Button
-              onClick={() => {
-                update(voteRef, {
-                  status: vote.status === "open" ? "closed" : "open",
-                });
-              }}
-              className="mt-2"
-            >
-              {vote.status === "open" ? "Close vote" : "Open vote"}
-            </Button>
-          </div>
-        )}
-        {/* <pre>{JSON.stringify(vote, null, 2)}</pre> */}
       </div>
+
+      {vote.allowChoiceCreation && <NewOption onAdd={handleNewOption} />}
+
+      {vote.admin === deviceId && (
+        <Button
+          onClick={() => {
+            update(voteRef, {
+              status: vote.status === "open" ? "closed" : "open",
+            });
+          }}
+          className="mt-2"
+        >
+          {vote.status === "open" ? "Close vote" : "Open vote"}
+        </Button>
+      )}
     </>
   );
 };

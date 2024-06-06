@@ -11,7 +11,7 @@ export const formSummary = (formValues: any) => {
   }
 
   if (allowChoiceCreation) {
-    formDescription.push("Users can create options.");
+    formDescription.push("Users can create options");
   }
 
   return { formType, formDescription };

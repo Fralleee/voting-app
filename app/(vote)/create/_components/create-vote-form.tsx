@@ -37,22 +37,9 @@ import {
 } from "@/components/ui/accordion";
 import { formSummary } from "../_utils/formSummary";
 import { motion } from "framer-motion";
-
-const formSchema = z.object({
-  type: z.enum(["poll", "storypoints"]),
-  description: z.string().min(2, {
-    message: "You need to enter a vote description.",
-  }),
-  allowMultiChoice: z.boolean().optional(),
-  allowChoiceCreation: z.boolean().optional(),
-  options: z.array(
-    z.object({
-      value: z.string().min(1, {
-        message: "You need to enter an option.",
-      }),
-    }),
-  ),
-});
+import { LoadingButton } from "@/components/ui/loading-button";
+import { useState } from "react";
+import { voteSchema } from "../_validation/voteSchema";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -79,10 +66,11 @@ const itemVariants = {
 };
 
 const CreateVoteForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const deviceId = useIdentity();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof voteSchema>>({
+    resolver: zodResolver(voteSchema),
     defaultValues: {
       type: "poll",
       allowMultiChoice: false,
@@ -96,7 +84,8 @@ const CreateVoteForm = () => {
     name: "options",
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof voteSchema>) {
+    setIsLoading(true);
     const {
       type,
       description,
@@ -283,9 +272,9 @@ const CreateVoteForm = () => {
           variants={itemVariants}
           className="mx-auto flex w-full max-w-64 flex-col justify-end gap-3"
         >
-          <Button className="w-full" type="submit">
+          <LoadingButton loading={isLoading} className="w-full" type="submit">
             Start voting!
-          </Button>
+          </LoadingButton>
           <Link
             prefetch
             className={buttonVariants({ variant: "outline" })}

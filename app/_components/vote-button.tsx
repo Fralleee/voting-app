@@ -13,7 +13,13 @@ export const VoteButton = () => {
       exit={{ scale: 0.25, opacity: 0 }}
       transition={{ ease: "backOut", duration: 0.3, delay: 0.15 }}
     >
-      <Link prefetch className={buttonVariants({ size: "xl" })} href="/create">
+      <Link
+        prefetch
+        className={buttonVariants({
+          size: "xl",
+        })}
+        href="/create"
+      >
         Ready, Set, Vote!
       </Link>
     </motion.div>
