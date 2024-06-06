@@ -27,7 +27,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Toggle } from "@/components/ui/toggle";
 import { Switch } from "@/components/ui/switch";
 import Link from "next/link";
 import {
@@ -37,6 +36,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formSummary } from "../_utils/formSummary";
+import { motion } from "framer-motion";
 
 const formSchema = z.object({
   type: z.enum(["poll", "storypoints"]),
@@ -53,6 +53,30 @@ const formSchema = z.object({
     }),
   ),
 });
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+      delayChildren: 0.2,
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+      ease: "easeOut",
+    },
+  },
+};
 
 const CreateVoteForm = () => {
   const router = useRouter();
@@ -99,110 +123,114 @@ const CreateVoteForm = () => {
   const { formType, formDescription } = formSummary(form.getValues());
   return (
     <Form {...form}>
-      <form
+      <motion.form
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
         className="mx-auto flex h-full w-full max-w-[640px] flex-col justify-between rounded-lg border-stone-200 px-4 dark:border-slate-800 md:h-auto md:border md:px-8 md:py-12"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className="flex flex-col">
-          <Accordion
-            type="single"
-            collapsible
-            className="flex flex-col gap-3 rounded-lg border border-input px-4"
-          >
-            <AccordionItem value="item-1">
-              <AccordionTrigger>
-                <div className="text-left text-stone-700 dark:text-slate-300">
-                  <p>{formType}</p>
-                  <p className="text-sm text-stone-600 dark:text-slate-400">
-                    {formDescription.join(",")}
-                  </p>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between px-1 py-2">
-                      <div>
-                        <FormLabel className="text-base">Type</FormLabel>
-                        <FormDescription>
-                          Type of vote to create.
-                        </FormDescription>
-                      </div>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+        <div className="flex flex-col gap-3">
+          <motion.div variants={itemVariants}>
+            <Accordion
+              type="single"
+              collapsible
+              className="flex flex-col gap-3 rounded-lg border border-input px-4"
+            >
+              <AccordionItem value="item-1">
+                <AccordionTrigger>
+                  <div className="text-left text-stone-700 dark:text-slate-300">
+                    <p>{formType}</p>
+                    <p className="text-sm text-stone-600 dark:text-slate-400">
+                      {formDescription.join(",")}
+                    </p>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between px-1 py-2">
+                        <div>
+                          <FormLabel className="text-base">Type</FormLabel>
+                          <FormDescription>
+                            Type of vote to create.
+                          </FormDescription>
+                        </div>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="max-w-48">
+                              <SelectValue placeholder="Select a type" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectItem value="poll">Poll</SelectItem>
+                              <SelectItem value="storypoints" disabled>
+                                Storypoints
+                              </SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="allowMultiChoice"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between px-1 py-2">
+                        <div>
+                          <FormLabel className="text-base">
+                            Allow multi-choice
+                          </FormLabel>
+                          <FormDescription>
+                            Let users select multiple options.
+                          </FormDescription>
+                        </div>
                         <FormControl>
-                          <SelectTrigger className="max-w-48">
-                            <SelectValue placeholder="Select a type" />
-                          </SelectTrigger>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
                         </FormControl>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectItem value="poll">Poll</SelectItem>
-                            <SelectItem value="storypoints" disabled>
-                              Storypoints
-                            </SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="allowMultiChoice"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between px-1 py-2">
-                      <div>
-                        <FormLabel className="text-base">
-                          Allow multi-choice
-                        </FormLabel>
-                        <FormDescription>
-                          Let users select multiple options.
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="allowChoiceCreation"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between px-1 py-2">
-                      <div>
-                        <FormLabel className="text-base">
-                          Allow users to create options
-                        </FormLabel>
-                        <FormDescription>
-                          Let users create options if nothing fits.
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-
-          <div className="mt-3 flex flex-col gap-3">
+                  <FormField
+                    control={form.control}
+                    name="allowChoiceCreation"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between px-1 py-2">
+                        <div>
+                          <FormLabel className="text-base">
+                            Allow users to create options
+                          </FormLabel>
+                          <FormDescription>
+                            Let users create options if nothing fits.
+                          </FormDescription>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </motion.div>
+          <motion.div variants={itemVariants} className="flex flex-col gap-3">
             <FormField
               control={form.control}
               name="description"
@@ -248,10 +276,13 @@ const CreateVoteForm = () => {
                 Add option
               </Button>
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="mx-auto flex w-full max-w-64 flex-col justify-end gap-3">
+        <motion.div
+          variants={itemVariants}
+          className="mx-auto flex w-full max-w-64 flex-col justify-end gap-3"
+        >
           <Button className="w-full" type="submit">
             Start voting!
           </Button>
@@ -262,8 +293,8 @@ const CreateVoteForm = () => {
           >
             Cancel
           </Link>
-        </div>
-      </form>
+        </motion.div>
+      </motion.form>
     </Form>
   );
 };
