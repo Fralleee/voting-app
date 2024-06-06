@@ -18,12 +18,12 @@ const Vote = ({ id }: { id: string }) => {
 
   if (loading)
     return (
-      <div className="flex flex-col items-center w-full max-w-[640px]">
-        <Skeleton className="h-12 w-full mb-4" />
-        <Card className="flex flex-col p-12 w-full">
-          <div className="flex gap-3 justify-center w-full">
-            <Skeleton className="w-32 h-32 p-3" />
-            <Skeleton className="w-32 h-32 p-3" />
+      <div className="flex w-full max-w-[640px] flex-col items-center">
+        <Skeleton className="mb-4 h-12 w-full" />
+        <Card className="flex w-full flex-col p-12">
+          <div className="flex w-full justify-center gap-3">
+            <Skeleton className="h-32 w-32 p-3" />
+            <Skeleton className="h-32 w-32 p-3" />
           </div>
         </Card>
       </div>
@@ -36,74 +36,111 @@ const Vote = ({ id }: { id: string }) => {
 
   function handleMultipleChoice(value: string[]): void {
     update(voteRef, {
-      options: vote.options.map(option => ({
+      options: vote.options.map((option) => ({
         ...option,
         votes: value.includes(option.value)
           ? (option.votes || []).includes(deviceId)
             ? option.votes
             : [...(option.votes || []), deviceId]
-          : (option.votes || []).filter(vote => vote !== deviceId),
+          : (option.votes || []).filter((vote) => vote !== deviceId),
       })),
     });
   }
 
   function handleSingleChoice(value: string): void {
     update(voteRef, {
-      options: vote.options.map(option => ({
+      options: vote.options.map((option) => ({
         ...option,
-        votes: option.value === value ? [...(option.votes || []), deviceId] : (option.votes || []).filter(v => v !== deviceId),
+        votes:
+          option.value === value
+            ? [...(option.votes || []), deviceId]
+            : (option.votes || []).filter((v) => v !== deviceId),
       })),
     });
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-[640px]">
-      <h1 className="text-2xl mb-4">{vote.name}</h1>
-      <p className="text-gray-500 mb-4 font-semibold">Voting is {vote.status === "open" ? "Open" : "Closed"}</p>
-      <Card className="flex flex-col p-12 w-full">
-        {vote.allowMultiChoice ? (
-          <ToggleGroup
-            variant="outline"
-            defaultValue={vote.options.filter(option => option.votes?.includes(deviceId)).map(opt => opt.value)}
-            onValueChange={handleMultipleChoice}
-            type="multiple"
-            className="flex flex-wrap justify-center gap-3 w-full">
-            {vote.options.map(option => (
-              <ToggleGroupItem value={option.value} disabled={vote.status === "closed"} className="w-32 h-32 p-3 relative" key={option.value}>
-                <p className="absolute top-2 right-3">{option.votes?.length}</p>
-                <p className="text-wrap line-clamp-5 truncate">{option.value}</p>
-              </ToggleGroupItem>
-            ))}
-          </ToggleGroup>
-        ) : (
-          <ToggleGroup
-            variant="outline"
-            defaultValue={vote.options.find(option => option.votes?.includes(deviceId))?.value}
-            onValueChange={handleSingleChoice}
-            type="single"
-            className="flex flex-wrap justify-center gap-3 w-full">
-            {vote.options.map(option => (
-              <ToggleGroupItem value={option.value} disabled={vote.status === "closed"} className="w-32 h-32 p-3 relative" key={option.value}>
-                <p className="absolute top-2 right-3">{option.votes?.length}</p>
-                <p className="text-wrap line-clamp-5 truncate">{option.value}</p>
-              </ToggleGroupItem>
-            ))}
-          </ToggleGroup>
+    <>
+      <h1 className="mb-4 max-w-[1100px] text-center text-2xl font-bold text-stone-700 dark:text-slate-200 md:text-3xl lg:text-4xl">
+        {vote.name}
+      </h1>
+      <div className="flex w-full max-w-[640px] flex-col items-center">
+        <p className="mb-4 font-semibold text-gray-500">
+          Voting is {vote.status === "open" ? "Open" : "Closed"}
+        </p>
+        <Card className="flex w-full flex-col p-12">
+          {vote.allowMultiChoice ? (
+            <ToggleGroup
+              variant="outline"
+              defaultValue={vote.options
+                .filter((option) => option.votes?.includes(deviceId))
+                .map((opt) => opt.value)}
+              onValueChange={handleMultipleChoice}
+              type="multiple"
+              className="flex w-full flex-wrap justify-center gap-3"
+            >
+              {vote.options.map((option) => (
+                <ToggleGroupItem
+                  value={option.value}
+                  disabled={vote.status === "closed"}
+                  className="relative h-32 w-32 p-3 text-lg"
+                  key={option.value}
+                >
+                  <p className="absolute right-3 top-2">
+                    {option.votes?.length}
+                  </p>
+                  <p className="line-clamp-5 truncate text-wrap">
+                    {option.value}
+                  </p>
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+          ) : (
+            <ToggleGroup
+              variant="outline"
+              defaultValue={
+                vote.options.find((option) => option.votes?.includes(deviceId))
+                  ?.value
+              }
+              onValueChange={handleSingleChoice}
+              type="single"
+              className="flex w-full flex-wrap justify-center gap-3"
+            >
+              {vote.options.map((option) => (
+                <ToggleGroupItem
+                  value={option.value}
+                  disabled={vote.status === "closed"}
+                  className="relative h-32 w-32 p-3 text-lg"
+                  key={option.value}
+                >
+                  <p className="absolute right-3 top-2">
+                    {option.votes?.length}
+                  </p>
+                  <p className="line-clamp-5 truncate text-wrap">
+                    {option.value}
+                  </p>
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+          )}
+        </Card>
+        {vote.admin === deviceId && (
+          <div className="mt-4 flex flex-col items-center">
+            <Button
+              onClick={() => {
+                update(voteRef, {
+                  status: vote.status === "open" ? "closed" : "open",
+                });
+              }}
+              className="mt-2"
+            >
+              {vote.status === "open" ? "Close vote" : "Open vote"}
+            </Button>
+          </div>
         )}
-      </Card>
-      {vote.admin === deviceId && (
-        <div className="flex flex-col items-center mt-4">
-          <Button
-            onClick={() => {
-              update(voteRef, { status: vote.status === "open" ? "closed" : "open" });
-            }}
-            className="mt-2">
-            {vote.status === "open" ? "Close vote" : "Open vote"}
-          </Button>
-        </div>
-      )}
-      {/* <pre>{JSON.stringify(vote, null, 2)}</pre> */}
-    </div>
+        {/* <pre>{JSON.stringify(vote, null, 2)}</pre> */}
+      </div>
+    </>
   );
 };
 

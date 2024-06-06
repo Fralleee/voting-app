@@ -3,7 +3,7 @@ import CreateVoteForm from "./components/create-vote-form";
 
 export default function Page() {
   return (
-    <Card className="flex flex-col p-12 w-full max-w-[640px]">
+    <Card className="flex w-full max-w-[640px] flex-col p-12">
       <CreateVoteForm />
     </Card>
   );

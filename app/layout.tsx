@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ToggleTheme } from "@/components/toggle-theme";
 import { cn } from "@/utils/cn";
+import { ToggleTheme } from "./_components/toggle-theme";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +19,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "dark:bg-slate-950 bg-stone-50")}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <body className={cn(inter.className, "bg-stone-50 dark:bg-slate-950")}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <ToggleTheme />
-          {children}
+          <div className="mx-auto grid h-full w-full max-w-[1080px] items-center">
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>

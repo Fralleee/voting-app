@@ -33,7 +33,7 @@ export const InfiniteMovingCards = ({
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
 
-      scrollerContent.forEach(item => {
+      scrollerContent.forEach((item) => {
         const duplicatedItem = item.cloneNode(true);
         if (scrollerRef.current) {
           scrollerRef.current.appendChild(duplicatedItem);
@@ -48,9 +48,15 @@ export const InfiniteMovingCards = ({
   const getDirection = () => {
     if (containerRef.current) {
       if (direction === "left") {
-        containerRef.current.style.setProperty("--animation-direction", "forwards");
+        containerRef.current.style.setProperty(
+          "--animation-direction",
+          "forwards",
+        );
       } else {
-        containerRef.current.style.setProperty("--animation-direction", "reverse");
+        containerRef.current.style.setProperty(
+          "--animation-direction",
+          "reverse",
+        );
       }
     }
   };
@@ -68,21 +74,40 @@ export const InfiniteMovingCards = ({
   return (
     <div
       ref={containerRef}
-      className={cn("scroller relative z-20  max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]", className)}>
+      className={cn(
+        "scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        className,
+      )}
+    >
       <ul
         ref={scrollerRef}
-        className={cn(" flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap", start && "animate-scroll ", pauseOnHover && "hover:[animation-play-state:paused]")}>
-        {items.map(item => (
+        className={cn(
+          "flex w-max min-w-full shrink-0 flex-nowrap gap-4 py-4",
+          start && "animate-scroll",
+          pauseOnHover && "hover:[animation-play-state:paused]",
+        )}
+      >
+        {items.map((item) => (
           <li
-            className="w-[350px] max-w-full relative rounded-2xl border border-b-stone-700/50 dark:border-b-slate-500/50 flex-shrink-0 bg-stone-50/50 dark:bg-slate-950/50 border-stone-700 dark:border-slate-500 px-8 py-6 md:w-[450px]"
-            key={item.name}>
+            className="relative w-[350px] max-w-full flex-shrink-0 rounded-2xl border border-stone-700 border-b-stone-700/50 bg-stone-50/50 px-8 py-6 dark:border-slate-500 dark:border-b-slate-500/50 dark:bg-slate-950/50 md:w-[450px]"
+            key={item.name}
+          >
             <blockquote>
-              <div aria-hidden="true" className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"></div>
-              <span className=" relative z-20 text-sm leading-[1.6] text-stone-950 dark:text-slate-100 font-normal">{item.quote}</span>
+              <div
+                aria-hidden="true"
+                className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
+              ></div>
+              <span className="relative z-20 text-sm font-normal leading-[1.6] text-stone-950 dark:text-slate-100">
+                {item.quote}
+              </span>
               <div className="relative z-20 mt-6 flex flex-row items-center">
                 <span className="flex flex-col gap-1">
-                  <span className=" text-sm leading-[1.6] text-stone-600 dark:text-slate-400 font-normal">{item.name}</span>
-                  <span className=" text-sm leading-[1.6] text-stone-600 dark:text-slate-400 font-normal">{item.title}</span>
+                  <span className="text-sm font-normal leading-[1.6] text-stone-600 dark:text-slate-400">
+                    {item.name}
+                  </span>
+                  <span className="text-sm font-normal leading-[1.6] text-stone-600 dark:text-slate-400">
+                    {item.title}
+                  </span>
                 </span>
               </div>
             </blockquote>

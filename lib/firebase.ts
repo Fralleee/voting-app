@@ -1,5 +1,8 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics, isSupported as analyticsIsSupported } from "firebase/analytics";
+import {
+  getAnalytics,
+  isSupported as analyticsIsSupported,
+} from "firebase/analytics";
 import { getDatabase } from "firebase/database";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -23,7 +26,7 @@ const firebase = initializeApp(firebaseConfig);
 const database = getDatabase(firebase);
 
 let analytics;
-analyticsIsSupported().then(isSupported => {
+analyticsIsSupported().then((isSupported) => {
   if (isSupported) {
     analytics = getAnalytics(firebase);
   } else {
