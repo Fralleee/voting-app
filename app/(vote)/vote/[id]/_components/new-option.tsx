@@ -14,8 +14,8 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  type OptionFormData,
-  optionSchema,
+  type NewOptionFormData,
+  newOptionSchema,
 } from "@/app/(vote)/create/_validation/optionSchema";
 
 export const NewOption = ({ onAdd }: { onAdd: (value: string) => void }) => {
@@ -25,15 +25,15 @@ export const NewOption = ({ onAdd }: { onAdd: (value: string) => void }) => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<OptionFormData>({
-    resolver: zodResolver(optionSchema),
+  } = useForm<NewOptionFormData>({
+    resolver: zodResolver(newOptionSchema),
   });
 
   function handleOpenChange(open: boolean) {
     setOpen(open);
   }
 
-  function handleOnSubmit(data: OptionFormData) {
+  function handleOnSubmit(data: NewOptionFormData) {
     setOpen(false);
     onAdd(data.value);
     reset();

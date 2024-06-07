@@ -4,4 +4,8 @@ export const optionSchema = z.object({
   value: z.string().optional(),
 });
 
-export type OptionFormData = z.infer<typeof optionSchema>;
+export const newOptionSchema = z.object({
+  value: z.string(),
+});
+
+export type NewOptionFormData = z.infer<typeof newOptionSchema>;

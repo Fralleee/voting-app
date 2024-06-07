@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/utils/cn";
 import { ToggleTheme } from "./_components/toggle-theme";
 import { UserSheet } from "./_components/user-sheet";
-import { UserDrawer } from "./_components/user-drawer";
 
 const inter = Inter({ subsets: ["latin"] });
 

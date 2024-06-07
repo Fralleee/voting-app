@@ -67,8 +67,11 @@ const itemVariants = {
 
 const buttonVariant = {
   hidden: { scale: 0.25, opacity: 0 },
-  visible: { scale: 1, opacity: 1 },
-  transition: { ease: "backOut", duration: 0.3, delay: 0.15 },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    transition: { ease: "backOut", duration: 0.3, delay: 0.15 },
+  },
 };
 
 const CreateVoteForm = () => {
