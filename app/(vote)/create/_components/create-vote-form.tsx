@@ -202,9 +202,9 @@ const CreateVoteForm = () => {
             >
               <AccordionItem value="item-1">
                 <AccordionTrigger>
-                  <div className="text-left text-stone-700 dark:text-slate-300">
+                  <div className="flex flex-col items-start justify-center text-left text-stone-700 transition-all dark:text-slate-300">
                     <p>{formType}</p>
-                    <p className="text-sm text-stone-600 dark:text-slate-400">
+                    <p className="h-auto max-h-10 text-sm text-stone-600 transition-all empty:max-h-0 dark:text-slate-400">
                       {formDescription.join(",")}
                     </p>
                   </div>
