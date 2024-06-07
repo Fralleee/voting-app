@@ -140,11 +140,14 @@ const CreateVoteForm = () => {
     const hasDuplicates = duplicateOptions.length > 0;
     if (hasDuplicates) {
       form.clearErrors("options");
+
       for (const option of duplicateOptions) {
-        form.setError(`options.${options.indexOf(option)}.value`, {
+        const index = options.indexOf(option);
+        form.setError(`options.${index}.value`, {
           type: "manual",
           message: "Value already exists in previous option.",
         });
+        form.setFocus(`options.${index}.value`);
       }
       setIsLoading(false);
       return;
