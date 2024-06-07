@@ -123,6 +123,23 @@ const CreateVoteForm = () => {
         type: "manual",
         message: "At least two valid options are required.",
       });
+
+      let firstError = false;
+      for (const option of options) {
+        if (option.value?.trim() === "") {
+          const index = options.indexOf(option);
+          form.setError(`options.${index}.value`, {
+            type: "manual",
+            message: "Option cannot be empty.",
+          });
+
+          if (!firstError) {
+            form.setFocus(`options.${index}.value`);
+            firstError = true;
+          }
+        }
+      }
+
       setIsLoading(false);
       return;
     }
