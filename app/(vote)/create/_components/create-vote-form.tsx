@@ -198,7 +198,7 @@ const CreateVoteForm = () => {
             <Accordion
               type="single"
               collapsible
-              className="flex flex-col gap-3 rounded-lg border border-input px-4"
+              className="flex flex-col gap-3 rounded-lg border border-input bg-stone-50 px-4 dark:bg-slate-900/40"
             >
               <AccordionItem value="item-1">
                 <AccordionTrigger>
