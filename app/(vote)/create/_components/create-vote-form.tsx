@@ -86,7 +86,7 @@ const CreateVoteForm = () => {
       type: "poll",
       allowMultiChoice: false,
       allowChoiceCreation: false,
-      description: "",
+      topic: "",
       options: [{ value: "" }],
     },
   });
@@ -106,13 +106,8 @@ const CreateVoteForm = () => {
 
   async function onSubmit(values: z.infer<typeof voteSchema>) {
     setIsLoading(true);
-    const {
-      type,
-      description,
-      options,
-      allowChoiceCreation,
-      allowMultiChoice,
-    } = values;
+    const { type, topic, options, allowChoiceCreation, allowMultiChoice } =
+      values;
 
     const filteredOptions = options.filter(
       (option) => option.value?.trim() !== "",
@@ -173,7 +168,7 @@ const CreateVoteForm = () => {
     const newVoteRef = ref(database, "votes");
     const newVote = await push(newVoteRef, {
       type,
-      name: description,
+      topic,
       options: filteredOptions,
       admin: identifier,
       allowMultiChoice,
@@ -296,14 +291,14 @@ const CreateVoteForm = () => {
           <motion.div variants={itemVariants} className="flex flex-col gap-3">
             <FormField
               control={form.control}
-              name="description"
+              name="topic"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
                       placeholder="What should we vote about?"
                       autoComplete="off"
-                      className={`h-14 ${errors.description ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700" : ""}`}
+                      className={`h-14 ${errors.topic ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700" : ""}`}
                       {...field}
                     />
                   </FormControl>

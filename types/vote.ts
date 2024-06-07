@@ -7,7 +7,7 @@ export interface VoteOption {
 
 export interface Vote {
   type: "poll" | "storypoints";
-  name: string;
+  topic: string;
   admin: string;
   allowMultiChoice: boolean;
   allowChoiceCreation: boolean;
