@@ -70,7 +70,7 @@ const buttonVariant = {
   visible: {
     scale: 1,
     opacity: 1,
-    transition: { ease: "backOut", duration: 0.3, delay: 0.15 },
+    transition: { ease: "backOut", duration: 0.3 },
   },
 };
 
@@ -128,10 +128,10 @@ const CreateVoteForm = () => {
 
     const duplicates = new Set();
     const duplicateOptions = filteredOptions.reduce((acc, option) => {
-      if (duplicates.has(option.value)) {
+      if (duplicates.has(option.value.toLowerCase())) {
         acc.push(option);
       } else {
-        duplicates.add(option.value);
+        duplicates.add(option.value.toLowerCase());
       }
       return acc;
     }, [] as VoteOption[]);
@@ -299,7 +299,9 @@ const CreateVoteForm = () => {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="Start typing, and new options will be added automatically"
+                        placeholder={
+                          index === 0 ? "Yes" : index === 1 ? "No" : ""
+                        }
                         autoComplete="off"
                         {...field}
                         className={
@@ -324,6 +326,10 @@ const CreateVoteForm = () => {
                 </FormItem>
               )}
             />
+
+            <p className="w-full text-center text-sm opacity-50">
+              Start typing, and new options will be added automatically
+            </p>
           </motion.div>
         </div>
 
