@@ -1,6 +1,8 @@
+import { User } from "./user";
+
 export interface VoteOption {
   value: string;
-  votes: string[];
+  votes: User[];
 }
 
 export interface Vote {

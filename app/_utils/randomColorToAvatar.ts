@@ -1,4 +1,5 @@
 const hashStringToColor = (str: string) => {
+  if (!str) return Math.abs(str?.length || 0);
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -8,6 +9,7 @@ const hashStringToColor = (str: string) => {
 };
 
 export const randomColorToAvatar = (alias: string) => {
+  if (!alias) return;
   const colors = [
     "bg-red-500",
     "bg-yellow-500",

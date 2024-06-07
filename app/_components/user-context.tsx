@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ref, set, update } from "firebase/database";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { database } from "@/lib/firebase";
@@ -9,7 +8,27 @@ import { generateUsername } from "../_utils/generateUsername";
 import { storage } from "../_utils/storage";
 import type { User } from "@/types/user";
 
-const useIdentity = () => {
+interface UserContextType {
+  user: User | null;
+  identifier: string;
+  isLoading: boolean;
+  error: Error | undefined;
+  alias: string | null | undefined;
+  updateUserAlias: (newAlias: string) => void;
+}
+
+const defaultContextValue: UserContextType = {
+  user: null,
+  identifier: storage?.getItem("identifier") || generateIdentifier(),
+  isLoading: true,
+  error: undefined,
+  alias: storage?.getItem("alias") || undefined,
+  updateUserAlias: (newAlias: string) => {},
+};
+
+const UserContext = createContext<UserContextType>(defaultContextValue);
+
+export const useIdentity = () => {
   const [identifier] = useState(
     storage?.getItem("identifier") || generateIdentifier(),
   );
@@ -20,10 +39,8 @@ const useIdentity = () => {
 
   useEffect(() => {
     if (!loading && !user && identifier) {
-      // No user in database, create one
       const alias = storage?.getItem("alias") ?? generateUsername();
       const newUser = { identifier, alias };
-
       set(userRef, newUser)
         .then(() => {
           storage?.setItem("alias", alias);
@@ -37,7 +54,7 @@ const useIdentity = () => {
       setIsLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- userRef is stable
-  }, [identifier, user, loading]);
+  }, [user, loading]);
 
   const updateUserAlias = (newAlias: string) => {
     update(ref(database, `users/${identifier}`), { alias: newAlias })
@@ -48,7 +65,25 @@ const useIdentity = () => {
       .catch(console.error);
   };
 
-  return { user, identifier, isLoading, error, alias, updateUserAlias };
+  const userVal = user as User;
+  return {
+    user: userVal,
+    identifier,
+    isLoading,
+    error,
+    alias,
+    updateUserAlias,
+  };
 };
 
-export default useIdentity;
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+  const identity = useIdentity();
+
+  return (
+    <UserContext.Provider value={identity}>{children}</UserContext.Provider>
+  );
+};
+
+export const useUser = () => useContext(UserContext);
+
+export default UserProvider;

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import type { Vote } from "@/types/vote";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,12 +10,45 @@ import { useObject } from "react-firebase-hooks/database";
 import { database } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
 import { NewOption } from "./new-option";
-import useIdentity from "@/app/_hooks/useIdentity";
+import AvatarCircles from "@/components/ui/avatar-circles";
+import { useUser } from "@/app/_components/user-context";
 
 const Vote = ({ id }: { id: string }) => {
   const voteRef = ref(database, `votes/${id}`);
   const [snapshot, loading, error] = useObject(voteRef);
-  const { identifier } = useIdentity();
+  const { user, identifier } = useUser();
+
+  useEffect(() => {
+    if (!user || !snapshot || !snapshot.val()) return;
+    const vote = snapshot.val() as Vote;
+
+    if (user.alias !== vote.admin) {
+      update(voteRef, {
+        admin: user.alias,
+      });
+    }
+
+    const hasVotesWithOtherAlias = vote.options.some((option) =>
+      option.votes?.some(
+        (u) => u.identifier === identifier && u.alias !== user.alias,
+      ),
+    );
+
+    if (!hasVotesWithOtherAlias) {
+      return;
+    }
+
+    update(voteRef, {
+      options: vote.options.map((option) => ({
+        ...option,
+        votes: (option.votes || [])?.map((u) =>
+          u.identifier === identifier ? { ...u, alias: user.alias } : u,
+        ),
+      })),
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, loading]);
 
   if (loading)
     return (
@@ -37,26 +70,49 @@ const Vote = ({ id }: { id: string }) => {
 
   function handleMultipleChoice(value: string[]): void {
     update(voteRef, {
-      options: vote.options.map((option) => ({
-        ...option,
-        votes: value.includes(option.value)
-          ? (option.votes || []).includes(identifier)
-            ? option.votes
-            : [...(option.votes || []), identifier]
-          : (option.votes || []).filter((vote) => vote !== identifier),
-      })),
+      options: vote.options.map((option) => {
+        if (value.includes(option.value)) {
+          const alreadyVoted = option.votes?.some(
+            (user) => user.identifier === identifier,
+          );
+
+          if (alreadyVoted) {
+            return option;
+          }
+
+          return {
+            ...option,
+            votes: [...(option.votes || []), user],
+          };
+        }
+
+        return {
+          ...option,
+          votes: (option.votes || []).filter(
+            (user) => user.identifier !== identifier,
+          ),
+        };
+      }),
     });
   }
 
   function handleSingleChoice(value: string): void {
     update(voteRef, {
-      options: vote.options.map((option) => ({
-        ...option,
-        votes:
-          option.value === value
-            ? [...(option.votes || []), identifier]
-            : (option.votes || []).filter((v) => v !== identifier),
-      })),
+      options: vote.options.map((option) => {
+        if (value.includes(option.value)) {
+          return {
+            ...option,
+            votes: [...(option.votes || []), user],
+          };
+        }
+
+        return {
+          ...option,
+          votes: (option.votes || []).filter(
+            (user) => user.identifier !== identifier,
+          ),
+        };
+      }),
     });
   }
 
@@ -86,7 +142,9 @@ const Vote = ({ id }: { id: string }) => {
             <ToggleGroup
               variant="outline"
               defaultValue={vote.options
-                .filter((option) => option.votes?.includes(identifier))
+                .filter((option) =>
+                  option.votes?.some((user) => user.identifier === identifier),
+                )
                 .map((opt) => opt.value)}
               onValueChange={handleMultipleChoice}
               type="multiple"
@@ -99,9 +157,9 @@ const Vote = ({ id }: { id: string }) => {
                   className="relative h-32 w-32 p-3 text-lg"
                   key={option.value}
                 >
-                  <p className="absolute right-3 top-2">
-                    {option.votes?.length}
-                  </p>
+                  <div className="absolute right-2 top-2">
+                    <AvatarCircles users={option.votes || []} maxCircles={3} />
+                  </div>
                   <p className="line-clamp-5 truncate text-wrap">
                     {option.value}
                   </p>
@@ -113,7 +171,7 @@ const Vote = ({ id }: { id: string }) => {
               variant="outline"
               defaultValue={
                 vote.options.find((option) =>
-                  option.votes?.includes(identifier),
+                  option.votes?.some((user) => user.identifier === identifier),
                 )?.value
               }
               onValueChange={handleSingleChoice}
@@ -127,9 +185,9 @@ const Vote = ({ id }: { id: string }) => {
                   className="relative h-32 w-32 p-3 text-lg"
                   key={option.value}
                 >
-                  <p className="absolute right-3 top-2">
-                    {option.votes?.length}
-                  </p>
+                  <div className="absolute right-2 top-2">
+                    <AvatarCircles users={option.votes || []} maxCircles={3} />
+                  </div>
                   <p className="line-clamp-5 truncate text-wrap">
                     {option.value}
                   </p>
