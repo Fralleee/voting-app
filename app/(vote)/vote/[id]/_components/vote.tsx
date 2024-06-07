@@ -131,7 +131,7 @@ const Vote = ({ id }: { id: string }) => {
   return (
     <>
       <h1 className="mb-4 text-center text-2xl font-bold text-stone-700 dark:text-slate-200 md:text-3xl lg:text-4xl">
-        {vote.name}
+        {vote.topic}
       </h1>
       <div className="flex w-full max-w-[640px] flex-col items-center">
         <p className="mb-4 font-semibold text-gray-500">
