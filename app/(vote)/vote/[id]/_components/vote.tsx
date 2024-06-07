@@ -11,12 +11,12 @@ import { database } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
 import { NewOption } from "./new-option";
 import AvatarCircles from "@/components/ui/avatar-circles";
-import { useUser } from "@/app/_components/user-context";
+import useIdentity from "@/app/_hooks/useIdentity";
 
 const Vote = ({ id }: { id: string }) => {
   const voteRef = ref(database, `votes/${id}`);
   const [snapshot, loading, error] = useObject(voteRef);
-  const { user, identifier } = useUser();
+  const { user, identifier } = useIdentity();
 
   useEffect(() => {
     if (!user || !snapshot || !snapshot.val()) return;

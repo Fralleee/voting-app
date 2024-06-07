@@ -39,7 +39,7 @@ import { motion } from "framer-motion";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { useEffect, useState } from "react";
 import { voteSchema } from "../_validation/voteSchema";
-import { useUser } from "@/app/_components/user-context";
+import useIdentity from "@/app/_hooks/useIdentity";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -77,7 +77,8 @@ const buttonVariant = {
 const CreateVoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { identifier } = useUser();
+  // const { identifier } = useUser();
+  const { identifier } = useIdentity();
 
   const form = useForm<z.infer<typeof voteSchema>>({
     resolver: zodResolver(voteSchema),

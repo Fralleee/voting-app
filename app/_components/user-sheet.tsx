@@ -16,11 +16,11 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { aliasToAvatar } from "../_utils/aliasToAvatar";
 import { randomColorToAvatar } from "../_utils/randomColorToAvatar";
-import { UserIcon } from "lucide-react"; // Assuming you have a UserIcon component
-import { useUser } from "./user-context";
+import { UserIcon } from "lucide-react";
+import useIdentity from "../_hooks/useIdentity";
 
 export function UserSheet() {
-  const { alias, isLoading, updateUserAlias } = useUser();
+  const { alias, isLoading, updateUserAlias } = useIdentity();
   const [newAlias, setNewAlias] = useState(alias || "");
   const [isClient, setIsClient] = useState(false);
 
