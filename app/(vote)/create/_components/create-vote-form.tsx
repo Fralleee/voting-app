@@ -65,6 +65,12 @@ const itemVariants = {
   },
 };
 
+const buttonVariant = {
+  hidden: { scale: 0.25, opacity: 0 },
+  visible: { scale: 1, opacity: 1 },
+  transition: { ease: "backOut", duration: 0.3, delay: 0.15 },
+};
+
 const CreateVoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -154,7 +160,6 @@ const CreateVoteForm = () => {
   }
 
   const { formType, formDescription } = formSummary(form.getValues());
-  console.log(errors);
   return (
     <Form {...form}>
       <motion.form
@@ -272,7 +277,7 @@ const CreateVoteForm = () => {
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder="What do you want to vote about?"
+                      placeholder="What should we vote about?"
                       autoComplete="off"
                       className={`h-14 ${errors.description ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700" : ""}`}
                       {...field}
@@ -320,7 +325,7 @@ const CreateVoteForm = () => {
         </div>
 
         <motion.div
-          variants={itemVariants}
+          variants={buttonVariant}
           className="mx-auto mt-6 flex w-full max-w-64 flex-col justify-end gap-3"
         >
           <LoadingButton loading={isLoading} className="w-full" type="submit">
