@@ -1,10 +1,10 @@
 "use client";
 
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { database } from "@/lib/firebase";
 import { ref, push } from "firebase/database";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -37,7 +37,7 @@ import {
 import { formSummary } from "../_utils/formSummary";
 import { motion } from "framer-motion";
 import { LoadingButton } from "@/components/ui/loading-button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { voteSchema } from "../_validation/voteSchema";
 import useIdentity from "@/app/_hooks/useIdentity";
 
@@ -69,6 +69,7 @@ const CreateVoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { identifier } = useIdentity();
+
   const form = useForm<z.infer<typeof voteSchema>>({
     resolver: zodResolver(voteSchema),
     defaultValues: {
@@ -76,13 +77,22 @@ const CreateVoteForm = () => {
       allowMultiChoice: false,
       allowChoiceCreation: false,
       description: "",
-      options: [{ value: "" }, { value: "" }],
+      options: [{ value: "" }],
     },
   });
+  const { errors } = form.formState;
+
   const { fields, append } = useFieldArray({
     control: form.control,
     name: "options",
   });
+
+  const options = useWatch({ control: form.control, name: "options" });
+  useEffect(() => {
+    if (options.length > 0 && options[options.length - 1]?.value !== "") {
+      append({ value: "" }, { shouldFocus: false });
+    }
+  }, [options, append]);
 
   async function onSubmit(values: z.infer<typeof voteSchema>) {
     setIsLoading(true);
@@ -93,9 +103,43 @@ const CreateVoteForm = () => {
       allowChoiceCreation,
       allowMultiChoice,
     } = values;
+
     const filteredOptions = options.filter(
-      (option) => option.value.trim() !== "",
+      (option) => option.value?.trim() !== "",
     ) as VoteOption[];
+
+    if (filteredOptions.length < 2) {
+      form.setError("optionErrors", {
+        type: "manual",
+        message: "At least two valid options are required.",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    const duplicates = new Set();
+    const duplicateOptions = filteredOptions.reduce((acc, option) => {
+      if (duplicates.has(option.value)) {
+        acc.push(option);
+      } else {
+        duplicates.add(option.value);
+      }
+      return acc;
+    }, [] as VoteOption[]);
+
+    const hasDuplicates = duplicateOptions.length > 0;
+    if (hasDuplicates) {
+      form.clearErrors("options");
+      for (const option of duplicateOptions) {
+        form.setError(`options.${options.indexOf(option)}.value`, {
+          type: "manual",
+          message: "Value already exists in previous option.",
+        });
+      }
+      setIsLoading(false);
+      return;
+    }
+
     const newVoteRef = ref(database, "votes");
     const newVote = await push(newVoteRef, {
       type,
@@ -110,6 +154,7 @@ const CreateVoteForm = () => {
   }
 
   const { formType, formDescription } = formSummary(form.getValues());
+  console.log(errors);
   return (
     <Form {...form}>
       <motion.form
@@ -229,7 +274,7 @@ const CreateVoteForm = () => {
                     <Input
                       placeholder="What do you want to vote about?"
                       autoComplete="off"
-                      className="h-14"
+                      className={`h-14 ${errors.description ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700" : ""}`}
                       {...field}
                     />
                   </FormControl>
@@ -237,7 +282,6 @@ const CreateVoteForm = () => {
                 </FormItem>
               )}
             />
-
             {fields.map((item, index) => (
               <FormField
                 key={item.id}
@@ -247,11 +291,14 @@ const CreateVoteForm = () => {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder={
-                          index === 0 ? "Yes" : index === 1 ? "No" : ""
-                        }
+                        placeholder="Start typing, and new options will be added automatically"
                         autoComplete="off"
                         {...field}
+                        className={
+                          errors.options && errors.options[index]
+                            ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700"
+                            : ""
+                        }
                       />
                     </FormControl>
                     <FormMessage />
@@ -260,17 +307,21 @@ const CreateVoteForm = () => {
               />
             ))}
 
-            <div className="mb-8 flex justify-end gap-6">
-              <Button type="button" onClick={() => append({ value: "" })}>
-                Add option
-              </Button>
-            </div>
+            <FormField
+              control={form.control}
+              name="optionErrors"
+              render={() => (
+                <FormItem className="flex flex-row items-center justify-between px-1 py-2">
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </motion.div>
         </div>
 
         <motion.div
           variants={itemVariants}
-          className="mx-auto flex w-full max-w-64 flex-col justify-end gap-3"
+          className="mx-auto mt-6 flex w-full max-w-64 flex-col justify-end gap-3"
         >
           <LoadingButton loading={isLoading} className="w-full" type="submit">
             Start voting!

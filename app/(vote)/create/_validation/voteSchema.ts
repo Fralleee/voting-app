@@ -9,4 +9,5 @@ export const voteSchema = z.object({
   allowMultiChoice: z.boolean().optional(),
   allowChoiceCreation: z.boolean().optional(),
   options: z.array(optionSchema),
+  optionErrors: z.any().optional(),
 });
