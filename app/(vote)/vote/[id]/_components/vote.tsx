@@ -140,7 +140,7 @@ const Vote = ({ id }: { id: string }) => {
                 .map((opt) => opt.value)}
               onValueChange={handleMultipleChoice}
               type="multiple"
-              className="flex w-full flex-wrap justify-center gap-3"
+              className="flex w-full flex-wrap justify-center gap-3 overflow-y-auto"
             >
               {vote.options.map((option, index) => (
                 <MotionToggleGroupItem
@@ -158,7 +158,7 @@ const Vote = ({ id }: { id: string }) => {
                   }}
                   value={option.value}
                   disabled={vote.status !== "open"}
-                  className="relative h-32 w-32 select-none overflow-y-auto p-3 text-lg data-[disabled]:text-muted-foreground"
+                  className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
                   key={option.value}
                 >
                   <div className="absolute right-2 top-2">
@@ -180,7 +180,7 @@ const Vote = ({ id }: { id: string }) => {
               }
               onValueChange={handleSingleChoice}
               type="single"
-              className="flex w-full flex-wrap justify-center gap-3"
+              className="flex w-full flex-wrap justify-center gap-3 overflow-y-auto"
             >
               {vote.options.map((option, index) => (
                 <MotionToggleGroupItem
@@ -199,7 +199,7 @@ const Vote = ({ id }: { id: string }) => {
                   value={option.value}
                   disabled={vote.status !== "open"}
                   key={option.value}
-                  className="relative h-32 w-32 select-none overflow-y-auto p-3 text-lg data-[disabled]:text-muted-foreground"
+                  className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
                 >
                   <div className="absolute right-2 top-2">
                     <AvatarCircles users={option.votes || []} maxCircles={3} />
