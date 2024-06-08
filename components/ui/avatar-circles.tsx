@@ -1,6 +1,6 @@
 "use client";
 
-import type { User } from "@/types/user";
+import type { User } from "@/types/userTypes";
 import { cn } from "@/utils/cn";
 import { Avatar, AvatarFallback } from "./avatar";
 import { aliasToAvatar } from "@/app/_utils/aliasToAvatar";

@@ -17,7 +17,7 @@ import {
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VoteOption } from "@/types/vote";
+import { VoteOption } from "@/types/voteTypes";
 import {
   Select,
   SelectContent,

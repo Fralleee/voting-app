@@ -1,4 +1,4 @@
-import { User } from "./user";
+import { User } from "./userTypes";
 
 export interface VoteOption {
   value: string;

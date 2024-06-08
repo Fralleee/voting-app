@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import type { Vote, VoteOption } from "@/types/vote";
+import type { Vote, VoteOption } from "@/types/voteTypes";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ref, update } from "firebase/database";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -218,7 +218,9 @@ const Vote = ({ id }: { id: string }) => {
               ? "closed"
               : "locked"}
         </p>
-        {vote.allowChoiceCreation && <NewOption onAdd={handleNewOption} />}
+        {vote.allowChoiceCreation && (
+          <NewOption status={vote.status} onAdd={handleNewOption} />
+        )}
         {vote.admin === identifier && (
           <AdminControls vote={vote} voteRef={voteRef} />
         )}

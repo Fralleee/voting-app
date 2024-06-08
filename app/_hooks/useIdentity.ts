@@ -7,7 +7,7 @@ import { database } from "@/lib/firebase";
 import { generateIdentifier } from "../_utils/generateIdentifier";
 import { generateUsername } from "../_utils/generateUsername";
 import { storage } from "../_utils/storage";
-import type { User } from "@/types/user";
+import type { User } from "@/types/userTypes";
 
 const useIdentity = () => {
   const [identifier] = useState(

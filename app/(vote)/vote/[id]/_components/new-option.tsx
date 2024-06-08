@@ -26,7 +26,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-export const NewOption = ({ onAdd }: { onAdd: (value: string) => void }) => {
+interface NewOptionProps {
+  status: "open" | "closed" | "locked";
+  onAdd: (value: string) => void;
+}
+
+export const NewOption = ({ status, onAdd }: NewOptionProps) => {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof newOptionSchema>>({
     resolver: zodResolver(newOptionSchema),
@@ -51,10 +56,11 @@ export const NewOption = ({ onAdd }: { onAdd: (value: string) => void }) => {
     reset();
   }
 
+  const isClosed = status === "closed";
   return (
     <Drawer noBodyStyles open={open} onOpenChange={handleOpenChange}>
       <DrawerTrigger asChild>
-        <Button className="w-full" variant="outline">
+        <Button className="w-full" variant="outline" disabled={isClosed}>
           Add option
         </Button>
       </DrawerTrigger>
@@ -93,7 +99,10 @@ export const NewOption = ({ onAdd }: { onAdd: (value: string) => void }) => {
               )}
             />
             <DrawerFooter className="mt-6 p-0">
-              <Button type="submit" disabled={!form.formState.isValid}>
+              <Button
+                type="submit"
+                disabled={!form.formState.isValid || isClosed}
+              >
                 Submit
               </Button>
               <DrawerClose asChild>

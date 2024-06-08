@@ -1,6 +1,6 @@
 "use client";
 
-import type { Vote } from "@/types/vote";
+import type { Vote } from "@/types/voteTypes";
 import { DatabaseReference, update } from "firebase/database";
 import { ConfettiSideCannons } from "@/app/_components/side-cannons";
 import { Button } from "@/components/ui/button";
@@ -69,7 +69,7 @@ const AdminControls = ({ vote, voteRef }: AdminControlsProps) => {
         className="flex w-full items-center gap-3"
       >
         <BookCheck size={16} />
-        {vote.type === "poll" ? "Close" : "Close"}
+        Close
       </ConfettiSideCannons>
     </div>
   );
