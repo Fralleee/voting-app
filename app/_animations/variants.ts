@@ -1,4 +1,6 @@
-export const containerVariants = {
+import { Variants } from "framer-motion";
+
+export const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -6,11 +8,12 @@ export const containerVariants = {
       duration: 0.2,
       delayChildren: 0.2,
       staggerChildren: 0.15,
+      max: 5,
     },
   },
 };
 
-export const itemVariants = {
+export const itemVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
@@ -22,7 +25,7 @@ export const itemVariants = {
   },
 };
 
-export const buttonVariant = {
+export const buttonVariant: Variants = {
   hidden: { scale: 0.25, opacity: 0 },
   visible: {
     scale: 1,

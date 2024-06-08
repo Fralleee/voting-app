@@ -15,11 +15,7 @@ import AvatarCircles from "@/components/ui/avatar-circles";
 import useIdentity from "@/app/_hooks/useIdentity";
 import AdminControls from "./admin-controls";
 import { motion } from "framer-motion";
-import {
-  buttonVariant,
-  containerVariants,
-  itemVariants,
-} from "@/app/_animations/variants";
+import { containerVariants, itemVariants } from "@/app/_animations/variants";
 import { notFound } from "next/navigation";
 
 const Vote = ({ id }: { id: string }) => {
@@ -50,17 +46,6 @@ const Vote = ({ id }: { id: string }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading]);
-
-  const voteOptions = useMemo(() => vote?.options || [], [vote]);
-  const selectedOptions = useMemo(() => {
-    return voteOptions
-      .filter((option) =>
-        option.votes?.some((vote) => vote.identifier === identifier),
-      )
-      .map((option) => option.value);
-  }, [voteOptions, identifier]);
-
-  const groupKey = useMemo(() => selectedOptions.join(","), [selectedOptions]);
 
   function handleMultipleChoice(value: string[]): void {
     update(voteRef, {
@@ -144,10 +129,9 @@ const Vote = ({ id }: { id: string }) => {
         >
           {vote.topic}
         </motion.h1>
-        <MotionCard className="flex w-full flex-col p-3 md:p-12">
+        <MotionCard className="flex max-h-96 w-full flex-col overflow-y-scroll border-none p-3 md:p-12">
           {vote.allowMultiChoice ? (
             <ToggleGroup
-              key={groupKey}
               variant="outline"
               value={vote.options
                 .filter((option) =>
@@ -158,12 +142,23 @@ const Vote = ({ id }: { id: string }) => {
               type="multiple"
               className="flex w-full flex-wrap justify-center gap-3"
             >
-              {vote.options.map((option) => (
+              {vote.options.map((option, index) => (
                 <MotionToggleGroupItem
-                  variants={itemVariants}
+                  variants={{
+                    hidden: { y: 20, opacity: 0 },
+                    visible: {
+                      y: 0,
+                      opacity: 1,
+                      transition: {
+                        duration: 0.2,
+                        ease: "easeOut",
+                        delay: index < 4 ? index * 0.15 : 0.45,
+                      },
+                    },
+                  }}
                   value={option.value}
                   disabled={vote.status !== "open"}
-                  className="relative h-32 w-32 p-3 text-lg data-[disabled]:text-muted"
+                  className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
                   key={option.value}
                 >
                   <div className="absolute right-2 top-2">
@@ -177,7 +172,6 @@ const Vote = ({ id }: { id: string }) => {
             </ToggleGroup>
           ) : (
             <ToggleGroup
-              key={groupKey}
               variant="outline"
               defaultValue={
                 vote.options.find((option) =>
@@ -188,13 +182,24 @@ const Vote = ({ id }: { id: string }) => {
               type="single"
               className="flex w-full flex-wrap justify-center gap-3"
             >
-              {vote.options.map((option) => (
+              {vote.options.map((option, index) => (
                 <MotionToggleGroupItem
-                  variants={itemVariants}
+                  variants={{
+                    hidden: { y: 20, opacity: 0 },
+                    visible: {
+                      y: 0,
+                      opacity: 1,
+                      transition: {
+                        duration: 0.2,
+                        ease: "easeOut",
+                        delay: index < 4 ? index * 0.15 : 0.45,
+                      },
+                    },
+                  }}
                   value={option.value}
                   disabled={vote.status !== "open"}
                   key={option.value}
-                  className="relative h-32 w-32 p-3 text-lg data-[disabled]:text-muted"
+                  className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
                 >
                   <div className="absolute right-2 top-2">
                     <AvatarCircles users={option.votes || []} maxCircles={3} />
@@ -211,8 +216,19 @@ const Vote = ({ id }: { id: string }) => {
 
       <div className="mx-auto mt-6 flex w-full max-w-64 flex-col items-center justify-end gap-3">
         <motion.p
-          variants={itemVariants}
-          className="font-semibold text-gray-500"
+          variants={{
+            hidden: { y: 20, opacity: 0 },
+            visible: {
+              y: 0,
+              opacity: 1,
+              transition: {
+                duration: 0.2,
+                ease: "easeOut",
+                delay: 0.5,
+              },
+            },
+          }}
+          className="font-semibold text-muted-foreground"
         >
           Voting is{" "}
           {vote.status === "open"
@@ -224,12 +240,32 @@ const Vote = ({ id }: { id: string }) => {
 
         <div className="mx-auto mt-6 flex w-full max-w-64 flex-col items-center justify-end gap-3">
           {vote.allowChoiceCreation && (
-            <motion.div variants={buttonVariant} className="w-full">
+            <motion.div
+              variants={{
+                hidden: { scale: 0.25, opacity: 0 },
+                visible: {
+                  scale: 1,
+                  opacity: 1,
+                  transition: { ease: "backOut", duration: 0.3, delay: 0.65 },
+                },
+              }}
+              className="w-full"
+            >
               <NewOption status={vote.status} onAdd={handleNewOption} />
             </motion.div>
           )}
           {vote.admin === identifier && (
-            <motion.div variants={buttonVariant} className="w-full">
+            <motion.div
+              variants={{
+                hidden: { scale: 0.25, opacity: 0 },
+                visible: {
+                  scale: 1,
+                  opacity: 1,
+                  transition: { ease: "backOut", duration: 0.3, delay: 0.8 },
+                },
+              }}
+              className="w-full"
+            >
               <AdminControls vote={vote} voteRef={voteRef} />
             </motion.div>
           )}
