@@ -129,7 +129,7 @@ const Vote = ({ id }: { id: string }) => {
         >
           {vote.topic}
         </motion.h1>
-        <MotionCard className="flex max-h-96 w-full flex-col overflow-y-scroll border-none p-3 md:p-12">
+        <MotionCard className="flex max-h-96 w-full flex-col border-none p-3 md:p-12">
           {vote.allowMultiChoice ? (
             <ToggleGroup
               variant="outline"
@@ -158,7 +158,7 @@ const Vote = ({ id }: { id: string }) => {
                   }}
                   value={option.value}
                   disabled={vote.status !== "open"}
-                  className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
+                  className="relative h-32 w-32 select-none overflow-y-auto p-3 text-lg data-[disabled]:text-muted-foreground"
                   key={option.value}
                 >
                   <div className="absolute right-2 top-2">
@@ -199,7 +199,7 @@ const Vote = ({ id }: { id: string }) => {
                   value={option.value}
                   disabled={vote.status !== "open"}
                   key={option.value}
-                  className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
+                  className="relative h-32 w-32 select-none overflow-y-auto p-3 text-lg data-[disabled]:text-muted-foreground"
                 >
                   <div className="absolute right-2 top-2">
                     <AvatarCircles users={option.votes || []} maxCircles={3} />
