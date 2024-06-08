@@ -45,7 +45,7 @@ import {
   itemVariants,
   buttonVariant,
 } from "@/app/_animations/variants";
-import { Card } from "@/components/ui/card";
+import { MotionCard } from "@/components/ui/card";
 
 const CreateVoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -152,7 +152,12 @@ const CreateVoteForm = () => {
 
   const { formType, formDescription } = formSummary(form.getValues());
   return (
-    <Card className="mx-auto flex h-full w-full max-w-[640px] flex-col justify-between rounded-lg border-stone-200 px-4 pt-20 dark:border-slate-800 md:h-auto md:border md:px-8 md:py-12">
+    <MotionCard
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      className="mx-auto flex h-full w-full max-w-xl flex-col justify-between rounded-lg border-stone-200 px-4 pt-20 dark:border-slate-800 md:h-auto md:border md:px-8 md:py-12"
+    >
       <Form {...form}>
         <motion.form
           initial="hidden"
@@ -339,7 +344,7 @@ const CreateVoteForm = () => {
           </motion.div>
         </motion.form>
       </Form>
-    </Card>
+    </MotionCard>
   );
 };
 

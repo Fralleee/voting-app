@@ -63,6 +63,7 @@ const config = {
         },
         card: {
           DEFAULT: "hsl(var(--card))",
+          background: "hsl(var(--card-background))",
           foreground: "hsl(var(--card-foreground))",
         },
       },

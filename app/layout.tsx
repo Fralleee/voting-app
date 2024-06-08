@@ -20,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "bg-stone-50 dark:bg-slate-950")}>
+      <body
+        className={cn(inter.className, "bg-card-background md:bg-background")}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
