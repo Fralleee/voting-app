@@ -54,13 +54,15 @@ export const NewOption = ({ onAdd }: { onAdd: (value: string) => void }) => {
   return (
     <Drawer noBodyStyles open={open} onOpenChange={handleOpenChange}>
       <DrawerTrigger asChild>
-        <Button variant="outline">Add option</Button>
+        <Button className="w-full" variant="outline">
+          Add option
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <Form {...form}>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="mx-auto flex w-full max-w-sm flex-col gap-3 pb-16 pt-8"
+            className="mx-auto flex w-full max-w-sm flex-col gap-3 px-3 pb-16 pt-8"
           >
             <DrawerHeader className="p-0">
               <DrawerTitle>Add option</DrawerTitle>

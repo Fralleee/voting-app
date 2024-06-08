@@ -43,15 +43,7 @@ const AdminControls = ({ vote, voteRef }: AdminControlsProps) => {
   }
 
   return (
-    <div className="flex w-full max-w-48 flex-col gap-3">
-      <ConfettiSideCannons
-        disabled={closed}
-        onClick={closeVoting}
-        className="flex w-full items-center gap-3"
-      >
-        <BookCheck size={16} />
-        {vote.type === "poll" ? "Close" : "Close"}
-      </ConfettiSideCannons>
+    <div className="flex w-full flex-col gap-3">
       <Button
         disabled={closed}
         variant="outline"
@@ -71,6 +63,14 @@ const AdminControls = ({ vote, voteRef }: AdminControlsProps) => {
         {locked ? <Lock size={16} /> : <LockOpen size={16} />}
         {locked ? "Unlock" : "Lock"}
       </Toggle>
+      <ConfettiSideCannons
+        disabled={closed}
+        onClick={closeVoting}
+        className="flex w-full items-center gap-3"
+      >
+        <BookCheck size={16} />
+        {vote.type === "poll" ? "Close" : "Close"}
+      </ConfettiSideCannons>
     </div>
   );
 };
