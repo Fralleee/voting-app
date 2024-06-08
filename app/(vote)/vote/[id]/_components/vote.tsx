@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import type { Vote } from "@/types/vote";
+import type { Vote, VoteOption } from "@/types/vote";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ref, update } from "firebase/database";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { NewOption } from "./new-option";
 import AvatarCircles from "@/components/ui/avatar-circles";
 import useIdentity from "@/app/_hooks/useIdentity";
+import { ConfettiSideCannons } from "@/app/_components/side-cannons";
+import AdminControls from "./admin-controls";
 
 const Vote = ({ id }: { id: string }) => {
   const voteRef = ref(database, `votes/${id}`);
@@ -21,13 +23,6 @@ const Vote = ({ id }: { id: string }) => {
   useEffect(() => {
     if (!user || !snapshot || !snapshot.val()) return;
     const vote = snapshot.val() as Vote;
-
-    if (user.alias !== vote.admin) {
-      update(voteRef, {
-        admin: user.alias,
-      });
-    }
-
     const hasVotesWithOtherAlias = vote.options.some((option) =>
       option.votes?.some(
         (u) => u.identifier === identifier && u.alias !== user.alias,
@@ -49,6 +44,20 @@ const Vote = ({ id }: { id: string }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading]);
+
+  const voteOptions = useMemo(
+    () => (snapshot?.val()?.options || []) as VoteOption[],
+    [snapshot],
+  );
+  const selectedOptions = useMemo(() => {
+    return voteOptions
+      .filter((option) =>
+        option.votes?.some((vote) => vote.identifier === identifier),
+      )
+      .map((option) => option.value);
+  }, [voteOptions, identifier]);
+
+  const groupKey = useMemo(() => selectedOptions.join(","), [selectedOptions]);
 
   if (loading)
     return (
@@ -135,13 +144,19 @@ const Vote = ({ id }: { id: string }) => {
       </h1>
       <div className="flex w-full max-w-[640px] flex-col items-center">
         <p className="mb-4 font-semibold text-gray-500">
-          Voting is {vote.status === "open" ? "Open" : "Closed"}
+          Voting is{" "}
+          {vote.status === "open"
+            ? "open"
+            : vote.status === "closed"
+              ? "closed"
+              : "locked"}
         </p>
         <Card className="flex w-full flex-col p-12">
           {vote.allowMultiChoice ? (
             <ToggleGroup
+              key={groupKey}
               variant="outline"
-              defaultValue={vote.options
+              value={vote.options
                 .filter((option) =>
                   option.votes?.some((user) => user.identifier === identifier),
                 )
@@ -153,7 +168,7 @@ const Vote = ({ id }: { id: string }) => {
               {vote.options.map((option) => (
                 <ToggleGroupItem
                   value={option.value}
-                  disabled={vote.status === "closed"}
+                  disabled={vote.status !== "open"}
                   className="relative h-32 w-32 p-3 text-lg"
                   key={option.value}
                 >
@@ -168,6 +183,7 @@ const Vote = ({ id }: { id: string }) => {
             </ToggleGroup>
           ) : (
             <ToggleGroup
+              key={groupKey}
               variant="outline"
               defaultValue={
                 vote.options.find((option) =>
@@ -181,7 +197,7 @@ const Vote = ({ id }: { id: string }) => {
               {vote.options.map((option) => (
                 <ToggleGroupItem
                   value={option.value}
-                  disabled={vote.status === "closed"}
+                  disabled={vote.status !== "open"}
                   className="relative h-32 w-32 p-3 text-lg"
                   key={option.value}
                 >
@@ -199,18 +215,8 @@ const Vote = ({ id }: { id: string }) => {
       </div>
 
       {vote.allowChoiceCreation && <NewOption onAdd={handleNewOption} />}
-
       {vote.admin === identifier && (
-        <Button
-          onClick={() => {
-            update(voteRef, {
-              status: vote.status === "open" ? "closed" : "open",
-            });
-          }}
-          className="mt-2"
-        >
-          {vote.status === "open" ? "Close vote" : "Open vote"}
-        </Button>
+        <AdminControls vote={vote} voteRef={voteRef} />
       )}
     </>
   );

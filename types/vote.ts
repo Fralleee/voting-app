@@ -11,6 +11,6 @@ export interface Vote {
   admin: string;
   allowMultiChoice: boolean;
   allowChoiceCreation: boolean;
-  status: "open" | "closed";
+  status: "open" | "closed" | "locked";
   options: VoteOption[];
 }

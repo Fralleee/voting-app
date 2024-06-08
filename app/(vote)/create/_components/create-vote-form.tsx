@@ -108,7 +108,6 @@ const CreateVoteForm = () => {
     const { type, topic, options, allowChoiceCreation, allowMultiChoice } =
       values;
 
-    console.log(options);
     const filteredOptions = options.filter(
       (option) => option.value !== "",
     ) as VoteOption[];
