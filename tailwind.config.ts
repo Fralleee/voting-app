@@ -6,6 +6,9 @@ const {
 } = require("tailwindcss/lib/util/flattenColorPalette");
 
 const config = {
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",

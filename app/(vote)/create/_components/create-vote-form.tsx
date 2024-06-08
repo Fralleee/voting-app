@@ -77,7 +77,6 @@ const buttonVariant = {
 const CreateVoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  // const { identifier } = useUser();
   const { identifier } = useIdentity();
 
   const form = useForm<z.infer<typeof voteSchema>>({
@@ -109,8 +108,9 @@ const CreateVoteForm = () => {
     const { type, topic, options, allowChoiceCreation, allowMultiChoice } =
       values;
 
+    console.log(options);
     const filteredOptions = options.filter(
-      (option) => option.value?.trim() !== "",
+      (option) => option.value !== "",
     ) as VoteOption[];
 
     if (filteredOptions.length < 2) {
@@ -121,7 +121,7 @@ const CreateVoteForm = () => {
 
       let firstError = false;
       for (const option of options) {
-        if (option.value?.trim() === "") {
+        if (option.value === "") {
           const index = options.indexOf(option);
           form.setError(`options.${index}.value`, {
             type: "manual",
