@@ -1,4 +1,5 @@
 import { cn } from "@/utils/cn";
+import { motion } from "framer-motion";
 import * as React from "react";
 
 const Card = React.forwardRef<
@@ -75,7 +76,10 @@ const CardFooter = React.forwardRef<
 ));
 CardFooter.displayName = "CardFooter";
 
+const MotionCard = motion(Card);
+
 export {
+  MotionCard,
   Card,
   CardHeader,
   CardFooter,

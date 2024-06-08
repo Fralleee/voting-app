@@ -5,6 +5,7 @@ import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import { VariantProps } from "class-variance-authority";
 import { cn } from "@/utils/cn";
 import { toggleVariants } from "@/components/ui/toggle";
+import { motion } from "framer-motion";
 
 const ToggleGroupContext = React.createContext<
   VariantProps<typeof toggleVariants>
@@ -57,4 +58,5 @@ const ToggleGroupItem = React.forwardRef<
 
 ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName;
 
-export { ToggleGroup, ToggleGroupItem };
+const MotionToggleGroupItem = motion(ToggleGroupItem);
+export { ToggleGroup, ToggleGroupItem, MotionToggleGroupItem };
