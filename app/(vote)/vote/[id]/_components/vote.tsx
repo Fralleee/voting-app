@@ -26,7 +26,6 @@ const Vote = ({ id }: { id: string }) => {
   const voteRef = ref(database, `votes/${id}`);
   const [vote, loading] = useObjectVal<Vote>(voteRef);
   const { user, identifier } = useIdentity();
-  console.log("TEST");
 
   useEffect(() => {
     if (!user || !vote) return;
