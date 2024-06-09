@@ -6,20 +6,20 @@ import { ref, update } from "firebase/database";
 import { database } from "@/lib/firebase";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { notFound } from "next/navigation";
-import useIdentity from "@/app/_hooks/useIdentity";
 import Results from "./results";
 import Voting from "./voting";
+import { useUser } from "@/app/_hooks/useUser";
 
 const Poll = ({ id }: { id: string }) => {
   const pollReference = ref(database, `votes/${id}`);
   const [poll, loading] = useObjectVal<Poll>(pollReference);
-  const { user, identifier, isLoading } = useIdentity();
+  const { user, isLoading } = useUser();
 
   useEffect(() => {
     if (!user || !poll) return;
     const hasVotesWithOtherAlias = poll.options.some((option) =>
       option.votes?.some(
-        (u) => u.identifier === identifier && u.alias !== user.alias,
+        (u) => u.identifier === user.identifier && u.alias !== user.alias,
       ),
     );
 
@@ -31,7 +31,7 @@ const Poll = ({ id }: { id: string }) => {
       options: poll.options.map((option) => ({
         ...option,
         votes: (option.votes || [])?.map((u) =>
-          u.identifier === identifier ? { ...u, alias: user.alias } : u,
+          u.identifier === user.identifier ? { ...u, alias: user.alias } : u,
         ),
       })),
     });
@@ -50,7 +50,7 @@ const Poll = ({ id }: { id: string }) => {
   return poll.status === "closed" ? (
     <Results poll={poll} />
   ) : (
-    <Voting poll={poll} pollReference={pollReference} user={user} />
+    <Voting poll={poll} pollReference={pollReference} />
   );
 };
 

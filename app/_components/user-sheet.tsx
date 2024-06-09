@@ -17,7 +17,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { aliasToAvatar } from "../_utils/aliasToAvatar";
 import { randomColorToAvatar } from "../_utils/randomColorToAvatar";
 import { UserIcon } from "lucide-react";
-import useIdentity from "../_hooks/useIdentity";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userSchema } from "../(vote)/create/_validation/userSchema";
@@ -32,18 +31,18 @@ import { z } from "zod";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useUser } from "../_hooks/useUser";
 
 export function UserSheet() {
   const [open, setOpen] = useState(false);
-  const { alias, isLoading, updateUserAlias } = useIdentity();
+  const { user, isLoading, updateUserAlias } = useUser();
   const [isClient, setIsClient] = useState(false);
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      alias: alias || "",
+      alias: user?.alias || "",
     },
   });
   const {
@@ -56,6 +55,13 @@ export function UserSheet() {
     // As soon as the component mounts, we know we're on the client
     setIsClient(true);
   }, []);
+
+  useEffect(() => {
+    if (user && !isLoading) {
+      form.setValue("alias", user.alias);
+    }
+    setIsClient(true);
+  }, [isLoading, user]);
 
   function onSubmit(values: z.infer<typeof userSchema>) {
     if (!form.formState.isValid) {
@@ -80,9 +86,9 @@ export function UserSheet() {
               <Button size="icon" variant="outline">
                 <span className="sr-only">User settings</span>
                 <Avatar>
-                  {isClient && !isLoading && alias ? (
-                    <AvatarFallback className={randomColorToAvatar(alias)}>
-                      {aliasToAvatar(alias)}
+                  {isClient && !isLoading && user?.alias ? (
+                    <AvatarFallback className={randomColorToAvatar(user.alias)}>
+                      {aliasToAvatar(user.alias)}
                     </AvatarFallback>
                   ) : (
                     <AvatarFallback>

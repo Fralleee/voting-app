@@ -39,7 +39,6 @@ import { motion } from "framer-motion";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { useEffect, useState } from "react";
 import { voteSchema } from "../_validation/voteSchema";
-import useIdentity from "@/app/_hooks/useIdentity";
 import {
   containerVariants,
   itemVariants,
@@ -48,11 +47,12 @@ import {
 import { MotionCard } from "@/components/ui/card";
 import { validateDuplicateOptions } from "../_validation/validateDuplicateOptions";
 import { useWarnIfUnsavedChanges } from "@/app/_hooks/useWarnIfUnsavedChanges";
+import { useUser } from "@/app/_hooks/useUser";
 
 const CreateVoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { identifier } = useIdentity();
+  const { user } = useUser();
 
   const form = useForm<z.infer<typeof voteSchema>>({
     resolver: zodResolver(voteSchema),
@@ -138,7 +138,7 @@ const CreateVoteForm = () => {
       type,
       topic,
       options: filteredOptions,
-      admin: identifier,
+      admin: user?.identifier,
       allowMultiChoice,
       allowChoiceCreation,
       status: "open",

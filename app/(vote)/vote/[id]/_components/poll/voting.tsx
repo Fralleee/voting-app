@@ -13,23 +13,22 @@ import AvatarCircles from "@/components/ui/avatar-circles";
 import AdminControls from "../admin-controls";
 import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/app/_animations/variants";
-import { User } from "@/types/userTypes";
+import { useUser } from "@/app/_hooks/useUser";
 
 interface VotingProps {
   poll: Poll;
   pollReference: DatabaseReference;
-  user: User;
 }
 
-const Voting = ({ poll, pollReference, user }: VotingProps) => {
-  const { identifier } = user;
+const Voting = ({ poll, pollReference }: VotingProps) => {
+  const { user } = useUser();
 
   function handleMultipleChoice(value: string[]): void {
     update(pollReference, {
       options: poll.options.map((option) => {
         if (value.includes(option.value)) {
           const alreadyVoted = option.votes?.some(
-            (user) => user.identifier === identifier,
+            (u) => u.identifier === user?.identifier,
           );
 
           if (alreadyVoted) {
@@ -45,7 +44,7 @@ const Voting = ({ poll, pollReference, user }: VotingProps) => {
         return {
           ...option,
           votes: (option.votes || []).filter(
-            (user) => user.identifier !== identifier,
+            (u) => u.identifier !== user?.identifier,
           ),
         };
       }),
@@ -65,7 +64,7 @@ const Voting = ({ poll, pollReference, user }: VotingProps) => {
         return {
           ...option,
           votes: (option.votes || []).filter(
-            (user) => user.identifier !== identifier,
+            (u) => u.identifier !== user?.identifier,
           ),
         };
       }),
@@ -106,7 +105,7 @@ const Voting = ({ poll, pollReference, user }: VotingProps) => {
             variant="outline"
             value={poll.options
               .filter((option) =>
-                option.votes?.some((user) => user.identifier === identifier),
+                option.votes?.some((u) => u.identifier === user?.identifier),
               )
               .map((opt) => opt.value)}
             onValueChange={handleMultipleChoice}
@@ -146,7 +145,7 @@ const Voting = ({ poll, pollReference, user }: VotingProps) => {
             variant="outline"
             defaultValue={
               poll.options.find((option) =>
-                option.votes?.some((user) => user.identifier === identifier),
+                option.votes?.some((u) => u.identifier === user?.identifier),
               )?.value
             }
             onValueChange={handleSingleChoice}
@@ -232,7 +231,7 @@ const Voting = ({ poll, pollReference, user }: VotingProps) => {
               <NewOption vote={poll} onAdd={handleNewOption} />
             </motion.div>
           )}
-          {poll.admin === identifier && (
+          {poll.admin === user?.identifier && (
             <motion.div
               variants={{
                 hidden: { scale: 0.25, opacity: 0 },
