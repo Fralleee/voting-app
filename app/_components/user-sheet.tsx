@@ -29,6 +29,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export function UserSheet() {
   const [open, setOpen] = useState(false);
@@ -67,22 +73,31 @@ export function UserSheet() {
 
   return (
     <Sheet open={open} onOpenChange={handleOpenChange}>
-      <SheetTrigger asChild>
-        <Button size="icon" variant="outline">
-          <span className="sr-only">User settings</span>
-          <Avatar>
-            {isClient && !isLoading && alias ? (
-              <AvatarFallback className={randomColorToAvatar(alias)}>
-                {aliasToAvatar(alias)}
-              </AvatarFallback>
-            ) : (
-              <AvatarFallback>
-                <UserIcon className="h-6 w-6" />
-              </AvatarFallback>
-            )}
-          </Avatar>
-        </Button>
-      </SheetTrigger>
+      <Tooltip delayDuration={200}>
+        <TooltipTrigger asChild>
+          <SheetTrigger asChild>
+            <div>
+              <Button size="icon" variant="outline">
+                <span className="sr-only">User settings</span>
+                <Avatar>
+                  {isClient && !isLoading && alias ? (
+                    <AvatarFallback className={randomColorToAvatar(alias)}>
+                      {aliasToAvatar(alias)}
+                    </AvatarFallback>
+                  ) : (
+                    <AvatarFallback>
+                      <UserIcon className="h-6 w-6" />
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+              </Button>
+              <TooltipContent side="bottom">
+                <p>Edit profile</p>
+              </TooltipContent>
+            </div>
+          </SheetTrigger>
+        </TooltipTrigger>
+      </Tooltip>
       <SheetContent>
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)}>

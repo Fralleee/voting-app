@@ -1,6 +1,6 @@
-import { VoteOption } from "@/types/voteTypes";
+import { PollOption } from "@/types/voteTypes";
 
-export const validateDuplicateOptions = (options: VoteOption[]) => {
+export const validateDuplicateOptions = (options: PollOption[]) => {
   const duplicates = new Set();
   const duplicateOptions = options.reduce((acc, option) => {
     if (duplicates.has(option.value.toLowerCase())) {
@@ -9,7 +9,7 @@ export const validateDuplicateOptions = (options: VoteOption[]) => {
       duplicates.add(option.value.toLowerCase());
     }
     return acc;
-  }, [] as VoteOption[]);
+  }, [] as PollOption[]);
 
   const hasDuplicates = duplicateOptions.length > 0;
 

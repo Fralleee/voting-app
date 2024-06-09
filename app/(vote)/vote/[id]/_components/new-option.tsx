@@ -26,10 +26,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { validateDuplicateOptions } from "@/app/(vote)/create/_validation/validateDuplicateOptions";
-import { Vote } from "@/types/voteTypes";
+import { Poll } from "@/types/voteTypes";
 
 interface NewOptionProps {
-  vote: Vote;
+  vote: Poll;
   onAdd: (value: string) => void;
 }
 

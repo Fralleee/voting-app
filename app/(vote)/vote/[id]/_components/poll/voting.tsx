@@ -2,54 +2,31 @@
 
 import React, { useEffect } from "react";
 import { MotionCard } from "@/components/ui/card";
-import type { Vote } from "@/types/voteTypes";
-import { ref, update } from "firebase/database";
+import type { Poll } from "@/types/voteTypes";
+import { DatabaseReference, ref, update } from "firebase/database";
 import {
   MotionToggleGroupItem,
   ToggleGroup,
 } from "@/components/ui/toggle-group";
-import { useObjectVal } from "react-firebase-hooks/database";
-import { database } from "@/lib/firebase";
-import { NewOption } from "./new-option";
+import { NewOption } from "../new-option";
 import AvatarCircles from "@/components/ui/avatar-circles";
-import useIdentity from "@/app/_hooks/useIdentity";
-import AdminControls from "./admin-controls";
+import AdminControls from "../admin-controls";
 import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/app/_animations/variants";
-import { notFound } from "next/navigation";
+import { User } from "@/types/userTypes";
 
-const Vote = ({ id }: { id: string }) => {
-  const voteRef = ref(database, `votes/${id}`);
-  const [vote, loading] = useObjectVal<Vote>(voteRef);
-  const { user, identifier, isLoading } = useIdentity();
+interface VotingProps {
+  poll: Poll;
+  pollReference: DatabaseReference;
+  user: User;
+}
 
-  useEffect(() => {
-    if (!user || !vote) return;
-    const hasVotesWithOtherAlias = vote.options.some((option) =>
-      option.votes?.some(
-        (u) => u.identifier === identifier && u.alias !== user.alias,
-      ),
-    );
-
-    if (!hasVotesWithOtherAlias) {
-      return;
-    }
-
-    update(voteRef, {
-      options: vote.options.map((option) => ({
-        ...option,
-        votes: (option.votes || [])?.map((u) =>
-          u.identifier === identifier ? { ...u, alias: user.alias } : u,
-        ),
-      })),
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, loading]);
+const Voting = ({ poll, pollReference, user }: VotingProps) => {
+  const { identifier } = user;
 
   function handleMultipleChoice(value: string[]): void {
-    update(voteRef, {
-      options: vote?.options.map((option) => {
+    update(pollReference, {
+      options: poll.options.map((option) => {
         if (value.includes(option.value)) {
           const alreadyVoted = option.votes?.some(
             (user) => user.identifier === identifier,
@@ -76,8 +53,8 @@ const Vote = ({ id }: { id: string }) => {
   }
 
   function handleSingleChoice(value: string): void {
-    update(voteRef, {
-      options: vote?.options.map((option) => {
+    update(pollReference, {
+      options: poll.options.map((option) => {
         if (value.includes(option.value)) {
           return {
             ...option,
@@ -96,23 +73,15 @@ const Vote = ({ id }: { id: string }) => {
   }
 
   function handleNewOption(value: string): void {
-    update(voteRef, {
+    update(pollReference, {
       options: [
-        ...(vote?.options || []),
+        ...poll.options,
         {
           value,
           votes: [],
         },
       ],
     });
-  }
-
-  if (loading || isLoading) {
-    return null;
-  }
-
-  if (!vote) {
-    notFound();
   }
 
   return (
@@ -126,16 +95,16 @@ const Vote = ({ id }: { id: string }) => {
         variants={itemVariants}
         className="text-center text-2xl font-bold md:text-3xl lg:text-4xl"
       >
-        {vote.topic}
+        {poll.topic}
       </motion.h1>
       <motion.div
         variants={itemVariants}
         className="flex w-full flex-grow flex-col p-3 md:p-12"
       >
-        {vote.allowMultiChoice ? (
+        {poll.allowMultiChoice ? (
           <ToggleGroup
             variant="outline"
-            value={vote.options
+            value={poll.options
               .filter((option) =>
                 option.votes?.some((user) => user.identifier === identifier),
               )
@@ -144,7 +113,7 @@ const Vote = ({ id }: { id: string }) => {
             type="multiple"
             className="flex w-full flex-wrap justify-center gap-3"
           >
-            {vote.options.map((option, index) => (
+            {poll.options.map((option, index) => (
               <MotionToggleGroupItem
                 variants={{
                   hidden: { y: 20, opacity: 0 },
@@ -159,7 +128,7 @@ const Vote = ({ id }: { id: string }) => {
                   },
                 }}
                 value={option.value}
-                disabled={vote.status !== "open"}
+                disabled={poll.status !== "open"}
                 className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
                 key={option.value}
               >
@@ -176,7 +145,7 @@ const Vote = ({ id }: { id: string }) => {
           <ToggleGroup
             variant="outline"
             defaultValue={
-              vote.options.find((option) =>
+              poll.options.find((option) =>
                 option.votes?.some((user) => user.identifier === identifier),
               )?.value
             }
@@ -184,7 +153,7 @@ const Vote = ({ id }: { id: string }) => {
             type="single"
             className="flex w-full flex-wrap justify-center gap-3"
           >
-            {vote.options.map((option, index) => (
+            {poll.options.map((option, index) => (
               <MotionToggleGroupItem
                 variants={{
                   hidden: { scale: 0, opacity: 0 },
@@ -199,7 +168,7 @@ const Vote = ({ id }: { id: string }) => {
                   },
                 }}
                 value={option.value}
-                disabled={vote.status !== "open"}
+                disabled={poll.status !== "open"}
                 key={option.value}
                 className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
               >
@@ -226,22 +195,22 @@ const Vote = ({ id }: { id: string }) => {
                 duration: 0.2,
                 ease: "backOut",
                 delay:
-                  vote.options.length > 4 ? 0.6 : vote.options.length * 0.15,
+                  poll.options.length > 4 ? 0.6 : poll.options.length * 0.15,
               },
             },
           }}
           className="text-muted-foreground"
         >
           Voting is{" "}
-          {vote.status === "open"
+          {poll.status === "open"
             ? "open"
-            : vote.status === "closed"
+            : poll.status === "closed"
               ? "closed"
               : "locked"}
         </motion.p>
 
         <div className="mx-auto mt-6 flex w-full max-w-64 flex-col justify-end gap-3">
-          {vote.allowChoiceCreation && (
+          {poll.allowChoiceCreation && (
             <motion.div
               variants={{
                 hidden: { scale: 0.25, opacity: 0 },
@@ -252,18 +221,18 @@ const Vote = ({ id }: { id: string }) => {
                     ease: "backOut",
                     duration: 0.3,
                     delay:
-                      vote.options.length > 5
+                      poll.options.length > 5
                         ? 0.75
-                        : vote.options.length * 0.15 + 0.15,
+                        : poll.options.length * 0.15 + 0.15,
                   },
                 },
               }}
               className="w-full"
             >
-              <NewOption vote={vote} onAdd={handleNewOption} />
+              <NewOption vote={poll} onAdd={handleNewOption} />
             </motion.div>
           )}
-          {vote.admin === identifier && (
+          {poll.admin === identifier && (
             <motion.div
               variants={{
                 hidden: { scale: 0.25, opacity: 0 },
@@ -274,15 +243,15 @@ const Vote = ({ id }: { id: string }) => {
                     ease: "backOut",
                     duration: 0.3,
                     delay:
-                      vote.options.length > 5
+                      poll.options.length > 5
                         ? 0.9
-                        : vote.options.length * 0.15 + 0.3,
+                        : poll.options.length * 0.15 + 0.3,
                   },
                 },
               }}
               className="w-full"
             >
-              <AdminControls vote={vote} voteRef={voteRef} />
+              <AdminControls vote={poll} voteRef={pollReference} />
             </motion.div>
           )}
         </div>
@@ -291,4 +260,4 @@ const Vote = ({ id }: { id: string }) => {
   );
 };
 
-export default Vote;
+export default Voting;

@@ -14,9 +14,9 @@ const useIdentity = () => {
     storage?.getItem("identifier") || generateIdentifier(),
   );
   const [alias, setAlias] = useState(storage?.getItem("alias"));
-  const [isLoading, setIsLoading] = useState(true);
   const userRef = ref(database, `users/${identifier}`);
   const [user, loading, error] = useObjectVal<User>(userRef);
+  const [isLoading, setIsLoading] = useState(loading);
 
   useEffect(() => {
     if (!loading && !user && identifier) {

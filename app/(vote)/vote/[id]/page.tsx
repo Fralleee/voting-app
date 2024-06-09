@@ -1,5 +1,5 @@
-import Vote from "./_components/vote";
+import Poll from "./_components/poll/poll";
 
 export default function Page({ params }: { params: { id: string } }) {
-  return <Vote id={params.id} />;
+  return <Poll id={params.id} />;
 }

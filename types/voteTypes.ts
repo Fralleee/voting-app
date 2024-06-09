@@ -1,16 +1,16 @@
 import { User } from "./userTypes";
 
-export interface VoteOption {
+export interface PollOption {
   value: string;
   votes?: User[];
 }
 
-export interface Vote {
+export interface Poll {
   type: "poll" | "storypoints";
   topic: string;
   admin: string;
   allowMultiChoice: boolean;
   allowChoiceCreation: boolean;
   status: "open" | "closed" | "locked";
-  options: VoteOption[];
+  options: PollOption[];
 }

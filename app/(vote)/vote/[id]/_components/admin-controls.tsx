@@ -1,6 +1,6 @@
 "use client";
 
-import type { Vote } from "@/types/voteTypes";
+import type { Poll } from "@/types/voteTypes";
 import { DatabaseReference, update } from "firebase/database";
 import { ConfettiSideCannons } from "@/app/_components/side-cannons";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { BookCheck, ListChecks, Lock, LockOpen, RotateCcw } from "lucide-react";
 
 interface AdminControlsProps {
-  vote: Vote;
+  vote: Poll;
   voteRef: DatabaseReference;
 }
 

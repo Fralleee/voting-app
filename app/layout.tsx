@@ -38,21 +38,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="absolute top-4 flex w-full justify-center gap-3">
-            <TooltipProvider>
+          <TooltipProvider>
+            <div className="absolute top-4 flex w-full justify-center gap-3">
+              <ToggleTheme />
               <Tooltip delayDuration={200}>
-                <TooltipTrigger>
-                  <ToggleTheme />
-                </TooltipTrigger>
-                <TooltipContent side="bottom">
-                  <p>Toggle theme</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
-            <TooltipProvider>
-              <Tooltip delayDuration={200}>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <Link
                     prefetch
                     className={buttonVariants({
@@ -68,26 +58,14 @@ export default function RootLayout({
                   <p>Home</p>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
-
-            <TooltipProvider>
+              <UserSheet />
+            </div>
+            <div className="mx-auto grid min-h-full w-full max-w-[1080px] items-center px-4 md:pb-8 md:pt-20">
+              {children}
+            </div>
+            <div className="absolute left-4 top-4 text-muted-foreground">
               <Tooltip delayDuration={200}>
-                <TooltipTrigger>
-                  <UserSheet />
-                </TooltipTrigger>
-                <TooltipContent side="bottom">
-                  <p>Edit profile</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-          <div className="mx-auto grid min-h-full w-full max-w-[1080px] items-center px-4 md:pb-8 md:pt-20">
-            {children}
-          </div>
-          <div className="absolute left-4 top-4 text-muted-foreground">
-            <TooltipProvider>
-              <Tooltip delayDuration={200}>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <Link
                     href="https://www.fralle.net/"
                     target="_blank"
@@ -104,8 +82,8 @@ export default function RootLayout({
                   <p>Developer website</p>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
-          </div>
+            </div>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

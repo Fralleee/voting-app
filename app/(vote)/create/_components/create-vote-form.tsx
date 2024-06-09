@@ -17,7 +17,7 @@ import {
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { VoteOption } from "@/types/voteTypes";
+import { PollOption } from "@/types/voteTypes";
 import {
   Select,
   SelectContent,
@@ -88,7 +88,7 @@ const CreateVoteForm = () => {
 
     const filteredOptions = options.filter(
       (option) => option.value !== "",
-    ) as VoteOption[];
+    ) as PollOption[];
 
     if (filteredOptions.length < 2) {
       form.setError("optionErrors", {
