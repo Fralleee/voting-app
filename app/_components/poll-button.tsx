@@ -4,7 +4,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
-export const VoteButton = () => {
+export const PollButton = () => {
   return (
     <motion.div
       className="mx-auto px-4 text-center font-normal md:text-left md:text-xl lg:text-2xl"
@@ -20,7 +20,7 @@ export const VoteButton = () => {
         })}
         href="/create"
       >
-        Ready, Set, Vote!
+        Ready, Set, Poll!
       </Link>
     </motion.div>
   );

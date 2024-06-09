@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import type { Poll } from "@/types/voteTypes";
+import type { Poll } from "@/types/pollTypes";
 import { ref, update } from "firebase/database";
 import { database } from "@/lib/firebase";
 import { useObjectVal } from "react-firebase-hooks/database";

@@ -17,7 +17,7 @@ import {
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PollOption } from "@/types/voteTypes";
+import { PollOption } from "@/types/pollTypes";
 import {
   Select,
   SelectContent,
@@ -38,7 +38,7 @@ import { formSummary } from "../_utils/formSummary";
 import { motion } from "framer-motion";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { useEffect, useState } from "react";
-import { voteSchema } from "../_validation/voteSchema";
+import { pollSchema } from "../_validation/pollSchema";
 import {
   containerVariants,
   itemVariants,
@@ -49,13 +49,13 @@ import { validateDuplicateOptions } from "../_validation/validateDuplicateOption
 import { useWarnIfUnsavedChanges } from "@/app/_hooks/useWarnIfUnsavedChanges";
 import { useUser } from "@/app/_hooks/useUser";
 
-const CreateVoteForm = () => {
+const CreateForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { user } = useUser();
 
-  const form = useForm<z.infer<typeof voteSchema>>({
-    resolver: zodResolver(voteSchema),
+  const form = useForm<z.infer<typeof pollSchema>>({
+    resolver: zodResolver(pollSchema),
     defaultValues: {
       type: "poll",
       allowMultiChoice: false,
@@ -81,7 +81,7 @@ const CreateVoteForm = () => {
     }
   }, [options, append]);
 
-  async function onSubmit(values: z.infer<typeof voteSchema>) {
+  async function onSubmit(values: z.infer<typeof pollSchema>) {
     setIsLoading(true);
     const { type, topic, options, allowChoiceCreation, allowMultiChoice } =
       values;
@@ -352,4 +352,4 @@ const CreateVoteForm = () => {
   );
 };
 
-export default CreateVoteForm;
+export default CreateForm;

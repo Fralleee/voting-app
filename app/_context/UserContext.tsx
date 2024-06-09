@@ -54,7 +54,8 @@ const useIdentity = () => {
   const [error, setError] = useState<Error | undefined>();
 
   useEffect(() => {
-    if (!loading && !user && identifier) {
+    const isNewUser = !loading && !user && identifier;
+    if (isNewUser) {
       const alias = storage?.getItem("alias") ?? generateUsername();
       const newUser = { identifier, alias };
 

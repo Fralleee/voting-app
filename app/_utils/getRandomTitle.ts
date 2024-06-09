@@ -1,11 +1,11 @@
 const titles = [
   "Poll Fiction",
   "The Polling Stones",
-  "Indiana Votes",
+  "Indiana Polls",
   "Silence of the Votes",
   "Lord of the Polls",
   "Poll-tergeist",
-  "Votey McVoteface",
+  "Pollyy McPollface",
   "Jurassic Poll",
   "Harry Pollter",
   "Mad Poll: Fury Vote",

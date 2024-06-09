@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { newOptionSchema } from "@/app/(vote)/create/_validation/optionSchema";
+import { newOptionSchema } from "@/app/(poll)/create/_validation/optionSchema";
 import { useState } from "react";
 import { z } from "zod";
 import { cn } from "@/utils/cn";
@@ -25,8 +25,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { validateDuplicateOptions } from "@/app/(vote)/create/_validation/validateDuplicateOptions";
-import { Poll } from "@/types/voteTypes";
+import { validateDuplicateOptions } from "@/app/(poll)/create/_validation/validateDuplicateOptions";
+import { Poll } from "@/types/pollTypes";
 
 interface NewOptionProps {
   vote: Poll;

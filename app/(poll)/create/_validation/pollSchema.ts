@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { optionSchema } from "./optionSchema";
 
-export const voteSchema = z.object({
+export const pollSchema = z.object({
   type: z.enum(["poll", "storypoints"]),
   topic: z.string().min(2, {
     message: "You need to enter a topic.",

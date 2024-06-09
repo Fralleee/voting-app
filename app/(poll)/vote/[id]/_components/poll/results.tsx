@@ -2,8 +2,8 @@
 
 import React from "react";
 import { MotionCard } from "@/components/ui/card";
-import type { Poll } from "@/types/voteTypes";
-import { containerVariants, itemVariants } from "@/app/_animations/variants";
+import type { Poll } from "@/types/pollTypes";
+import { containerVariants } from "@/app/_animations/variants";
 
 const Results = ({ poll }: { poll: Poll }) => {
   return (

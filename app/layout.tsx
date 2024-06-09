@@ -6,7 +6,7 @@ import { cn } from "@/utils/cn";
 import { ToggleTheme } from "./_components/toggle-theme";
 import { UserSheet } from "./_components/user-sheet";
 import { buttonVariants } from "@/components/ui/button";
-import { Home, Terminal, User } from "lucide-react";
+import { Home, Terminal } from "lucide-react";
 import Link from "next/link";
 import {
   Tooltip,
@@ -19,7 +19,7 @@ import { UserProvider } from "./_context/UserContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Vote | Fralle",
+  title: "Polls | Fralle",
   description: "Probably the best app there is.",
 };
 

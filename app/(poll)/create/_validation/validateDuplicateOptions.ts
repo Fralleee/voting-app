@@ -1,4 +1,4 @@
-import { PollOption } from "@/types/voteTypes";
+import { PollOption } from "@/types/pollTypes";
 
 export const validateDuplicateOptions = (options: PollOption[]) => {
   const duplicates = new Set();

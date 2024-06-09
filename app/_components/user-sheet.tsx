@@ -19,7 +19,7 @@ import { randomColorToAvatar } from "../_utils/randomColorToAvatar";
 import { UserIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userSchema } from "../(vote)/create/_validation/userSchema";
+import { userSchema } from "../(poll)/create/_validation/userSchema";
 import {
   Form,
   FormControl,

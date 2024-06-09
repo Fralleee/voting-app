@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { MotionCard } from "@/components/ui/card";
-import type { Poll } from "@/types/voteTypes";
-import { DatabaseReference, ref, update } from "firebase/database";
+import type { Poll } from "@/types/pollTypes";
+import { DatabaseReference, update } from "firebase/database";
 import {
   MotionToggleGroupItem,
   ToggleGroup,
@@ -250,7 +250,7 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
               }}
               className="w-full"
             >
-              <AdminControls vote={poll} voteRef={pollReference} />
+              <AdminControls poll={poll} pollReference={pollReference} />
             </motion.div>
           )}
         </div>

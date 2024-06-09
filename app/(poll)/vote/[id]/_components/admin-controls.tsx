@@ -1,41 +1,41 @@
 "use client";
 
-import type { Poll } from "@/types/voteTypes";
+import type { Poll } from "@/types/pollTypes";
 import { DatabaseReference, update } from "firebase/database";
 import { ConfettiSideCannons } from "@/app/_components/side-cannons";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
-import { BookCheck, ListChecks, Lock, LockOpen, RotateCcw } from "lucide-react";
+import { BookCheck, Lock, LockOpen, RotateCcw } from "lucide-react";
 
 interface AdminControlsProps {
-  vote: Poll;
-  voteRef: DatabaseReference;
+  poll: Poll;
+  pollReference: DatabaseReference;
 }
 
-const AdminControls = ({ vote, voteRef }: AdminControlsProps) => {
-  const closed = vote.status === "closed";
-  const locked = vote.status === "locked";
+const AdminControls = ({ poll, pollReference }: AdminControlsProps) => {
+  const closed = poll.status === "closed";
+  const locked = poll.status === "locked";
 
   function lockVoting() {
     if (closed) {
       return;
     }
 
-    update(voteRef, {
+    update(pollReference, {
       status: locked ? "open" : "locked",
     });
   }
 
   function closeVoting() {
-    update(voteRef, {
+    update(pollReference, {
       status: "closed",
     });
   }
 
   function resetVoting() {
-    update(voteRef, {
+    update(pollReference, {
       status: "open",
-      options: vote.options.map((option) => ({
+      options: poll.options.map((option) => ({
         ...option,
         votes: [],
       })),

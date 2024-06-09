@@ -4,7 +4,7 @@ import React from "react";
 import { FlipWords } from "../../components/ui/flip-words";
 import { motion } from "framer-motion";
 
-const regularVotes = [
+const regularPolls = [
   "single-choice polls",
   "multi-choice polls",
   "storypoints voting",
@@ -16,7 +16,7 @@ const Prompts = () => (
     animate={{ scale: 1, y: 0, opacity: 1 }}
     transition={{ ease: "easeOut", duration: 0.3 }}
   >
-    Create <FlipWords words={regularVotes} /> easier than deciding on what pizza
+    Create <FlipWords words={regularPolls} /> easier than deciding on what pizza
     to get
   </motion.div>
 );
