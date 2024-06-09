@@ -166,7 +166,7 @@ const CreateVoteForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex h-full flex-col justify-between"
         >
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-grow flex-col gap-3">
             <motion.div variants={itemVariants}>
               <Accordion
                 type="single"
@@ -320,27 +320,35 @@ const CreateVoteForm = () => {
                   </FormItem>
                 )}
               />
-
-              <p className="w-full text-center text-sm opacity-50">
-                Start typing, and new options will be added automatically
-              </p>
             </motion.div>
           </div>
 
           <motion.div
             variants={buttonVariant}
-            className="mx-auto mt-6 flex w-full max-w-64 flex-col justify-end gap-3"
+            className="mx-auto my-6 flex w-full max-w-64 flex-col items-center justify-end gap-3"
           >
-            <LoadingButton loading={isLoading} className="w-full" type="submit">
-              Start voting!
-            </LoadingButton>
-            <Link
-              prefetch
-              className={buttonVariants({ variant: "outline" })}
-              href="/"
+            <motion.p
+              variants={itemVariants}
+              className="text-center text-sm text-muted-foreground"
             >
-              Cancel
-            </Link>
+              Start typing, and new options will be added automatically
+            </motion.p>
+            <div className="mx-auto mt-6 flex w-full max-w-64 flex-col justify-end gap-3">
+              <LoadingButton
+                loading={isLoading}
+                className="w-full"
+                type="submit"
+              >
+                Start voting!
+              </LoadingButton>
+              <Link
+                prefetch
+                className={buttonVariants({ variant: "outline" })}
+                href="/"
+              >
+                Cancel
+              </Link>
+            </div>
           </motion.div>
         </motion.form>
       </Form>

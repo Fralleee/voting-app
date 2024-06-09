@@ -130,7 +130,7 @@ const Vote = ({ id }: { id: string }) => {
       </motion.h1>
       <motion.div
         variants={itemVariants}
-        className="flex max-h-[480px] w-full flex-grow flex-col overflow-y-auto p-3 md:p-12"
+        className="flex w-full flex-grow flex-col p-3 md:p-12"
       >
         {vote.allowMultiChoice ? (
           <ToggleGroup
@@ -240,7 +240,7 @@ const Vote = ({ id }: { id: string }) => {
               : "locked"}
         </motion.p>
 
-        <div className="mx-auto mt-6 flex w-full max-w-64 flex-col items-center justify-end gap-3">
+        <div className="mx-auto mt-6 flex w-full max-w-64 flex-col justify-end gap-3">
           {vote.allowChoiceCreation && (
             <motion.div
               variants={{
