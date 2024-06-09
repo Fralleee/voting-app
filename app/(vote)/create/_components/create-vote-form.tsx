@@ -47,6 +47,7 @@ import {
 } from "@/app/_animations/variants";
 import { MotionCard } from "@/components/ui/card";
 import { validateDuplicateOptions } from "../_validation/validateDuplicateOptions";
+import { useWarnIfUnsavedChanges } from "@/app/_hooks/useWarnIfUnsavedChanges";
 
 const CreateVoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +64,10 @@ const CreateVoteForm = () => {
       options: [{ value: "" }],
     },
   });
-  const { errors } = form.formState;
+  const { errors, dirtyFields } = form.formState;
+  // Using dirtyFields to check if there are any unsaved changes rather than isDirty since it's more accurate
+  const hasAnyDirtyFields = Object.keys(dirtyFields).length > 0;
+  useWarnIfUnsavedChanges(hasAnyDirtyFields);
 
   const { fields, append } = useFieldArray({
     control: form.control,
