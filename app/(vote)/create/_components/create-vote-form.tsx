@@ -46,6 +46,7 @@ import {
   buttonVariant,
 } from "@/app/_animations/variants";
 import { MotionCard } from "@/components/ui/card";
+import { validateDuplicateOptions } from "../_validation/validateDuplicateOptions";
 
 const CreateVoteForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -111,17 +112,8 @@ const CreateVoteForm = () => {
       return;
     }
 
-    const duplicates = new Set();
-    const duplicateOptions = filteredOptions.reduce((acc, option) => {
-      if (duplicates.has(option.value.toLowerCase())) {
-        acc.push(option);
-      } else {
-        duplicates.add(option.value.toLowerCase());
-      }
-      return acc;
-    }, [] as VoteOption[]);
-
-    const hasDuplicates = duplicateOptions.length > 0;
+    const { hasDuplicates, duplicateOptions } =
+      validateDuplicateOptions(filteredOptions);
     if (hasDuplicates) {
       form.clearErrors("options");
 
@@ -156,7 +148,7 @@ const CreateVoteForm = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className="mx-auto flex h-full w-full max-w-xl flex-col justify-between rounded-lg border-stone-200 px-4 pt-20 dark:border-slate-800 md:h-auto md:border md:px-8 md:py-12"
+      className="mx-auto flex h-full w-full max-w-xl flex-col justify-between rounded-lg px-4 pt-20 md:h-auto md:border md:px-8 md:py-12"
     >
       <Form {...form}>
         <motion.form
@@ -171,13 +163,13 @@ const CreateVoteForm = () => {
               <Accordion
                 type="single"
                 collapsible
-                className="flex flex-col gap-3 rounded-lg border border-input bg-stone-50 px-4 dark:bg-slate-900/40"
+                className="bg-card-background flex flex-col gap-3 rounded-md border border-input px-4"
               >
                 <AccordionItem value="item-1">
                   <AccordionTrigger>
-                    <div className="flex flex-col items-start justify-center text-left text-stone-700 transition-all dark:text-slate-300">
+                    <div className="flex flex-col items-start justify-center text-left transition-all">
                       <p>{formType}</p>
-                      <p className="h-auto max-h-10 text-sm text-stone-600 transition-all empty:max-h-0 dark:text-slate-400">
+                      <p className="h-auto max-h-10 text-sm text-muted-foreground transition-all empty:max-h-0">
                         {formDescription.join(",")}
                       </p>
                     </div>

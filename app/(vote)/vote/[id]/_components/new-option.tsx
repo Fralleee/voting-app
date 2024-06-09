@@ -25,13 +25,15 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { validateDuplicateOptions } from "@/app/(vote)/create/_validation/validateDuplicateOptions";
+import { Vote } from "@/types/voteTypes";
 
 interface NewOptionProps {
-  status: "open" | "closed" | "locked";
+  vote: Vote;
   onAdd: (value: string) => void;
 }
 
-export const NewOption = ({ status, onAdd }: NewOptionProps) => {
+export const NewOption = ({ vote, onAdd }: NewOptionProps) => {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof newOptionSchema>>({
     resolver: zodResolver(newOptionSchema),
@@ -45,12 +47,25 @@ export const NewOption = ({ status, onAdd }: NewOptionProps) => {
     handleSubmit,
     formState: { errors },
   } = form;
+  const { options, status } = vote;
 
   function handleOpenChange(open: boolean) {
     setOpen(open);
   }
 
   function onSubmit(values: z.infer<typeof newOptionSchema>) {
+    const newOptions = [...options, { value: values.value }];
+    const { hasDuplicates } = validateDuplicateOptions(newOptions);
+    if (hasDuplicates) {
+      form.setError("value", {
+        type: "manual",
+        message: "Value already exists in previous option.",
+      });
+      form.setFocus("value");
+
+      return;
+    }
+
     onAdd(values.value);
     setOpen(false);
     reset();

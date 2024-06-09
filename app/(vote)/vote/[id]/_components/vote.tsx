@@ -124,7 +124,7 @@ const Vote = ({ id }: { id: string }) => {
     >
       <motion.h1
         variants={itemVariants}
-        className="text-center text-2xl font-bold text-stone-700 dark:text-slate-200 md:text-3xl lg:text-4xl"
+        className="text-center text-2xl font-bold md:text-3xl lg:text-4xl"
       >
         {vote.topic}
       </motion.h1>
@@ -260,7 +260,7 @@ const Vote = ({ id }: { id: string }) => {
               }}
               className="w-full"
             >
-              <NewOption status={vote.status} onAdd={handleNewOption} />
+              <NewOption vote={vote} onAdd={handleNewOption} />
             </motion.div>
           )}
           {vote.admin === identifier && (

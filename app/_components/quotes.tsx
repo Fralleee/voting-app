@@ -45,7 +45,7 @@ const testimonials = [
 export function Quotes() {
   return (
     <motion.div
-      className="b relative flex h-96 flex-col items-center justify-center overflow-hidden rounded-md bg-stone-50/85 antialiased dark:bg-slate-950/85"
+      className="b relative flex h-96 flex-col items-center justify-center overflow-hidden rounded-md antialiased"
       initial={{ x: -40, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ ease: "backOut", duration: 0.4 }}

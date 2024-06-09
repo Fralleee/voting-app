@@ -2,7 +2,7 @@ import { User } from "./userTypes";
 
 export interface VoteOption {
   value: string;
-  votes: User[];
+  votes?: User[];
 }
 
 export interface Vote {
