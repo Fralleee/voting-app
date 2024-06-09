@@ -57,7 +57,7 @@ export default function RootLayout({
               <Tooltip delayDuration={200}>
                 <TooltipTrigger>
                   <Link
-                    href="https://www.fralle.net/#projects"
+                    href="https://www.fralle.net/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className={buttonVariants({
