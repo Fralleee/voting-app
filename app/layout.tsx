@@ -39,15 +39,47 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="absolute top-4 flex w-full justify-center gap-3">
-            <ToggleTheme />
-            <Link
-              prefetch
-              className={buttonVariants({ variant: "outline", size: "icon" })}
-              href="/"
-            >
-              <Home />
-            </Link>
-            <UserSheet />
+            <TooltipProvider>
+              <Tooltip delayDuration={200}>
+                <TooltipTrigger>
+                  <ToggleTheme />
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p>Toggle theme</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider>
+              <Tooltip delayDuration={200}>
+                <TooltipTrigger>
+                  <Link
+                    prefetch
+                    className={buttonVariants({
+                      variant: "outline",
+                      size: "icon",
+                    })}
+                    href="/"
+                  >
+                    <Home />
+                  </Link>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p>Home</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider>
+              <Tooltip delayDuration={200}>
+                <TooltipTrigger>
+                  <UserSheet />
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p>Edit profile</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
           <div className="mx-auto grid min-h-full w-full max-w-[1080px] items-center px-4 md:pb-8 md:pt-20">
             {children}
