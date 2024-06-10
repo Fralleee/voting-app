@@ -41,12 +41,4 @@ const Confetti = (options: ConfettiOptions) => {
   });
 };
 
-Confetti.shapeFromPath = (options: { path: string; [key: string]: any }) => {
-  return confetti.shapeFromPath({ ...options });
-};
-
-Confetti.shapeFromText = (options: { text: string; [key: string]: any }) => {
-  return confetti.shapeFromText({ ...options });
-};
-
 export { Confetti };

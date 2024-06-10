@@ -2,6 +2,7 @@ import { z } from "zod";
 import { optionSchema } from "./optionSchema";
 
 const baseSchema = z.object({
+  type: z.enum(["poll", "storypoints"]),
   allowMultiChoice: z.boolean().optional(),
   options: z.array(optionSchema),
   optionErrors: z.any().optional(),

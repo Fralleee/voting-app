@@ -17,10 +17,7 @@ interface OptionsInputProps {
 }
 
 export const OptionsInput = ({ form }: OptionsInputProps) => {
-  const {
-    control,
-    formState: { errors },
-  } = form;
+  const { control } = form;
   const { fields, append } = useFieldArray({
     control,
     name: "options",

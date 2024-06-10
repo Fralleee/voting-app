@@ -1,9 +1,10 @@
-export const formSummary = (formValues: any) => {
+// @ts-expect-error -- Not sensitive data
+export const formSummary = (formValues) => {
   const { type, blindVoting, allowMultiChoice, allowChoiceCreation } =
     formValues;
 
   let formType: string = allowMultiChoice ? "Multi-choice " : "Single-choice ";
-  let formDescription: string[] = [];
+  const formDescription: string[] = [];
 
   if (type === "poll") {
     formType += "poll";

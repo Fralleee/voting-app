@@ -45,12 +45,7 @@ export function UserSheet() {
       alias: user?.alias || "",
     },
   });
-  const {
-    control,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = form;
+  const { control, setValue, handleSubmit } = form;
 
   useEffect(() => {
     // As soon as the component mounts, we know we're on the client

@@ -2,13 +2,12 @@ import { useEffect } from "react";
 
 export const useWarnIfUnsavedChanges = (unsaved: boolean) => {
   useEffect(() => {
-    const handleAnchorClick = (e: any) => {
-      const targetUrl = e.currentTarget.href,
-        currentUrl = window.location.href;
+    const handleAnchorClick = (e: MouseEvent) => {
+      const targetUrl = (e.currentTarget as HTMLAnchorElement).href;
+      const currentUrl = window.location.href;
       if (targetUrl !== currentUrl) {
         if (window.onbeforeunload) {
-          // @ts-ignore
-          const res = window.onbeforeunload();
+          const res = window.onbeforeunload(e);
           if (!res) {
             e.preventDefault();
           }
@@ -17,7 +16,9 @@ export const useWarnIfUnsavedChanges = (unsaved: boolean) => {
     };
 
     const handleMutation = () => {
-      const anchorElements = document.querySelectorAll("a[href]");
+      const anchorElements = document.querySelectorAll(
+        "a[href]",
+      ) as NodeListOf<HTMLAnchorElement>;
       anchorElements.forEach((anchor) =>
         anchor.addEventListener("click", handleAnchorClick),
       );
@@ -29,14 +30,16 @@ export const useWarnIfUnsavedChanges = (unsaved: boolean) => {
     // dont know if needed or not but it works
     return () => {
       mutationObserver.disconnect();
-      const anchorElements = document.querySelectorAll("a[href]");
+      const anchorElements = document.querySelectorAll(
+        "a[href]",
+      ) as NodeListOf<HTMLAnchorElement>;
       anchorElements.forEach((anchor) =>
         anchor.removeEventListener("click", handleAnchorClick),
       );
     };
   }, []);
 
-  // @ts-ignore
+  // @ts-expect-error -- We don't need to specify parameters
   useEffect(() => {
     const beforeUnloadHandler = () => {
       const yes = confirm(

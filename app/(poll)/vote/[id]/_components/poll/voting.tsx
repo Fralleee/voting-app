@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { MotionCard } from "@/components/ui/card";
 import type { Poll, Storypoints } from "@/types/pollTypes";
 import { DatabaseReference } from "firebase/database";
@@ -11,7 +11,6 @@ import { containerVariants, itemVariants } from "@/app/_animations/variants";
 import { useUser } from "@/app/_hooks/useUser";
 import { MultiChoice } from "../choice/multi-choice";
 import { SingleChoice } from "../choice/single-choice";
-import { Lock, LockOpen } from "lucide-react";
 
 interface VotingProps {
   poll: Poll | Storypoints;
@@ -20,16 +19,6 @@ interface VotingProps {
 
 const Voting = ({ poll, pollReference }: VotingProps) => {
   const { user } = useUser();
-
-  const pollStatus = useMemo(() => {
-    if (poll.status === "open") {
-      return "open";
-    } else if (poll.status === "closed") {
-      return "closed";
-    } else {
-      return "locked";
-    }
-  }, [poll.status]);
 
   return (
     <MotionCard
