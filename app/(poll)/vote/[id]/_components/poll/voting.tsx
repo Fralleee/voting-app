@@ -35,7 +35,7 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="mx-auto flex h-full min-h-screen w-full flex-col justify-between gap-3 px-4 pt-20 md:h-auto md:min-h-0 md:px-8 md:py-12"
+      className="mx-auto flex h-full w-full max-w-xl flex-col justify-between rounded-lg px-4 pt-20 md:h-auto md:border md:px-8 md:py-12"
     >
       <motion.h1
         variants={itemVariants}
@@ -74,7 +74,7 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
           Voting is {pollStatus}
         </motion.p>
 
-        <div className="mx-auto mt-6 flex w-full max-w-64 flex-col justify-end gap-3">
+        <div className="mx-auto flex w-full max-w-64 flex-col justify-end gap-3">
           {poll.allowChoiceCreation && (
             <motion.div
               variants={{

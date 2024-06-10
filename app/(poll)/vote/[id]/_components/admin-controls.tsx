@@ -62,14 +62,14 @@ const AdminControls = ({ poll, pollReference }: AdminControlsProps) => {
         {locked ? <Lock size={16} /> : <LockOpen size={16} />}
         {locked ? "Unlock" : "Lock"}
       </Toggle>
-      <ConfettiSideCannons
+      <Button
         disabled={closed}
         onClick={closeVoting}
         className="flex w-full items-center gap-3"
       >
         <BookCheck size={16} />
         Close
-      </ConfettiSideCannons>
+      </Button>
     </div>
   );
 };

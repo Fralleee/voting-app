@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { MotionCard } from "@/components/ui/card";
 import type { Poll } from "@/types/pollTypes";
 import {
@@ -8,7 +8,7 @@ import {
   containerVariants,
   itemVariants,
 } from "@/app/_animations/variants";
-import { getPollResults, getWinningOptions } from "@/app/_utils/results";
+import { getPollResults, getWinningOptions } from "@/app/_utils/pollResults";
 import AvatarCircles from "@/components/ui/avatar-circles";
 import { Home, ListPlus, Trash2 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -16,7 +16,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/utils/cn";
 import { DatabaseReference, remove } from "firebase/database";
-import { useRouter } from "next/navigation";
+import { Confetti } from "@/components/ui/confetti";
 
 interface ResultsProps {
   poll: Poll;
@@ -27,6 +27,35 @@ const Results = ({ poll, pollReference }: ResultsProps) => {
   const { votesPerOption } = getPollResults(poll);
   const winningOptions = getWinningOptions(votesPerOption);
 
+  useEffect(() => {
+    const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
+    const end = Date.now() + 1 * 1000;
+    const frame = () => {
+      if (Date.now() > end) return;
+
+      Confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        startVelocity: 60,
+        origin: { x: 0, y: 0.5 },
+        colors: colors,
+      });
+      Confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        startVelocity: 60,
+        origin: { x: 1, y: 0.5 },
+        colors: colors,
+      });
+
+      requestAnimationFrame(frame);
+    };
+
+    frame();
+  }, []);
+
   const handleRemovePoll = () => {
     remove(pollReference);
   };
@@ -36,7 +65,7 @@ const Results = ({ poll, pollReference }: ResultsProps) => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="mx-auto flex h-full min-h-screen w-full flex-col justify-between gap-6 pt-20 md:h-auto md:min-h-0 md:px-8 md:py-12"
+      className="mx-auto flex h-full w-full max-w-xl flex-col justify-between rounded-lg px-4 pt-20 md:h-auto md:border md:px-8 md:py-12"
     >
       <div className="flex flex-col gap-6">
         <div>
