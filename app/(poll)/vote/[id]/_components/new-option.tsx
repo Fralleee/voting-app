@@ -42,12 +42,7 @@ export const NewOption = ({ poll, pollReference }: NewOptionProps) => {
       value: "",
     },
   });
-  const {
-    control,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = form;
+  const { control, reset, handleSubmit } = form;
   const { options, status } = poll;
 
   function handleOpenChange(open: boolean) {
@@ -107,7 +102,7 @@ export const NewOption = ({ poll, pollReference }: NewOptionProps) => {
             <FormField
               control={control}
               name="value"
-              render={({ field }) => (
+              render={({ field, fieldState: { invalid } }) => (
                 <FormItem>
                   <FormControl>
                     <Input
@@ -115,7 +110,7 @@ export const NewOption = ({ poll, pollReference }: NewOptionProps) => {
                       autoComplete="off"
                       className={cn(
                         "w-full",
-                        errors.value
+                        invalid
                           ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700"
                           : "",
                       )}

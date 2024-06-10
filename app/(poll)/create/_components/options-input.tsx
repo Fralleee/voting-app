@@ -28,7 +28,11 @@ export const OptionsInput = ({ form }: OptionsInputProps) => {
   const options = useWatch({ control, name: "options" });
 
   useEffect(() => {
-    if (options.length > 0 && options[options.length - 1]?.value !== "") {
+    if (
+      options &&
+      options.length > 0 &&
+      options[options.length - 1]?.value !== ""
+    ) {
       append({ value: "" }, { shouldFocus: false });
     }
   }, [options, append]);
@@ -38,7 +42,7 @@ export const OptionsInput = ({ form }: OptionsInputProps) => {
       key={item.id}
       control={control}
       name={`options.${index}.value`}
-      render={({ field }) => (
+      render={({ field, fieldState: { invalid } }) => (
         <FormItem>
           <FormControl>
             <Input
@@ -46,7 +50,7 @@ export const OptionsInput = ({ form }: OptionsInputProps) => {
               autoComplete="off"
               {...field}
               className={
-                errors.options && errors.options[index]
+                invalid
                   ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700"
                   : ""
               }

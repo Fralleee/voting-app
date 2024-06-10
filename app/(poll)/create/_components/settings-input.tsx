@@ -15,7 +15,7 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import { Switch } from "@/components/ui/switch";
-import { pollSchema } from "../_validation/pollSchema";
+import { pollSchema, storypointsSchema } from "../_validation/pollSchema";
 import { z } from "zod";
 import { formSummary } from "../_utils/formSummary";
 import {
@@ -29,13 +29,17 @@ import {
 import { PollType } from "@/types/pollTypes";
 
 interface SettingsInputProps {
-  form: UseFormReturn<z.infer<typeof pollSchema>>;
+  type: PollType;
+  onTypeChange: (value: PollType) => void;
+  form: UseFormReturn<
+    z.infer<typeof pollSchema> | z.infer<typeof storypointsSchema>
+  >;
 }
 
-const SettingsInput = ({ form }: SettingsInputProps) => {
+const SettingsInput = ({ type, onTypeChange, form }: SettingsInputProps) => {
   const { control, setValue } = form;
 
-  const type = useWatch({ control, name: "type" });
+  // const type = useWatch({ control, name: "type" });
   const blindVoting = useWatch({ control, name: "blindVoting" });
   const allowMultiChoice = useWatch({ control, name: "allowMultiChoice" });
   const allowChoiceCreation = useWatch({
@@ -43,10 +47,7 @@ const SettingsInput = ({ form }: SettingsInputProps) => {
     name: "allowChoiceCreation",
   });
 
-  const handleTypeChange = useCallback(
-    (value: PollType) => setValue("type", value),
-    [setValue],
-  );
+  const handleTypeChange = useCallback(onTypeChange, [onTypeChange]);
   const toggleBlindVoting = useCallback(
     () => setValue("blindVoting", !blindVoting),
     [blindVoting, setValue],

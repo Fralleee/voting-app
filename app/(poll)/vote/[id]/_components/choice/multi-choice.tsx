@@ -2,14 +2,15 @@ import {
   ToggleGroup,
   MotionToggleGroupItem,
 } from "@/components/ui/toggle-group";
-import Poll from "../poll/poll";
 import { DatabaseReference, update } from "firebase/database";
 import { useUser } from "@/app/_hooks/useUser";
 import AvatarCircles from "@/components/ui/avatar-circles";
 import { useCallback } from "react";
+import { Poll, Storypoints } from "@/types/pollTypes";
+import { ShowVoters } from "../show-voters";
 
 interface MultiChoiceProps {
-  poll: Poll;
+  poll: Poll | Storypoints;
   pollReference: DatabaseReference;
 }
 
@@ -78,12 +79,7 @@ export const MultiChoice = ({ poll, pollReference }: MultiChoiceProps) => {
           className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
           key={option.value}
         >
-          {!poll.blindVoting ||
-            (poll.showVotes && (
-              <div className="absolute right-2 top-2">
-                <AvatarCircles users={option.votes || []} maxCircles={3} />
-              </div>
-            ))}
+          <ShowVoters option={option} poll={poll} />
           <p className="line-clamp-5 truncate text-wrap">{option.value}</p>
         </MotionToggleGroupItem>
       ))}

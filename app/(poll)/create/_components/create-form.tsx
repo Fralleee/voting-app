@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, useWatch } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { database } from "@/lib/firebase";
 import { ref, push } from "firebase/database";
@@ -20,7 +20,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { useState } from "react";
-import { pollSchema } from "../_validation/pollSchema";
+import { pollSchema, storypointsSchema } from "../_validation/pollSchema";
 import {
   containerVariants,
   itemVariants,
@@ -36,41 +36,36 @@ import SettingsInput from "./settings-input";
 
 const CreateForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [type, setType] = useState<"poll" | "storypoints">("poll");
   const router = useRouter();
   const { user } = useUser();
 
-  const form = useForm<z.infer<typeof pollSchema>>({
-    resolver: zodResolver(pollSchema),
+  const form = useForm<
+    z.infer<typeof pollSchema> | z.infer<typeof storypointsSchema>
+  >({
+    resolver: zodResolver(type === "poll" ? pollSchema : storypointsSchema),
     defaultValues: {
-      type: "poll",
-      blindVoting: false,
-      allowMultiChoice: false,
-      allowChoiceCreation: false,
       topic: "",
-      options: [{ value: "" }],
+      options: [{ value: "" }, { value: "" }],
+      blindVoting: false,
+      allowChoiceCreation: false,
+      allowMultiChoice: false,
     },
   });
 
-  const { errors, dirtyFields } = form.formState;
-
-  const type = useWatch({ control: form.control, name: "type" });
-
   // Using dirtyFields to check if there are any unsaved changes rather than isDirty since it's more accurate
+  const { dirtyFields } = form.formState;
   const hasAnyDirtyFields = Object.keys(dirtyFields).length > 0;
   useWarnIfUnsavedChanges(hasAnyDirtyFields);
 
-  async function onSubmit(values: z.infer<typeof pollSchema>) {
+  async function onSubmit(
+    values: z.infer<typeof pollSchema> | z.infer<typeof storypointsSchema>,
+  ) {
     setIsLoading(true);
-    const {
-      type,
-      topic,
-      options,
-      blindVoting,
-      allowChoiceCreation,
-      allowMultiChoice,
-    } = values;
 
     if (type === "storypoints") {
+      const { allowMultiChoice } = values as z.infer<typeof storypointsSchema>;
+
       const newVoteRef = ref(database, "votes");
       const newVote = await push(newVoteRef, {
         type,
@@ -87,65 +82,74 @@ const CreateForm = () => {
       return router.push(`/vote/${newVote.key}`);
     }
 
-    const filteredOptions = options.filter(
-      (option) => option.value !== "",
-    ) as PollOption[];
+    if (type === "poll") {
+      const {
+        topic,
+        options,
+        blindVoting,
+        allowChoiceCreation,
+        allowMultiChoice,
+      } = values as z.infer<typeof pollSchema>;
+      const filteredOptions = options.filter(
+        (option) => option.value !== "",
+      ) as PollOption[];
 
-    if (filteredOptions.length < 2) {
-      form.setError("optionErrors", {
-        type: "manual",
-        message: "At least two valid options are required.",
-      });
+      if (filteredOptions.length < 2) {
+        form.setError("optionErrors", {
+          type: "manual",
+          message: "At least two valid options are required.",
+        });
 
-      let firstError = false;
-      for (const option of options) {
-        if (option.value === "") {
+        let firstError = false;
+        for (const option of options) {
+          if (option.value === "") {
+            const index = options.indexOf(option);
+            form.setError(`options.${index}.value`, {
+              type: "manual",
+              message: "Option cannot be empty.",
+            });
+
+            if (!firstError) {
+              form.setFocus(`options.${index}.value`);
+              firstError = true;
+            }
+          }
+        }
+
+        setIsLoading(false);
+        return;
+      }
+
+      const { hasDuplicates, duplicateOptions } =
+        validateDuplicateOptions(filteredOptions);
+      if (hasDuplicates) {
+        form.clearErrors("options");
+
+        for (const option of duplicateOptions) {
           const index = options.indexOf(option);
           form.setError(`options.${index}.value`, {
             type: "manual",
-            message: "Option cannot be empty.",
+            message: "Value already exists in previous option.",
           });
-
-          if (!firstError) {
-            form.setFocus(`options.${index}.value`);
-            firstError = true;
-          }
+          form.setFocus(`options.${index}.value`);
         }
+        setIsLoading(false);
+        return;
       }
 
-      setIsLoading(false);
-      return;
+      const newVoteRef = ref(database, "votes");
+      const newVote = await push(newVoteRef, {
+        type,
+        topic,
+        options: filteredOptions,
+        admin: user?.identifier,
+        blindVoting,
+        allowMultiChoice,
+        allowChoiceCreation,
+        status: "open",
+      });
+      router.push(`/vote/${newVote.key}`);
     }
-
-    const { hasDuplicates, duplicateOptions } =
-      validateDuplicateOptions(filteredOptions);
-    if (hasDuplicates) {
-      form.clearErrors("options");
-
-      for (const option of duplicateOptions) {
-        const index = options.indexOf(option);
-        form.setError(`options.${index}.value`, {
-          type: "manual",
-          message: "Value already exists in previous option.",
-        });
-        form.setFocus(`options.${index}.value`);
-      }
-      setIsLoading(false);
-      return;
-    }
-
-    const newVoteRef = ref(database, "votes");
-    const newVote = await push(newVoteRef, {
-      type,
-      topic,
-      options: filteredOptions,
-      admin: user?.identifier,
-      blindVoting,
-      allowMultiChoice,
-      allowChoiceCreation,
-      status: "open",
-    });
-    router.push(`/vote/${newVote.key}`);
   }
 
   return (
@@ -165,7 +169,7 @@ const CreateForm = () => {
         >
           <div className="flex flex-grow flex-col gap-3">
             <motion.div variants={itemVariants}>
-              <SettingsInput form={form} />
+              <SettingsInput form={form} type={type} onTypeChange={setType} />
             </motion.div>
 
             {type === "poll" && (
@@ -176,13 +180,13 @@ const CreateForm = () => {
                 <FormField
                   control={form.control}
                   name="topic"
-                  render={({ field }) => (
+                  render={({ field, fieldState: { invalid } }) => (
                     <FormItem>
                       <FormControl>
                         <Input
                           placeholder="What should we vote about?"
                           autoComplete="off"
-                          className={`h-14 ${errors.topic ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700" : ""}`}
+                          className={`h-14 ${invalid ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700" : ""}`}
                           {...field}
                         />
                       </FormControl>
@@ -190,7 +194,9 @@ const CreateForm = () => {
                     </FormItem>
                   )}
                 />
-                <OptionsInput form={form} />
+                <OptionsInput
+                  form={form as UseFormReturn<z.infer<typeof pollSchema>>}
+                />
 
                 <FormField
                   control={form.control}

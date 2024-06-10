@@ -7,16 +7,25 @@ export interface PollOption {
 
 export type PollType = "poll" | "storypoints";
 
-export interface Poll {
+export interface BasePoll {
   type: PollType;
-  topic: string; // Not used by storypoints
   admin: string;
-  showVotes: boolean;
-  blindVoting: boolean; // Only used by Poll
   allowMultiChoice: boolean;
-  allowChoiceCreation: boolean; // Not used by storypoints
-  status: "open" | "closed" | "locked"; // Poll cant be locked
   options: PollOption[];
+}
+
+export interface Poll extends BasePoll {
+  type: "poll";
+  status: "open" | "closed";
+  topic: string;
+  blindVoting: boolean;
+  allowChoiceCreation: boolean;
+}
+
+export interface Storypoints extends BasePoll {
+  type: "storypoints";
+  status: "open" | "closed" | "locked";
+  showVotes: boolean;
 }
 
 export interface VoteResultsPerOption {

@@ -116,13 +116,13 @@ export function UserSheet() {
               <FormField
                 control={control}
                 name="alias"
-                render={({ field }) => (
+                render={({ field, fieldState: { invalid } }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         autoComplete="off"
                         className={
-                          errors.alias
+                          invalid
                             ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700"
                             : ""
                         }
