@@ -8,6 +8,7 @@ export interface PollOption {
 export type PollType = "poll" | "storypoints";
 
 export interface BasePoll {
+  topic: string;
   type: PollType;
   admin: string;
   allowMultiChoice: boolean;
@@ -17,7 +18,6 @@ export interface BasePoll {
 export interface Poll extends BasePoll {
   type: "poll";
   status: "open" | "closed";
-  topic: string;
   blindVoting: boolean;
   allowChoiceCreation: boolean;
 }

@@ -1,5 +1,5 @@
-import Poll from "./_components/poll/poll";
+import PollRoot from "./_components/poll/poll-root";
 
 export default function Page({ params }: { params: { id: string } }) {
-  return <Poll id={params.id} />;
+  return <PollRoot id={params.id} />;
 }

@@ -1,14 +1,12 @@
 "use client";
 
-import type { Poll } from "@/types/pollTypes";
+import type { Poll, Storypoints } from "@/types/pollTypes";
 import { DatabaseReference, update } from "firebase/database";
-import { ConfettiSideCannons } from "@/app/_components/side-cannons";
 import { Button } from "@/components/ui/button";
-import { Toggle } from "@/components/ui/toggle";
-import { BookCheck, Eye, Lock, LockOpen, RotateCcw } from "lucide-react";
+import { BookCheck, Eye, RotateCcw } from "lucide-react";
 
 interface AdminControlsProps {
-  poll: Poll;
+  poll: Poll | Storypoints;
   pollReference: DatabaseReference;
 }
 
@@ -20,16 +18,6 @@ const AdminControls = ({ poll, pollReference }: AdminControlsProps) => {
     update(pollReference, {
       status: "locked",
       showVotes: true,
-    });
-  }
-
-  function lockVoting() {
-    if (closed) {
-      return;
-    }
-
-    update(pollReference, {
-      status: locked ? "open" : "locked",
     });
   }
 

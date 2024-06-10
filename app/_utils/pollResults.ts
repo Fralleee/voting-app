@@ -1,11 +1,11 @@
-import { Poll, VoteResultsPerOption } from "@/types/pollTypes";
+import { Poll, Storypoints, VoteResultsPerOption } from "@/types/pollTypes";
 
 interface PollResults {
   totalVotes: number;
   votesPerOption: VoteResultsPerOption[];
 }
 
-export const getPollResults = (poll: Poll): PollResults => {
+export const getPollResults = (poll: Poll | Storypoints): PollResults => {
   const totalVotes = poll.options.reduce(
     (acc, option) => acc + (option.votes?.length || 0),
     0,

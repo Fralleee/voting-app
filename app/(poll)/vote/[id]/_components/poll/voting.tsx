@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 import { MotionCard } from "@/components/ui/card";
-import type { Poll } from "@/types/pollTypes";
+import type { Poll, Storypoints } from "@/types/pollTypes";
 import { DatabaseReference } from "firebase/database";
 import { NewOption } from "../new-option";
 import AdminControls from "../admin-controls";
@@ -14,7 +14,7 @@ import { SingleChoice } from "../choice/single-choice";
 import { Lock, LockOpen } from "lucide-react";
 
 interface VotingProps {
-  poll: Poll;
+  poll: Poll | Storypoints;
   pollReference: DatabaseReference;
 }
 
@@ -57,7 +57,7 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
 
       <div className="mx-auto my-6 flex w-full max-w-64 flex-col items-center justify-end gap-3">
         <div className="mx-auto flex w-full max-w-64 flex-col justify-end gap-3">
-          {poll.allowChoiceCreation && (
+          {poll.type === "poll" && poll.allowChoiceCreation && (
             <motion.div
               variants={{
                 hidden: { scale: 0.25, opacity: 0 },

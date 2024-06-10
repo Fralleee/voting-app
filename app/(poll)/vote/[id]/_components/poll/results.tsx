@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { MotionCard } from "@/components/ui/card";
-import type { Poll } from "@/types/pollTypes";
+import type { Poll, Storypoints } from "@/types/pollTypes";
 import {
   buttonVariant,
   containerVariants,
@@ -19,7 +19,7 @@ import { DatabaseReference, remove } from "firebase/database";
 import { Confetti } from "@/components/ui/confetti";
 
 interface ResultsProps {
-  poll: Poll;
+  poll: Poll | Storypoints;
   pollReference: DatabaseReference;
 }
 

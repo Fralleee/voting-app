@@ -4,7 +4,6 @@ import {
 } from "@/components/ui/toggle-group";
 import { DatabaseReference, update } from "firebase/database";
 import { useUser } from "@/app/_hooks/useUser";
-import AvatarCircles from "@/components/ui/avatar-circles";
 import { useCallback } from "react";
 import { Poll, Storypoints } from "@/types/pollTypes";
 import { ShowVoters } from "../show-voters";

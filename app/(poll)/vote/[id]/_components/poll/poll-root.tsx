@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import type { Poll } from "@/types/pollTypes";
+import type { Poll, Storypoints } from "@/types/pollTypes";
 import { ref, update } from "firebase/database";
 import { database } from "@/lib/firebase";
 import { useObjectVal } from "react-firebase-hooks/database";
@@ -10,9 +10,9 @@ import Results from "./results";
 import Voting from "./voting";
 import { useUser } from "@/app/_hooks/useUser";
 
-const Poll = ({ id }: { id: string }) => {
+const PollRoot = ({ id }: { id: string }) => {
   const pollReference = ref(database, `votes/${id}`);
-  const [poll, loading] = useObjectVal<Poll>(pollReference);
+  const [poll, loading] = useObjectVal<Poll | Storypoints>(pollReference);
   const { user, isLoading } = useUser();
 
   useEffect(() => {
@@ -55,4 +55,4 @@ const Poll = ({ id }: { id: string }) => {
   );
 };
 
-export default Poll;
+export default PollRoot;
