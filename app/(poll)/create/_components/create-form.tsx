@@ -53,8 +53,6 @@ const CreateForm = () => {
 
   const { errors, dirtyFields } = form.formState;
 
-  console.log(errors);
-
   const type = useWatch({ control: form.control, name: "type" });
 
   // Using dirtyFields to check if there are any unsaved changes rather than isDirty since it's more accurate
