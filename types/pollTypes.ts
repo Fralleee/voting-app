@@ -5,8 +5,10 @@ export interface PollOption {
   votes?: User[];
 }
 
+export type PollType = "poll" | "storypoints";
+
 export interface Poll {
-  type: "poll" | "storypoints";
+  type: PollType;
   topic: string;
   admin: string;
   allowMultiChoice: boolean;

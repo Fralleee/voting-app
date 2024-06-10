@@ -27,13 +27,14 @@ import {
 } from "@/components/ui/form";
 import { validateDuplicateOptions } from "@/app/(poll)/create/_validation/validateDuplicateOptions";
 import { Poll } from "@/types/pollTypes";
+import { DatabaseReference, update } from "firebase/database";
 
 interface NewOptionProps {
-  vote: Poll;
-  onAdd: (value: string) => void;
+  poll: Poll;
+  pollReference: DatabaseReference;
 }
 
-export const NewOption = ({ vote, onAdd }: NewOptionProps) => {
+export const NewOption = ({ poll, pollReference }: NewOptionProps) => {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof newOptionSchema>>({
     resolver: zodResolver(newOptionSchema),
@@ -47,7 +48,7 @@ export const NewOption = ({ vote, onAdd }: NewOptionProps) => {
     handleSubmit,
     formState: { errors },
   } = form;
-  const { options, status } = vote;
+  const { options, status } = poll;
 
   function handleOpenChange(open: boolean) {
     setOpen(open);
@@ -66,9 +67,21 @@ export const NewOption = ({ vote, onAdd }: NewOptionProps) => {
       return;
     }
 
-    onAdd(values.value);
+    handleNewOption(values.value);
     setOpen(false);
     reset();
+  }
+
+  function handleNewOption(value: string): void {
+    update(pollReference, {
+      options: [
+        ...poll.options,
+        {
+          value,
+          votes: [],
+        },
+      ],
+    });
   }
 
   const isClosed = status === "closed";

@@ -1,19 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { MotionCard } from "@/components/ui/card";
 import type { Poll } from "@/types/pollTypes";
-import { DatabaseReference, update } from "firebase/database";
-import {
-  MotionToggleGroupItem,
-  ToggleGroup,
-} from "@/components/ui/toggle-group";
+import { DatabaseReference } from "firebase/database";
 import { NewOption } from "../new-option";
-import AvatarCircles from "@/components/ui/avatar-circles";
 import AdminControls from "../admin-controls";
 import { motion } from "framer-motion";
 import { containerVariants, itemVariants } from "@/app/_animations/variants";
 import { useUser } from "@/app/_hooks/useUser";
+import { MultiChoice } from "../choice/multi-choice";
+import { SingleChoice } from "../choice/single-choice";
 
 interface VotingProps {
   poll: Poll;
@@ -23,65 +20,15 @@ interface VotingProps {
 const Voting = ({ poll, pollReference }: VotingProps) => {
   const { user } = useUser();
 
-  function handleMultipleChoice(value: string[]): void {
-    update(pollReference, {
-      options: poll.options.map((option) => {
-        if (value.includes(option.value)) {
-          const alreadyVoted = option.votes?.some(
-            (u) => u.identifier === user?.identifier,
-          );
-
-          if (alreadyVoted) {
-            return option;
-          }
-
-          return {
-            ...option,
-            votes: [...(option.votes || []), user],
-          };
-        }
-
-        return {
-          ...option,
-          votes: (option.votes || []).filter(
-            (u) => u.identifier !== user?.identifier,
-          ),
-        };
-      }),
-    });
-  }
-
-  function handleSingleChoice(value: string): void {
-    update(pollReference, {
-      options: poll.options.map((option) => {
-        if (value === option.value) {
-          return {
-            ...option,
-            votes: [...(option.votes || []), user],
-          };
-        }
-
-        return {
-          ...option,
-          votes: (option.votes || []).filter(
-            (u) => u.identifier !== user?.identifier,
-          ),
-        };
-      }),
-    });
-  }
-
-  function handleNewOption(value: string): void {
-    update(pollReference, {
-      options: [
-        ...poll.options,
-        {
-          value,
-          votes: [],
-        },
-      ],
-    });
-  }
+  const pollStatus = useMemo(() => {
+    if (poll.status === "open") {
+      return "open";
+    } else if (poll.status === "closed") {
+      return "closed";
+    } else {
+      return "locked";
+    }
+  }, [poll.status]);
 
   return (
     <MotionCard
@@ -101,85 +48,9 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
         className="flex w-full flex-grow flex-col p-3 md:p-12"
       >
         {poll.allowMultiChoice ? (
-          <ToggleGroup
-            variant="outline"
-            value={poll.options
-              .filter((option) =>
-                option.votes?.some((u) => u.identifier === user?.identifier),
-              )
-              .map((opt) => opt.value)}
-            onValueChange={handleMultipleChoice}
-            type="multiple"
-            className="flex w-full flex-wrap justify-center gap-3"
-          >
-            {poll.options.map((option, index) => (
-              <MotionToggleGroupItem
-                variants={{
-                  hidden: { y: 20, opacity: 0 },
-                  visible: {
-                    y: 0,
-                    opacity: 1,
-                    transition: {
-                      duration: 0.2,
-                      ease: "easeOut",
-                      delay: index < 5 ? index * 0.15 : 0.45,
-                    },
-                  },
-                }}
-                value={option.value}
-                disabled={poll.status !== "open"}
-                className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
-                key={option.value}
-              >
-                <div className="absolute right-2 top-2">
-                  <AvatarCircles users={option.votes || []} maxCircles={3} />
-                </div>
-                <p className="line-clamp-5 truncate text-wrap">
-                  {option.value}
-                </p>
-              </MotionToggleGroupItem>
-            ))}
-          </ToggleGroup>
+          <MultiChoice poll={poll} pollReference={pollReference} />
         ) : (
-          <ToggleGroup
-            variant="outline"
-            defaultValue={
-              poll.options.find((option) =>
-                option.votes?.some((u) => u.identifier === user?.identifier),
-              )?.value
-            }
-            onValueChange={handleSingleChoice}
-            type="single"
-            className="flex w-full flex-wrap justify-center gap-3"
-          >
-            {poll.options.map((option, index) => (
-              <MotionToggleGroupItem
-                variants={{
-                  hidden: { scale: 0, opacity: 0 },
-                  visible: {
-                    scale: 1,
-                    opacity: 1,
-                    transition: {
-                      duration: 0.2,
-                      ease: "backOut",
-                      delay: index < 5 ? index * 0.15 : 0.75,
-                    },
-                  },
-                }}
-                value={option.value}
-                disabled={poll.status !== "open"}
-                key={option.value}
-                className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
-              >
-                <div className="absolute right-2 top-2">
-                  <AvatarCircles users={option.votes || []} maxCircles={3} />
-                </div>
-                <p className="line-clamp-5 truncate text-wrap">
-                  {option.value}
-                </p>
-              </MotionToggleGroupItem>
-            ))}
-          </ToggleGroup>
+          <SingleChoice poll={poll} pollReference={pollReference} />
         )}
       </motion.div>
 
@@ -200,12 +71,7 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
           }}
           className="text-muted-foreground"
         >
-          Voting is{" "}
-          {poll.status === "open"
-            ? "open"
-            : poll.status === "closed"
-              ? "closed"
-              : "locked"}
+          Voting is {pollStatus}
         </motion.p>
 
         <div className="mx-auto mt-6 flex w-full max-w-64 flex-col justify-end gap-3">
@@ -228,7 +94,7 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
               }}
               className="w-full"
             >
-              <NewOption vote={poll} onAdd={handleNewOption} />
+              <NewOption poll={poll} pollReference={pollReference} />
             </motion.div>
           )}
           {poll.admin === user?.identifier && (

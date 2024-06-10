@@ -47,6 +47,7 @@ export function UserSheet() {
   });
   const {
     control,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = form;
@@ -58,10 +59,10 @@ export function UserSheet() {
 
   useEffect(() => {
     if (user && !isLoading) {
-      form.setValue("alias", user.alias);
+      setValue("alias", user.alias);
     }
     setIsClient(true);
-  }, [isLoading, user]);
+  }, [isLoading, setValue, user]);
 
   function onSubmit(values: z.infer<typeof userSchema>) {
     if (!form.formState.isValid) {

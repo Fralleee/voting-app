@@ -34,7 +34,6 @@ const AdminControls = ({ poll, pollReference }: AdminControlsProps) => {
 
   function resetVoting() {
     update(pollReference, {
-      status: "open",
       options: poll.options.map((option) => ({
         ...option,
         votes: [],
