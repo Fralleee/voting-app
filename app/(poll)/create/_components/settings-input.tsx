@@ -97,28 +97,28 @@ const SettingsInput = ({ form }: SettingsInputProps) => {
               <SelectContent>
                 <SelectGroup>
                   <SelectItem value="poll">Poll</SelectItem>
-                  <SelectItem value="storypoints" disabled>
-                    Storypoints
-                  </SelectItem>
+                  <SelectItem value="storypoints">Storypoints</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
           </FormItem>
 
-          <FormItem className="flex flex-row items-center justify-between px-1 py-2">
-            <div>
-              <FormLabel className="text-base">Blind voting</FormLabel>
-              <FormDescription>
-                Don&apos;t display votes until after poll has closed.
-              </FormDescription>
-            </div>
-            <FormControl>
-              <Switch
-                checked={blindVoting}
-                onCheckedChange={toggleBlindVoting}
-              />
-            </FormControl>
-          </FormItem>
+          {type === "poll" && (
+            <FormItem className="flex flex-row items-center justify-between px-1 py-2">
+              <div>
+                <FormLabel className="text-base">Blind voting</FormLabel>
+                <FormDescription>
+                  Don&apos;t display votes until after poll has closed.
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={blindVoting}
+                  onCheckedChange={toggleBlindVoting}
+                />
+              </FormControl>
+            </FormItem>
+          )}
 
           <FormItem className="flex flex-row items-center justify-between px-1 py-2">
             <div>
@@ -135,22 +135,24 @@ const SettingsInput = ({ form }: SettingsInputProps) => {
             </FormControl>
           </FormItem>
 
-          <FormItem className="flex flex-row items-center justify-between px-1 py-2">
-            <div>
-              <FormLabel className="text-base">
-                Allow users to create options
-              </FormLabel>
-              <FormDescription>
-                Let users create options if nothing fits
-              </FormDescription>
-            </div>
-            <FormControl>
-              <Switch
-                checked={allowChoiceCreation}
-                onCheckedChange={toggleChoiceCreation}
-              />
-            </FormControl>
-          </FormItem>
+          {type === "poll" && (
+            <FormItem className="flex flex-row items-center justify-between px-1 py-2">
+              <div>
+                <FormLabel className="text-base">
+                  Allow users to create options
+                </FormLabel>
+                <FormDescription>
+                  Let users create options if nothing fits
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={allowChoiceCreation}
+                  onCheckedChange={toggleChoiceCreation}
+                />
+              </FormControl>
+            </FormItem>
+          )}
         </AccordionContent>
       </AccordionItem>
     </Accordion>

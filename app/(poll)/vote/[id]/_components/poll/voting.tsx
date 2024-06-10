@@ -11,6 +11,7 @@ import { containerVariants, itemVariants } from "@/app/_animations/variants";
 import { useUser } from "@/app/_hooks/useUser";
 import { MultiChoice } from "../choice/multi-choice";
 import { SingleChoice } from "../choice/single-choice";
+import { Lock, LockOpen } from "lucide-react";
 
 interface VotingProps {
   poll: Poll;
@@ -55,25 +56,6 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
       </motion.div>
 
       <div className="mx-auto my-6 flex w-full max-w-64 flex-col items-center justify-end gap-3">
-        <motion.p
-          variants={{
-            hidden: { scale: 0, opacity: 0 },
-            visible: {
-              scale: 1,
-              opacity: 1,
-              transition: {
-                duration: 0.2,
-                ease: "backOut",
-                delay:
-                  poll.options.length > 4 ? 0.6 : poll.options.length * 0.15,
-              },
-            },
-          }}
-          className="text-muted-foreground"
-        >
-          Voting is {pollStatus}
-        </motion.p>
-
         <div className="mx-auto flex w-full max-w-64 flex-col justify-end gap-3">
           {poll.allowChoiceCreation && (
             <motion.div

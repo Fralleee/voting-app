@@ -9,12 +9,13 @@ export type PollType = "poll" | "storypoints";
 
 export interface Poll {
   type: PollType;
-  topic: string;
+  topic: string; // Not used by storypoints
   admin: string;
-  blindVoting: boolean;
+  showVotes: boolean;
+  blindVoting: boolean; // Only used by Poll
   allowMultiChoice: boolean;
-  allowChoiceCreation: boolean;
-  status: "open" | "closed" | "locked";
+  allowChoiceCreation: boolean; // Not used by storypoints
+  status: "open" | "closed" | "locked"; // Poll cant be locked
   options: PollOption[];
 }
 

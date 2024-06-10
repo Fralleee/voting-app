@@ -5,7 +5,7 @@ import { DatabaseReference, update } from "firebase/database";
 import { ConfettiSideCannons } from "@/app/_components/side-cannons";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
-import { BookCheck, Lock, LockOpen, RotateCcw } from "lucide-react";
+import { BookCheck, Eye, Lock, LockOpen, RotateCcw } from "lucide-react";
 
 interface AdminControlsProps {
   poll: Poll;
@@ -15,6 +15,13 @@ interface AdminControlsProps {
 const AdminControls = ({ poll, pollReference }: AdminControlsProps) => {
   const closed = poll.status === "closed";
   const locked = poll.status === "locked";
+
+  function showVotes() {
+    update(pollReference, {
+      status: "locked",
+      showVotes: true,
+    });
+  }
 
   function lockVoting() {
     if (closed) {
@@ -34,6 +41,8 @@ const AdminControls = ({ poll, pollReference }: AdminControlsProps) => {
 
   function resetVoting() {
     update(pollReference, {
+      showVotes: false,
+      status: "open",
       options: poll.options.map((option) => ({
         ...option,
         votes: [],
@@ -43,25 +52,26 @@ const AdminControls = ({ poll, pollReference }: AdminControlsProps) => {
 
   return (
     <div className="flex w-full flex-col gap-3">
-      <Button
-        disabled={closed}
-        variant="outline"
-        onClick={resetVoting}
-        className="flex w-full items-center gap-3"
-      >
-        <RotateCcw size={16} />
-        Reset
-      </Button>
-      <Toggle
-        data-state={locked ? "on" : "off"}
-        disabled={closed}
-        variant="outline"
-        onClick={lockVoting}
-        className="flex w-full items-center gap-3"
-      >
-        {locked ? <Lock size={16} /> : <LockOpen size={16} />}
-        {locked ? "Unlock" : "Lock"}
-      </Toggle>
+      {poll.type === "storypoints" &&
+        (poll.showVotes ? (
+          <Button
+            variant="outline"
+            onClick={resetVoting}
+            className="flex w-full items-center gap-3"
+          >
+            <RotateCcw size={16} />
+            Reset
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            onClick={showVotes}
+            className="flex w-full items-center gap-3"
+          >
+            <Eye size={16} />
+            Reveal votes
+          </Button>
+        ))}
       <Button
         disabled={closed}
         onClick={closeVoting}

@@ -60,6 +60,62 @@ const Results = ({ poll, pollReference }: ResultsProps) => {
     remove(pollReference);
   };
 
+  if (poll.type === "storypoints") {
+    return (
+      <MotionCard
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        className="mx-auto flex h-full w-full max-w-xl flex-col justify-between rounded-lg px-4 pt-20 md:h-auto md:border md:px-8 md:py-12"
+      >
+        <div className="flex flex-col gap-6">
+          <div>
+            <h1 className="pb-3 text-center text-5xl font-bold uppercase">
+              We&apos;ve reached consensus
+            </h1>
+            <p className="text-center text-muted-foreground">
+              Thanks to everyone for contributing your insights and expertise to
+              finalize the storypoints
+            </p>
+          </div>
+        </div>
+
+        <motion.div
+          variants={buttonVariant}
+          className="mx-auto my-6 flex w-full max-w-64 flex-col justify-end gap-3"
+        >
+          <Link
+            prefetch
+            className={cn(
+              buttonVariants({
+                variant: "outline",
+              }),
+              "flex w-full items-center gap-3",
+            )}
+            href="/"
+          >
+            <Home size={16} /> Take me back
+          </Link>
+          <Button
+            onClick={handleRemovePoll}
+            className="flex w-full items-center gap-3"
+            variant={"destructive"}
+          >
+            <Trash2 size={16} />
+            Remove poll
+          </Button>
+          <Link
+            prefetch
+            className={cn(buttonVariants(), "flex w-full items-center gap-3")}
+            href="/create"
+          >
+            <ListPlus size={16} /> Create a poll
+          </Link>
+        </motion.div>
+      </MotionCard>
+    );
+  }
+
   return (
     <MotionCard
       initial="hidden"

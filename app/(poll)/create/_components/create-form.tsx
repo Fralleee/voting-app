@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { database } from "@/lib/firebase";
 import { ref, push } from "firebase/database";
@@ -50,7 +50,13 @@ const CreateForm = () => {
       options: [{ value: "" }],
     },
   });
+
   const { errors, dirtyFields } = form.formState;
+
+  console.log(errors);
+
+  const type = useWatch({ control: form.control, name: "type" });
+
   // Using dirtyFields to check if there are any unsaved changes rather than isDirty since it's more accurate
   const hasAnyDirtyFields = Object.keys(dirtyFields).length > 0;
   useWarnIfUnsavedChanges(hasAnyDirtyFields);
@@ -65,6 +71,23 @@ const CreateForm = () => {
       allowChoiceCreation,
       allowMultiChoice,
     } = values;
+
+    if (type === "storypoints") {
+      const newVoteRef = ref(database, "votes");
+      const newVote = await push(newVoteRef, {
+        type,
+        topic: "Story Points",
+        options: ["0", "1", "2", "3", "5", "8", "13", "21", "?"].map((val) => ({
+          value: val,
+        })),
+        admin: user?.identifier,
+        blindVoting: true,
+        allowMultiChoice,
+        allowChoiceCreation: false,
+        status: "open",
+      });
+      return router.push(`/vote/${newVote.key}`);
+    }
 
     const filteredOptions = options.filter(
       (option) => option.value !== "",
@@ -146,48 +169,56 @@ const CreateForm = () => {
             <motion.div variants={itemVariants}>
               <SettingsInput form={form} />
             </motion.div>
-            <motion.div variants={itemVariants} className="flex flex-col gap-3">
-              <FormField
-                control={form.control}
-                name="topic"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="What should we vote about?"
-                        autoComplete="off"
-                        className={`h-14 ${errors.topic ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700" : ""}`}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <OptionsInput form={form} />
 
-              <FormField
-                control={form.control}
-                name="optionErrors"
-                render={() => (
-                  <FormItem className="flex flex-row items-center justify-between px-1 py-2">
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </motion.div>
+            {type === "poll" && (
+              <motion.div
+                variants={itemVariants}
+                className="flex flex-col gap-3"
+              >
+                <FormField
+                  control={form.control}
+                  name="topic"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          placeholder="What should we vote about?"
+                          autoComplete="off"
+                          className={`h-14 ${errors.topic ? "border-red-700 focus-visible:border-input focus-visible:ring-red-700" : ""}`}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <OptionsInput form={form} />
+
+                <FormField
+                  control={form.control}
+                  name="optionErrors"
+                  render={() => (
+                    <FormItem className="flex flex-row items-center justify-between px-1 py-2">
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
+            )}
           </div>
 
           <motion.div
             variants={buttonVariant}
             className="mx-auto my-6 flex w-full max-w-64 flex-col items-center justify-end gap-3"
           >
-            <motion.p
-              variants={itemVariants}
-              className="text-center text-sm text-muted-foreground"
-            >
-              Start typing, and new options will be added automatically
-            </motion.p>
+            {type === "poll" && (
+              <motion.p
+                variants={itemVariants}
+                className="text-center text-sm text-muted-foreground"
+              >
+                Start typing, and new options will be added automatically
+              </motion.p>
+            )}
             <div className="mx-auto mt-6 flex w-full max-w-64 flex-col justify-end gap-3">
               <LoadingButton
                 loading={isLoading}
