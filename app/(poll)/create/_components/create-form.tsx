@@ -45,6 +45,7 @@ const CreateForm = () => {
   >({
     resolver: zodResolver(type === "poll" ? pollSchema : storypointsSchema),
     defaultValues: {
+      type,
       topic: "",
       options: [{ value: "" }, { value: "" }],
       blindVoting: false,

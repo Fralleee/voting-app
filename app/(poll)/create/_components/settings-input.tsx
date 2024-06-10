@@ -39,7 +39,6 @@ interface SettingsInputProps {
 const SettingsInput = ({ type, onTypeChange, form }: SettingsInputProps) => {
   const { control, setValue } = form;
 
-  // const type = useWatch({ control, name: "type" });
   const blindVoting = useWatch({ control, name: "blindVoting" });
   const allowMultiChoice = useWatch({ control, name: "allowMultiChoice" });
   const allowChoiceCreation = useWatch({
@@ -66,7 +65,7 @@ const SettingsInput = ({ type, onTypeChange, form }: SettingsInputProps) => {
     <Accordion
       type="single"
       collapsible
-      className="bg-card-background flex flex-col gap-3 rounded-md border border-input px-4"
+      className="flex flex-col gap-3 rounded-md border border-input bg-card-background px-4"
     >
       <AccordionItem value="item-1">
         <AccordionTrigger>
