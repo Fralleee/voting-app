@@ -1,5 +1,6 @@
 export const formSummary = (formValues: any) => {
-  const { type, allowMultiChoice, allowChoiceCreation } = formValues;
+  const { type, blindVoting, allowMultiChoice, allowChoiceCreation } =
+    formValues;
 
   let formType: string = allowMultiChoice ? "Multi-choice " : "Single-choice ";
   let formDescription: string[] = [];
@@ -8,6 +9,10 @@ export const formSummary = (formValues: any) => {
     formType += "poll";
   } else if (type === "storypoints") {
     formType += "story points session";
+  }
+
+  if (blindVoting) {
+    formDescription.push("Votes are hidden until the poll is closed");
   }
 
   if (allowChoiceCreation) {

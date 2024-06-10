@@ -11,6 +11,7 @@ export interface Poll {
   type: PollType;
   topic: string;
   admin: string;
+  blindVoting: boolean;
   allowMultiChoice: boolean;
   allowChoiceCreation: boolean;
   status: "open" | "closed" | "locked";

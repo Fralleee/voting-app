@@ -36,6 +36,7 @@ const SettingsInput = ({ form }: SettingsInputProps) => {
   const { control, setValue } = form;
 
   const type = useWatch({ control, name: "type" });
+  const blindVoting = useWatch({ control, name: "blindVoting" });
   const allowMultiChoice = useWatch({ control, name: "allowMultiChoice" });
   const allowChoiceCreation = useWatch({
     control,
@@ -45,6 +46,10 @@ const SettingsInput = ({ form }: SettingsInputProps) => {
   const handleTypeChange = useCallback(
     (value: PollType) => setValue("type", value),
     [setValue],
+  );
+  const toggleBlindVoting = useCallback(
+    () => setValue("blindVoting", !blindVoting),
+    [blindVoting, setValue],
   );
   const toggleMultiChoice = useCallback(
     () => setValue("allowMultiChoice", !allowMultiChoice),
@@ -66,9 +71,15 @@ const SettingsInput = ({ form }: SettingsInputProps) => {
         <AccordionTrigger>
           <div className="flex flex-col items-start justify-center text-left transition-all">
             <p>{formType}</p>
-            <p className="h-auto max-h-10 text-sm text-muted-foreground transition-all empty:max-h-0">
-              {formDescription.join(",")}
-            </p>
+            {formDescription.length > 0 &&
+              formDescription.map((desc, index) => (
+                <p
+                  key={index}
+                  className="h-auto max-h-10 text-sm text-muted-foreground transition-all empty:max-h-0"
+                >
+                  {desc}
+                </p>
+              ))}
           </div>
         </AccordionTrigger>
         <AccordionContent>
@@ -92,6 +103,21 @@ const SettingsInput = ({ form }: SettingsInputProps) => {
                 </SelectGroup>
               </SelectContent>
             </Select>
+          </FormItem>
+
+          <FormItem className="flex flex-row items-center justify-between px-1 py-2">
+            <div>
+              <FormLabel className="text-base">Blind voting</FormLabel>
+              <FormDescription>
+                Don&apos;t display votes until after poll has closed.
+              </FormDescription>
+            </div>
+            <FormControl>
+              <Switch
+                checked={blindVoting}
+                onCheckedChange={toggleBlindVoting}
+              />
+            </FormControl>
           </FormItem>
 
           <FormItem className="flex flex-row items-center justify-between px-1 py-2">

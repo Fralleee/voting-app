@@ -78,9 +78,11 @@ export const MultiChoice = ({ poll, pollReference }: MultiChoiceProps) => {
           className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
           key={option.value}
         >
-          <div className="absolute right-2 top-2">
-            <AvatarCircles users={option.votes || []} maxCircles={3} />
-          </div>
+          {!poll.blindVoting && (
+            <div className="absolute right-2 top-2">
+              <AvatarCircles users={option.votes || []} maxCircles={3} />
+            </div>
+          )}
           <p className="line-clamp-5 truncate text-wrap">{option.value}</p>
         </MotionToggleGroupItem>
       ))}

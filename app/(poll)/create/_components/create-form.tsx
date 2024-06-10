@@ -43,6 +43,7 @@ const CreateForm = () => {
     resolver: zodResolver(pollSchema),
     defaultValues: {
       type: "poll",
+      blindVoting: false,
       allowMultiChoice: false,
       allowChoiceCreation: false,
       topic: "",
@@ -56,8 +57,14 @@ const CreateForm = () => {
 
   async function onSubmit(values: z.infer<typeof pollSchema>) {
     setIsLoading(true);
-    const { type, topic, options, allowChoiceCreation, allowMultiChoice } =
-      values;
+    const {
+      type,
+      topic,
+      options,
+      blindVoting,
+      allowChoiceCreation,
+      allowMultiChoice,
+    } = values;
 
     const filteredOptions = options.filter(
       (option) => option.value !== "",
@@ -112,6 +119,7 @@ const CreateForm = () => {
       topic,
       options: filteredOptions,
       admin: user?.identifier,
+      blindVoting,
       allowMultiChoice,
       allowChoiceCreation,
       status: "open",
