@@ -54,7 +54,7 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
   function handleSingleChoice(value: string): void {
     update(pollReference, {
       options: poll.options.map((option) => {
-        if (value.includes(option.value)) {
+        if (value === option.value) {
           return {
             ...option,
             votes: [...(option.votes || []), user],

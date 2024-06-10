@@ -14,3 +14,9 @@ export interface Poll {
   status: "open" | "closed" | "locked";
   options: PollOption[];
 }
+
+export interface VoteResultsPerOption {
+  name: string;
+  votes: number;
+  users: User[] | undefined;
+}
