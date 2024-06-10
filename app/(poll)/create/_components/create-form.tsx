@@ -2,8 +2,6 @@
 
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { database } from "@/lib/firebase";
-import { ref, push } from "firebase/database";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Form,
@@ -15,7 +13,6 @@ import {
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PollOption } from "@/types/pollTypes";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { LoadingButton } from "@/components/ui/loading-button";
@@ -27,12 +24,12 @@ import {
   buttonVariant,
 } from "@/app/_animations/variants";
 import { MotionCard } from "@/components/ui/card";
-import { validateDuplicateOptions } from "../_validation/validateDuplicateOptions";
 import { useWarnIfUnsavedChanges } from "@/app/_hooks/useWarnIfUnsavedChanges";
 import { useUser } from "@/app/_hooks/useUser";
 import React from "react";
 import { OptionsInput } from "./options-input";
 import SettingsInput from "./settings-input";
+import { createPoll, createStorypointsPoll } from "../_utils/createPoll";
 
 const CreateForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -65,91 +62,22 @@ const CreateForm = () => {
     setIsLoading(true);
 
     if (type === "storypoints") {
-      const { allowMultiChoice } = values as z.infer<typeof storypointsSchema>;
-
-      const newVoteRef = ref(database, "votes");
-      const newVote = await push(newVoteRef, {
-        type,
-        topic: "Story Points",
-        options: ["0", "1", "2", "3", "5", "8", "13", "21", "?"].map((val) => ({
-          value: val,
-        })),
-        admin: user?.identifier,
-        blindVoting: true,
-        allowMultiChoice,
-        allowChoiceCreation: false,
-        status: "open",
-      });
-      return router.push(`/vote/${newVote.key}`);
+      const key = await createStorypointsPoll(type, user?.identifier, values);
+      return router.push(`/vote/${key}`);
     }
 
     if (type === "poll") {
-      const {
-        topic,
-        options,
-        blindVoting,
-        allowChoiceCreation,
-        allowMultiChoice,
-      } = values as z.infer<typeof pollSchema>;
-      const filteredOptions = options.filter(
-        (option) => option.value !== "",
-      ) as PollOption[];
-
-      if (filteredOptions.length < 2) {
-        form.setError("optionErrors", {
-          type: "manual",
-          message: "At least two valid options are required.",
-        });
-
-        let firstError = false;
-        for (const option of options) {
-          if (option.value === "") {
-            const index = options.indexOf(option);
-            form.setError(`options.${index}.value`, {
-              type: "manual",
-              message: "Option cannot be empty.",
-            });
-
-            if (!firstError) {
-              form.setFocus(`options.${index}.value`);
-              firstError = true;
-            }
-          }
-        }
-
-        setIsLoading(false);
-        return;
-      }
-
-      const { hasDuplicates, duplicateOptions } =
-        validateDuplicateOptions(filteredOptions);
-      if (hasDuplicates) {
-        form.clearErrors("options");
-
-        for (const option of duplicateOptions) {
-          const index = options.indexOf(option);
-          form.setError(`options.${index}.value`, {
-            type: "manual",
-            message: "Value already exists in previous option.",
-          });
-          form.setFocus(`options.${index}.value`);
-        }
-        setIsLoading(false);
-        return;
-      }
-
-      const newVoteRef = ref(database, "votes");
-      const newVote = await push(newVoteRef, {
+      const key = await createPoll(
         type,
-        topic,
-        options: filteredOptions,
-        admin: user?.identifier,
-        blindVoting,
-        allowMultiChoice,
-        allowChoiceCreation,
-        status: "open",
-      });
-      router.push(`/vote/${newVote.key}`);
+        user?.identifier,
+        form as UseFormReturn<z.infer<typeof pollSchema>>,
+        values as z.infer<typeof pollSchema>,
+      );
+      if (key) {
+        router.push(`/vote/${key}`);
+      } else {
+        setIsLoading(false);
+      }
     }
   }
 
