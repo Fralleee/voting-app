@@ -103,23 +103,6 @@ const SettingsInput = ({ form }: SettingsInputProps) => {
             </Select>
           </FormItem>
 
-          {type === "poll" && (
-            <FormItem className="flex flex-row items-center justify-between px-1 py-2">
-              <div>
-                <FormLabel className="text-base">Blind voting</FormLabel>
-                <FormDescription>
-                  Don&apos;t display votes until after poll has closed.
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={blindVoting}
-                  onCheckedChange={toggleBlindVoting}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-
           <FormItem className="flex flex-row items-center justify-between px-1 py-2">
             <div>
               <FormLabel className="text-base">Allow multi-choice</FormLabel>
@@ -149,6 +132,22 @@ const SettingsInput = ({ form }: SettingsInputProps) => {
                 <Switch
                   checked={allowChoiceCreation}
                   onCheckedChange={toggleChoiceCreation}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+          {type === "poll" && (
+            <FormItem className="flex flex-row items-center justify-between px-1 py-2">
+              <div>
+                <FormLabel className="text-base">Blind voting</FormLabel>
+                <FormDescription>
+                  Don&apos;t display votes until after poll has closed.
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={blindVoting}
+                  onCheckedChange={toggleBlindVoting}
                 />
               </FormControl>
             </FormItem>

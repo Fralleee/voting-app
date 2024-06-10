@@ -9,6 +9,7 @@ export const formSummary = (formValues: any) => {
     formType += "poll";
   } else if (type === "storypoints") {
     formType += "story points session";
+    return { formType, formDescription };
   }
 
   if (blindVoting) {
