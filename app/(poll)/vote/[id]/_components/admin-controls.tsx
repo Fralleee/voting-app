@@ -12,7 +12,6 @@ interface AdminControlsProps {
 
 const AdminControls = ({ poll, pollReference }: AdminControlsProps) => {
   const closed = poll.status === "closed";
-  const locked = poll.status === "locked";
 
   function showVotes() {
     update(pollReference, {
