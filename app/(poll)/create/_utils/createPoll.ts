@@ -96,6 +96,5 @@ export const createStorypointsPoll = async (
     status: "open",
   });
 
-  console.log(newVote.key);
   return newVote.key;
 };

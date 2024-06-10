@@ -4,7 +4,7 @@ import {
 } from "@/components/ui/toggle-group";
 import { DatabaseReference, update } from "firebase/database";
 import { useUser } from "@/app/_hooks/useUser";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Poll, Storypoints } from "@/types/pollTypes";
 import { ShowVoters } from "../show-voters";
 
@@ -15,6 +15,7 @@ interface MultiChoiceProps {
 
 export const MultiChoice = ({ poll, pollReference }: MultiChoiceProps) => {
   const { user } = useUser();
+  const [enableControls, setEnableControls] = useState(false);
 
   const handleMultipleChoice = useCallback(
     (value: string[]): void => {
@@ -59,29 +60,35 @@ export const MultiChoice = ({ poll, pollReference }: MultiChoiceProps) => {
       type="multiple"
       className="flex w-full flex-wrap justify-center gap-3"
     >
-      {poll.options.map((option, index) => (
-        <MotionToggleGroupItem
-          variants={{
-            hidden: { y: 20, opacity: 0 },
-            visible: {
-              y: 0,
-              opacity: 1,
-              transition: {
-                duration: 0.2,
-                ease: "easeOut",
-                delay: index < 5 ? index * 0.15 : 0.45,
+      {poll.options.map((option, index) => {
+        const delay = index < 3 ? index * 0.25 : 0.75;
+        return (
+          <MotionToggleGroupItem
+            key={index}
+            onAnimationComplete={() =>
+              index === poll.options.length - 1 && setEnableControls(true)
+            }
+            variants={{
+              hidden: { scale: 0, opacity: 0 },
+              visible: {
+                scale: 1,
+                opacity: 1,
+                transition: {
+                  duration: 0.4,
+                  ease: "backOut",
+                  delay,
+                },
               },
-            },
-          }}
-          value={option.value}
-          disabled={poll.status !== "open"}
-          className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
-          key={option.value}
-        >
-          <ShowVoters option={option} poll={poll} />
-          <p className="line-clamp-5 truncate text-wrap">{option.value}</p>
-        </MotionToggleGroupItem>
-      ))}
+            }}
+            value={option.value}
+            disabled={poll.status !== "open" || !enableControls}
+            className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
+          >
+            <ShowVoters option={option} poll={poll} />
+            <p className="line-clamp-5 truncate text-wrap">{option.value}</p>
+          </MotionToggleGroupItem>
+        );
+      })}
     </ToggleGroup>
   );
 };
