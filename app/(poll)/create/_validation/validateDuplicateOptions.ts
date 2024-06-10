@@ -13,8 +13,6 @@ export const validateDuplicateOptions = (options: PollOption[]) => {
 
   const hasDuplicates = duplicateOptions.length > 0;
 
-  console.log(duplicateOptions);
-
   return {
     hasDuplicates,
     duplicateOptions,

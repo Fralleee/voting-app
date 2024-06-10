@@ -17,6 +17,7 @@ const Poll = ({ id }: { id: string }) => {
 
   useEffect(() => {
     if (!user || !poll) return;
+
     const hasVotesWithOtherAlias = poll.options.some((option) =>
       option.votes?.some(
         (u) => u.identifier === user.identifier && u.alias !== user.alias,
@@ -48,7 +49,7 @@ const Poll = ({ id }: { id: string }) => {
   }
 
   return poll.status === "closed" ? (
-    <Results poll={poll} />
+    <Results poll={poll} pollReference={pollReference} />
   ) : (
     <Voting poll={poll} pollReference={pollReference} />
   );

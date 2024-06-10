@@ -59,4 +59,5 @@ const ToggleGroupItem = React.forwardRef<
 ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName;
 
 const MotionToggleGroupItem = motion(ToggleGroupItem);
+
 export { ToggleGroup, ToggleGroupItem, MotionToggleGroupItem };
