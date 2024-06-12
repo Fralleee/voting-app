@@ -8,7 +8,7 @@ interface ExpandableProps {
 
 export const Expandable = ({ expanded, children }: ExpandableProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const [maxHeight, setMaxHeight] = useState(500);
+  const [maxHeight, setMaxHeight] = useState(expanded ? 500 : 0);
 
   useEffect(() => {
     if (expanded) {
