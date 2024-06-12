@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PollType } from "@/types/pollTypes";
+import { Expandable } from "@/app/_components/expandable";
 
 interface SettingsInputProps {
   type: PollType;
@@ -118,7 +119,7 @@ const SettingsInput = ({ type, onTypeChange, form }: SettingsInputProps) => {
             </FormControl>
           </FormItem>
 
-          {type === "poll" && (
+          <Expandable expanded={type === "poll"}>
             <FormItem className="flex flex-row items-center justify-between px-1 py-2">
               <div>
                 <FormLabel className="text-base">
@@ -135,8 +136,6 @@ const SettingsInput = ({ type, onTypeChange, form }: SettingsInputProps) => {
                 />
               </FormControl>
             </FormItem>
-          )}
-          {type === "poll" && (
             <FormItem className="flex flex-row items-center justify-between px-1 py-2">
               <div>
                 <FormLabel className="text-base">Blind voting</FormLabel>
@@ -151,7 +150,7 @@ const SettingsInput = ({ type, onTypeChange, form }: SettingsInputProps) => {
                 />
               </FormControl>
             </FormItem>
-          )}
+          </Expandable>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

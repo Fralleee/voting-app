@@ -30,6 +30,7 @@ import React from "react";
 import { OptionsInput } from "./options-input";
 import SettingsInput from "./settings-input";
 import { createPoll, createStorypointsPoll } from "../_utils/createPoll";
+import { Expandable } from "@/app/_components/expandable";
 
 const CreateForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -101,7 +102,7 @@ const CreateForm = () => {
               <SettingsInput form={form} type={type} onTypeChange={setType} />
             </motion.div>
 
-            {type === "poll" && (
+            <Expandable expanded={type === "poll"}>
               <motion.div
                 variants={itemVariants}
                 className="flex flex-col gap-3"
@@ -137,21 +138,21 @@ const CreateForm = () => {
                   )}
                 />
               </motion.div>
-            )}
+            </Expandable>
           </div>
 
           <motion.div
             variants={buttonVariant}
             className="mx-auto my-6 flex w-full max-w-64 flex-col items-center justify-end gap-3"
           >
-            {type === "poll" && (
+            <Expandable expanded={type === "poll"}>
               <motion.p
                 variants={itemVariants}
                 className="text-center text-sm text-muted-foreground"
               >
                 Start typing, and new options will be added automatically
               </motion.p>
-            )}
+            </Expandable>
             <div className="mx-auto mt-6 flex w-full max-w-64 flex-col justify-end gap-3">
               <LoadingButton
                 loading={isLoading}
