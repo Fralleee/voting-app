@@ -16,7 +16,7 @@ export const Expandable = ({ expanded, children }: ExpandableProps) => {
     } else {
       setMaxHeight(0);
     }
-  }, [expanded]);
+  }, [expanded, children]);
 
   return (
     <div

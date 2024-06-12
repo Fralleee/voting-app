@@ -9,6 +9,10 @@ body,
   height: 100%;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 @layer base {
   :root {
     --background: 60 4.76% 95.88%;

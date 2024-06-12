@@ -1,23 +1,23 @@
-// @ts-expect-error -- Not sensitive data
-export const formSummary = (type, formValues) => {
-  const { blindVoting, allowMultiChoice, allowChoiceCreation } = formValues;
+import { z } from "zod";
+import { pollSchema, storypointsSchema } from "../_validation/pollSchema";
+import { PollType } from "@/types/pollTypes";
 
-  let formType: string = allowMultiChoice ? "Multi-choice " : "Single-choice ";
+export const formSummary = (
+  type: PollType,
+  formValues: z.infer<typeof pollSchema> | z.infer<typeof storypointsSchema>,
+) => {
+  const isPoll = type === "poll";
+  const isPollForm = formValues as z.infer<typeof pollSchema>;
+  const formType = `${formValues.allowMultiChoice ? "Multi-choice" : "Single-choice"} ${isPoll ? "poll" : "story points session"}`;
   const formDescription: string[] = [];
 
-  if (type === "poll") {
-    formType += "poll";
-  } else if (type === "storypoints") {
-    formType += "story points session";
-    return { formType, formDescription };
-  }
-
-  if (blindVoting) {
-    formDescription.push("Votes are hidden until the poll is closed");
-  }
-
-  if (allowChoiceCreation) {
-    formDescription.push("Users can create options");
+  if (isPoll) {
+    if (isPollForm.blindVoting) {
+      formDescription.push("Votes are hidden until the poll is closed");
+    }
+    if (isPollForm.allowChoiceCreation) {
+      formDescription.push("Users can create options");
+    }
   }
 
   return { formType, formDescription };

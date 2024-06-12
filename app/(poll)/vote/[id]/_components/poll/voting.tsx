@@ -7,7 +7,11 @@ import { DatabaseReference } from "firebase/database";
 import { NewOption } from "../new-option";
 import AdminControls from "../admin-controls";
 import { motion } from "framer-motion";
-import { containerVariants, itemVariants } from "@/app/_animations/variants";
+import {
+  buttonVariant,
+  containerVariants,
+  itemVariants,
+} from "@/app/_animations/variants";
 import { useUser } from "@/app/_hooks/useUser";
 import { MultiChoice } from "../choice/multi-choice";
 import { SingleChoice } from "../choice/single-choice";
@@ -47,46 +51,12 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
       <div className="mx-auto my-6 flex w-full max-w-64 flex-col items-center justify-end gap-3">
         <div className="mx-auto flex w-full max-w-64 flex-col justify-end gap-3">
           {poll.type === "poll" && poll.allowChoiceCreation && (
-            <motion.div
-              variants={{
-                hidden: { scale: 0.25, opacity: 0 },
-                visible: {
-                  scale: 1,
-                  opacity: 1,
-                  transition: {
-                    ease: "backOut",
-                    duration: 0.3,
-                    delay:
-                      poll.options.length > 5
-                        ? 0.75
-                        : poll.options.length * 0.15 + 0.15,
-                  },
-                },
-              }}
-              className="w-full"
-            >
+            <motion.div variants={buttonVariant} className="w-full">
               <NewOption poll={poll} pollReference={pollReference} />
             </motion.div>
           )}
           {poll.admin === user?.identifier && (
-            <motion.div
-              variants={{
-                hidden: { scale: 0.25, opacity: 0 },
-                visible: {
-                  scale: 1,
-                  opacity: 1,
-                  transition: {
-                    ease: "backOut",
-                    duration: 0.3,
-                    delay:
-                      poll.options.length > 5
-                        ? 0.9
-                        : poll.options.length * 0.15 + 0.3,
-                  },
-                },
-              }}
-              className="w-full"
-            >
+            <motion.div variants={buttonVariant} className="w-full">
               <AdminControls poll={poll} pollReference={pollReference} />
             </motion.div>
           )}

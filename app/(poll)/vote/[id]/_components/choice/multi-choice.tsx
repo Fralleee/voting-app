@@ -7,6 +7,7 @@ import { useUser } from "@/app/_hooks/useUser";
 import { useCallback, useState } from "react";
 import { Poll, Storypoints } from "@/types/pollTypes";
 import { ShowVoters } from "../show-voters";
+import { buttonVariant } from "@/app/_animations/variants";
 
 interface MultiChoiceProps {
   poll: Poll | Storypoints;
@@ -61,25 +62,13 @@ export const MultiChoice = ({ poll, pollReference }: MultiChoiceProps) => {
       className="flex w-full flex-wrap justify-center gap-3"
     >
       {poll.options.map((option, index) => {
-        const delay = index < 3 ? index * 0.25 : 0.75;
         return (
           <MotionToggleGroupItem
             key={index}
             onAnimationComplete={() =>
               index === poll.options.length - 1 && setEnableControls(true)
             }
-            variants={{
-              hidden: { scale: 0, opacity: 0 },
-              visible: {
-                scale: 1,
-                opacity: 1,
-                transition: {
-                  duration: 0.4,
-                  ease: "backOut",
-                  delay,
-                },
-              },
-            }}
+            variants={buttonVariant}
             value={option.value}
             disabled={poll.status !== "open" || !enableControls}
             className="relative h-32 w-32 select-none p-3 text-lg data-[disabled]:text-muted-foreground"
