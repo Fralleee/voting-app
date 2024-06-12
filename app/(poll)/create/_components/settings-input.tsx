@@ -61,7 +61,7 @@ const SettingsInput = ({ type, onTypeChange, form }: SettingsInputProps) => {
     [allowChoiceCreation, setValue],
   );
 
-  const { formType, formDescription } = formSummary(form.getValues());
+  const { formType, formDescription } = formSummary(type, form.getValues());
   return (
     <Accordion
       type="single"
