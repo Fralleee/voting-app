@@ -24,6 +24,7 @@ export const Expandable = ({ expanded, children }: ExpandableProps) => {
       style={{
         maxHeight: maxHeight,
         opacity: expanded ? 1 : 0,
+        pointerEvents: expanded ? "auto" : "none",
       }}
     >
       <motion.div className="flex flex-col gap-3" ref={contentRef}>
