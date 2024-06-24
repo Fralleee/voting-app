@@ -36,3 +36,7 @@ If you are the creator of the vote:
 - You have admin rights to start/close the voting.
 - Add choices or allow users to create their own choices.
 - Enable or disable multiple option selections.
+
+## Dependencies
+
+Uses [Poll Classifier](https://github.com/Fralleee/poll-classifier/) to categorize votes based on the topic using a trained model.
