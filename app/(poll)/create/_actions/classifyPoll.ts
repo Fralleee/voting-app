@@ -18,12 +18,15 @@ export const classifyPoll = async (key: string, topic: string) => {
       },
       body: JSON.stringify({ poll_text: topic }),
     });
+    console.log("Response");
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const { category } = await response.json();
+
+    console.log("Category found: " + category);
     const pollReference = ref(database, `votes/${key}`);
     update(pollReference, { category });
   } catch (error) {
