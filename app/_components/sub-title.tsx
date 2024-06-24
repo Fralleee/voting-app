@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { PropsWithChildren } from "react";
 
-export const SubTitle = ({ children }: { children: React.ReactNode }) => {
+export const SubTitle = ({ children }: PropsWithChildren<unknown>) => {
   return (
     <motion.h1
       className="relative text-center text-xl font-bold text-muted-foreground md:text-3xl lg:text-4xl"

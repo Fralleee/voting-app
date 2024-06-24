@@ -29,12 +29,14 @@ import { validateDuplicateOptions } from "@/app/(poll)/create/_validation/valida
 import { Poll } from "@/types/pollTypes";
 import { DatabaseReference, update } from "firebase/database";
 
-interface NewOptionProps {
-  poll: Poll;
-  pollReference: DatabaseReference;
+namespace NewOption {
+  export interface Props {
+    poll: Poll;
+    pollReference: DatabaseReference;
+  }
 }
 
-export const NewOption = ({ poll, pollReference }: NewOptionProps) => {
+export const NewOption = ({ poll, pollReference }: NewOption.Props) => {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof newOptionSchema>>({
     resolver: zodResolver(newOptionSchema),

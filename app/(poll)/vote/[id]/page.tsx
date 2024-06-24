@@ -1,5 +1,11 @@
 import PollRoot from "./_components/poll/poll-root";
 
-export default function Page({ params }: { params: { id: string } }) {
+namespace Page {
+  export interface Props {
+    params: { id: string };
+  }
+}
+
+export default function Page({ params }: Page.Props) {
   return <PollRoot id={params.id} />;
 }

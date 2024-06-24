@@ -9,12 +9,14 @@ import { ShowVoters } from "../show-voters";
 import { useCallback, useState } from "react";
 import { buttonVariant } from "@/app/_animations/variants";
 
-interface SingleChoiceProps {
-  poll: Poll | Storypoints;
-  pollReference: DatabaseReference;
+namespace SingleChoice {
+  export interface Props {
+    poll: Poll | Storypoints;
+    pollReference: DatabaseReference;
+  }
 }
 
-export const SingleChoice = ({ poll, pollReference }: SingleChoiceProps) => {
+export const SingleChoice = ({ poll, pollReference }: SingleChoice.Props) => {
   const { user } = useUser();
   const [enableControls, setEnableControls] = useState(false);
 

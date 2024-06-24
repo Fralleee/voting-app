@@ -2,19 +2,20 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Confetti } from "@/components/ui/confetti";
 
-export interface ConfettiSideCannonsProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  duration?: number;
-  colors?: string[];
+namespace ConfettiSideCannons {
+  export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    duration?: number;
+    colors?: string[];
+  }
 }
 
-export function ConfettiSideCannons({
+export const ConfettiSideCannons = ({
   children,
   duration = 3,
   onClick,
   colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"],
   ...rest
-}: ConfettiSideCannonsProps) {
+}: ConfettiSideCannons.Props) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (onClick) {
       onClick(e);
@@ -52,4 +53,4 @@ export function ConfettiSideCannons({
       {children}
     </Button>
   );
-}
+};

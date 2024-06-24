@@ -1,12 +1,14 @@
 import AvatarCircles from "@/components/ui/avatar-circles";
 import type { Poll, PollOption, Storypoints } from "@/types/pollTypes";
 
-interface ShowVotersProps {
-  poll: Poll | Storypoints;
-  option: PollOption;
+namespace ShowVoters {
+  export interface Props {
+    poll: Poll | Storypoints;
+    option: PollOption;
+  }
 }
 
-export const ShowVoters = ({ poll, option }: ShowVotersProps) => {
+export const ShowVoters = ({ poll, option }: ShowVoters.Props) => {
   const show =
     (poll.type === "storypoints" && poll.showVotes) ||
     (poll.type === "poll" && !poll.blindVoting);

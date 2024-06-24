@@ -10,11 +10,13 @@ import { generateUsername } from "../_utils/generateUsername";
 import { storage } from "../_utils/storage";
 import type { User } from "@/types/userTypes";
 
-interface UserContextProps {
-  user?: User;
-  isLoading: boolean;
-  error?: Error;
-  updateUserAlias: (newAlias: string) => void;
+namespace UserContext {
+  export interface Props {
+    user?: User;
+    isLoading: boolean;
+    error?: Error;
+    updateUserAlias: (newAlias: string) => void;
+  }
 }
 
 const defaultValues = {
@@ -23,7 +25,7 @@ const defaultValues = {
   updateUserAlias: () => {},
 };
 
-export const UserContext = createContext<UserContextProps>(defaultValues);
+export const UserContext = createContext<UserContext.Props>(defaultValues);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, isLoading, error, updateUserAlias } = useIdentity();

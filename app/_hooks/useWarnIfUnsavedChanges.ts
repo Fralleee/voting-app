@@ -46,9 +46,6 @@ export const useWarnIfUnsavedChanges = (unsaved: boolean) => {
         "Changes you made has not been saved just yet. Do you wish to proceed anyway?",
       );
 
-      // you can use this condition for something, example: if you have progressbar setup you might want to cancel the animation
-      // if (!yes) cancelProgressbar();
-
       return yes;
     };
     window.onbeforeunload = unsaved ? beforeUnloadHandler : null;

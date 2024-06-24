@@ -9,12 +9,14 @@ import { Poll, Storypoints } from "@/types/pollTypes";
 import { ShowVoters } from "../show-voters";
 import { buttonVariant } from "@/app/_animations/variants";
 
-interface MultiChoiceProps {
-  poll: Poll | Storypoints;
-  pollReference: DatabaseReference;
+namespace MultiChoice {
+  export interface Props {
+    poll: Poll | Storypoints;
+    pollReference: DatabaseReference;
+  }
 }
 
-export const MultiChoice = ({ poll, pollReference }: MultiChoiceProps) => {
+export const MultiChoice = ({ poll, pollReference }: MultiChoice.Props) => {
   const { user } = useUser();
   const [enableControls, setEnableControls] = useState(false);
 

@@ -12,11 +12,13 @@ import { UseFormReturn, useFieldArray, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { pollSchema } from "../_validation/pollSchema";
 
-interface OptionsInputProps {
-  form: UseFormReturn<z.infer<typeof pollSchema>>;
+namespace OptionsInput {
+  export interface Props {
+    form: UseFormReturn<z.infer<typeof pollSchema>>;
+  }
 }
 
-export const OptionsInput = ({ form }: OptionsInputProps) => {
+export const OptionsInput = ({ form }: OptionsInput.Props) => {
   const { control } = form;
   const { fields, append } = useFieldArray({
     control,

@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { UserProvider } from "./_context/UserContext";
+import { PropsWithChildren } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,11 +24,7 @@ export const metadata: Metadata = {
   description: "Probably the best app there is.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: PropsWithChildren<unknown>) {
   return (
     <html lang="en">
       <body

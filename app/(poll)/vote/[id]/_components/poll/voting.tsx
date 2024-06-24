@@ -18,12 +18,14 @@ import { SingleChoice } from "../choice/single-choice";
 import { getImageForCategory } from "@/app/_utils/getImageForCategory";
 import Image from "next/image";
 
-interface VotingProps {
-  poll: Poll | Storypoints;
-  pollReference: DatabaseReference;
+namespace Voting {
+  export interface Props {
+    poll: Poll | Storypoints;
+    pollReference: DatabaseReference;
+  }
 }
 
-const Voting = ({ poll, pollReference }: VotingProps) => {
+const Voting = ({ poll, pollReference }: Voting.Props) => {
   const { user } = useUser();
 
   return (

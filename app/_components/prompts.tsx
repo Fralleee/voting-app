@@ -9,6 +9,7 @@ const regularPolls = [
   "multi-choice polls",
   "storypoints voting",
 ];
+
 const Prompts = () => (
   <motion.div
     className="mx-auto mt-12 px-4 text-center font-normal text-muted-foreground md:text-left md:text-xl lg:text-2xl"

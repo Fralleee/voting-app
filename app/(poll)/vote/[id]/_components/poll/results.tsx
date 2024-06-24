@@ -18,12 +18,14 @@ import { cn } from "@/utils/cn";
 import { DatabaseReference, remove } from "firebase/database";
 import { Confetti } from "@/components/ui/confetti";
 
-interface ResultsProps {
-  poll: Poll | Storypoints;
-  pollReference: DatabaseReference;
+namespace Results {
+  export interface Props {
+    poll: Poll | Storypoints;
+    pollReference: DatabaseReference;
+  }
 }
 
-const Results = ({ poll, pollReference }: ResultsProps) => {
+const Results = ({ poll, pollReference }: Results.Props) => {
   const { votesPerOption } = getPollResults(poll);
   const winningOptions = getWinningOptions(votesPerOption);
 

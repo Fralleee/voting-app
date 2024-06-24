@@ -1,12 +1,16 @@
 import { motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, PropsWithChildren } from "react";
 
-interface ExpandableProps {
-  expanded: boolean;
-  children: React.ReactNode;
+namespace Expandable {
+  export interface Props {
+    expanded: boolean;
+  }
 }
 
-export const Expandable = ({ expanded, children }: ExpandableProps) => {
+export const Expandable = ({
+  expanded,
+  children,
+}: PropsWithChildren<Expandable.Props>) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [maxHeight, setMaxHeight] = useState(expanded ? 500 : 0);
 

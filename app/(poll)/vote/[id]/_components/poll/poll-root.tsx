@@ -10,7 +10,13 @@ import Results from "./results";
 import Voting from "./voting";
 import { useUser } from "@/app/_hooks/useUser";
 
-const PollRoot = ({ id }: { id: string }) => {
+namespace PollRoot {
+  export interface Props {
+    id: string;
+  }
+}
+
+const PollRoot = ({ id }: PollRoot.Props) => {
   const pollReference = ref(database, `votes/${id}`);
   const [poll, loading] = useObjectVal<Poll | Storypoints>(pollReference);
   const { user, isLoading } = useUser();

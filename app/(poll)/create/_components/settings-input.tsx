@@ -29,15 +29,17 @@ import {
 import { PollType } from "@/types/pollTypes";
 import { Expandable } from "@/app/_components/expandable";
 
-interface SettingsInputProps {
-  type: PollType;
-  onTypeChange: (value: PollType) => void;
-  form: UseFormReturn<
-    z.infer<typeof pollSchema> | z.infer<typeof storypointsSchema>
-  >;
+namespace SettingsInput {
+  export interface Props {
+    type: PollType;
+    onTypeChange: (value: PollType) => void;
+    form: UseFormReturn<
+      z.infer<typeof pollSchema> | z.infer<typeof storypointsSchema>
+    >;
+  }
 }
 
-const SettingsInput = ({ type, onTypeChange, form }: SettingsInputProps) => {
+const SettingsInput = ({ type, onTypeChange, form }: SettingsInput.Props) => {
   const { control, setValue } = form;
 
   const blindVoting = useWatch({ control, name: "blindVoting" });

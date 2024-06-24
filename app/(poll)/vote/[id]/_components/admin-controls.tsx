@@ -5,12 +5,14 @@ import { DatabaseReference, update } from "firebase/database";
 import { Button } from "@/components/ui/button";
 import { BookCheck, Eye, RotateCcw } from "lucide-react";
 
-interface AdminControlsProps {
-  poll: Poll | Storypoints;
-  pollReference: DatabaseReference;
+namespace AdminControls {
+  export interface Props {
+    poll: Poll | Storypoints;
+    pollReference: DatabaseReference;
+  }
 }
 
-const AdminControls = ({ poll, pollReference }: AdminControlsProps) => {
+const AdminControls = ({ poll, pollReference }: AdminControls.Props) => {
   const closed = poll.status === "closed";
 
   function showVotes() {
