@@ -31,6 +31,7 @@ import { OptionsInput } from "./options-input";
 import SettingsInput from "./settings-input";
 import { createPoll, createStorypointsPoll } from "../_utils/createPoll";
 import { Expandable } from "@/app/_components/expandable";
+import { classifyPoll } from "../_actions/classifyPoll";
 
 const CreateForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -68,13 +69,16 @@ const CreateForm = () => {
     }
 
     if (type === "poll") {
+      const pollValues = pollSchema.parse(values);
       const key = await createPoll(
         type,
         user?.identifier,
         form as UseFormReturn<z.infer<typeof pollSchema>>,
-        values as z.infer<typeof pollSchema>,
+        pollValues,
       );
+
       if (key) {
+        classifyPoll(key, pollValues.topic);
         router.push(`/vote/${key}`);
       } else {
         setIsLoading(false);

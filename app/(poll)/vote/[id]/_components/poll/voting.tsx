@@ -15,6 +15,8 @@ import {
 import { useUser } from "@/app/_hooks/useUser";
 import { MultiChoice } from "../choice/multi-choice";
 import { SingleChoice } from "../choice/single-choice";
+import { getImageForCategory } from "@/app/_utils/getImageForCategory";
+import Image from "next/image";
 
 interface VotingProps {
   poll: Poll | Storypoints;
@@ -29,7 +31,7 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="mx-auto flex h-full w-full max-w-xl flex-col justify-between rounded-lg px-4 pt-20 md:h-auto md:border md:px-8 md:py-12"
+      className="relative mx-auto flex h-full w-full max-w-xl flex-col justify-between rounded-lg px-4 pt-20 md:h-auto md:border md:px-8 md:py-12"
     >
       <motion.h1
         variants={itemVariants}
@@ -62,6 +64,17 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
           )}
         </div>
       </div>
+      {poll.type === "poll" && poll.category && (
+        <div className="absolute left-1/2 top-2 -ml-16 h-32 w-32 select-none fade-in dark:invert">
+          <Image
+            src={getImageForCategory(poll.category)}
+            width={128}
+            height={128}
+            alt={poll.category}
+            className="opacity-5"
+          />
+        </div>
+      )}
     </MotionCard>
   );
 };

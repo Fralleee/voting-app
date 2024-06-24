@@ -15,9 +15,18 @@ export interface BasePoll {
   options: PollOption[];
 }
 
+export type PollCategory =
+  | "food"
+  | "movies"
+  | "competition"
+  | "technology"
+  | "music"
+  | "history";
+
 export interface Poll extends BasePoll {
   type: "poll";
   status: "open" | "closed";
+  category: PollCategory | undefined;
   blindVoting: boolean;
   allowChoiceCreation: boolean;
 }
