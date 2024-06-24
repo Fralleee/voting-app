@@ -75,7 +75,6 @@ const Voting = ({ poll, pollReference }: VotingProps) => {
           />
         </div>
       )}
-      <pre>{JSON.stringify(poll)}</pre>
     </MotionCard>
   );
 };
