@@ -5,6 +5,7 @@ import { database } from "@/lib/firebase";
 
 export const classifyPoll = async (key: string, topic: string) => {
   try {
+    console.log("Classifying poll");
     const classifyPollUrl = process.env.CLASSIFY_POLL_URL;
     if (!classifyPollUrl) {
       throw new Error("CLASSIFY_POLL_URL is not defined");
