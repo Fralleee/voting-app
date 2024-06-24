@@ -5,13 +5,7 @@
 ![GitHub](https://img.shields.io/github/license/fralleee/voting-app)
 ![GitHub issues](https://img.shields.io/github/issues/fralleee/voting-app)
 
-Introducing **Voting App**, a comprehensive tool for managing various types of votes online. From simple single-choice votes to multi-option polls and even fun tie-breaker games, this app offers a robust platform for both casual and formal decision-making contexts.
-
-[Installation](#installation) •
-[Usage](#usage) •
-[Configuration](#configuration) •
-[Project Roadmap](#project-roadmap) •
-[Contributing](#contributing)
+A comprehensive tool for managing various types of votes online. From simple single-choice/multi-option polls to Storypoint sessions.
 
 </div>
 
