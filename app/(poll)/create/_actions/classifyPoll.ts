@@ -29,9 +29,13 @@ export const classifyPoll = async (key: string, topic: string) => {
 
     console.log("Category found: " + category);
     const pollReference = ref(database, `votes/${key}`);
-    update(pollReference, { category });
-    console.log(pollReference);
-    console.log("Should have updated this stuff");
+    await update(pollReference, { category })
+      .then(() => {
+        console.log("Poll category updated successfully");
+      })
+      .catch((error) => {
+        console.error("Error updating poll category:", error);
+      });
   } catch (error) {
     console.error("Error classifying poll:", error);
   }
