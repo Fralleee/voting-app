@@ -15,7 +15,7 @@ Introducing **Voting App**, a comprehensive tool for managing various types of v
 
 </div>
 
-## Dependencies
+## AI (because it's cool)
 
 Uses [Poll Classifier](https://github.com/Fralleee/poll-classifier/) to categorize votes based on the topic using a trained model.
 
